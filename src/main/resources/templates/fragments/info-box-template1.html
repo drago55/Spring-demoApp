@@ -1,0 +1,16 @@
+<div id="infobox" xmlns:th="http://www.thymeleaf.org" th:fragment="info-box-template1" >
+  <div align="middle">
+    <!--img id="img-info-box" width="100%" height="50%" th:src="" alt="Card image cap"></img> -->
+  </div>
+  <div class="container-fluid" id="content">
+    <h4 class="card-title" id="name"></h4>
+    <p class="card-text" id="description"></p>
+    <p class="card-text" id="address"></p>
+    <input type="hidden" id="lat" value=""></input>
+    <input type="hidden" id="lng" value=""></input>
+    <!--div id="label_link" class="text-center" class="label label-info"-->
+    <a class="btn btn-warning btn-xs btn-block text-center" onclick="getDirections();" width="auto" height="auto" float="bottom">Get directions</a>
+    <!--Update create show details page-->
+    <!--button class="btn btn-warning btn-xs" href="">Show Details</button-->
+  </div>
+</div>

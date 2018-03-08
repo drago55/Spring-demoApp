@@ -13,5 +13,9 @@ public class IndexController {
         model.addAttribute("content","google_map");
         return "index";
     }
-
+    @RequestMapping("fullscreen_map")
+    public String fullScreenMap(Model model){
+        model.addAttribute("content","fullscreen_map");
+        return "index";
+    }
 }

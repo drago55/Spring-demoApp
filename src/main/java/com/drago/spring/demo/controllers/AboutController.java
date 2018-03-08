@@ -9,7 +9,7 @@ public class AboutController {
 
     @RequestMapping("/about")
     public String showAbout(Model model) {
-        model.addAttribute("content","about");
+        model.addAttribute("content","about/about");
         return "index";
     }
 
