@@ -1,26 +1,42 @@
-<!-- Main google map view -->
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="fullscreen_map">
-    <div class="fullscreen" id="map2"></div>
-    <div class="panel-wraper" id="panel-wraper">
-        <div class="over_map_right" id="right-panel">
-            <p>Total Distance: <span id="total"></span></p>
-            <p style="color:blue; text-align:center;" id="location_error"></p>
-
-            <div class="infobox-wrapper" th:replace="@{'fragments/info-box-template1'}"></div>
-
-        </div>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Google maps demo app</title>
+    <meta charset="utf-8" http-equiv="X-UA-Compatible">
+    </meta>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"></link>
+    <link rel="stylesheet" th:href="@{css/theme.css}"></link>
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="map_canvas" id="map2"></div>
+<div class="panel-wraper" id="panel-wraper">
+    <div class="over_map_right" id="right-panel">
+        <p>Total Distance: <span id="total"></span></p>
+        <p style="color:blue; text-align:center;" id="location_error"></p>
+        <div class="infobox-wrapper" th:replace="@{'fragments/info-box-template1'}"></div>
     </div>
-    <!--script th:src="@{js/resources.js}"></script> -->
-    <!--script th:src="@{js/info-box-wrapper.js}"></script> -->
-    <script th:src="@{js/util.js}"></script>
-    <script th:src="@{js/user-location.js}"></script>
-    <script th:src="@{js/directions.js}"></script>
-    <!-- our main google map javascript -->
-    <script th:src="@{js/main_google_maps.js}"></script>
-
-    <script async="async" defer="defer"
-            th:src="@{https://maps.googleapis.com/maps/api/js(key=${'AIzaSyBfDqh0dyOJOWkJ_fmFM179dZ9zVbCspL4'},callback=initMap)}"></script>
-    <!-- Info box library -->
-    <!--script th:src="@{js/infobox.js}"></script> -->
-
 </div>
+<!--script th:src="@{js/resources.js}"></script> -->
+<!--script th:src="@{js/info-box-wrapper.js}"></script> -->
+<script th:src="@{js/util.js}"></script>
+<script th:src="@{js/user-location.js}"></script>
+<script th:src="@{js/directions.js}"></script>
+<!-- our main google map javascript -->
+<script th:src="@{js/main_google_maps.js}"></script>
+
+<!-- Info box library -->
+<!--script th:src="@{js/infobox.js}"></script> -->
+<script async="async" defer="defer"
+        th:src="@{https://maps.googleapis.com/maps/api/js(key=${'AIzaSyBfDqh0dyOJOWkJ_fmFM179dZ9zVbCspL4'},callback=initMap)}">
+</script>
+
+</body>
+</html>

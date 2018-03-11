@@ -9,7 +9,7 @@ public class ContactController {
 
         @RequestMapping("/contact")
         public String showContact(Model model){
-            model.addAttribute("content","contact/contact");
+            model.addAttribute("content","contact");
             return "index";
         }
 }

@@ -14,6 +14,7 @@ public class Marker{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String description;
+    private String name;
 
     @OneToOne(fetch = FetchType.EAGER)
     private LatLon latLon;

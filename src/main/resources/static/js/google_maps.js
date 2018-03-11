@@ -8,6 +8,10 @@ var uniqueId = 1;
 /*Marker object*/
 var markerObject ={
   name:'',
+  city:'',
+  postalCode:'',
+  stateProvince:'',
+  streetAddress:'',
   lat:null,
   lng:null,
   description:'',
@@ -73,10 +77,12 @@ function readValues() {
   if (document.getElementById('addMarkerContainer')) {
 
     markerObject.name = document.getElementById('name').value;
-    markerObject.address = document.getElementById('address').value;
+    markerObject.stateProvince=document.getElementById('streetAddress').value;
+    markerObject.stateProvince=document.getElementById('stateProvince').value;
+    markerObject.streetAddress = document.getElementById('city').value;
     markerObject.lat = document.getElementById('lat').value;
-    markerObject.lng = document.getElementById('lng').value;
-    markerObject.description=document.getElementById('lng').value;
+    markerObject.lng = document.getElementById('lon').value;
+    markerObject.description=document.getElementById('lon').value;
     var e = document.getElementById("type");
     markerObject.type=e.options[e.selectedIndex].value;
     markerObject.image =document.getElementById("marker_icon").src;
@@ -95,7 +101,7 @@ function getLatLong(location) {
 
   // show in input box
   document.getElementById("lat").value = clickLat.toFixed(5);
-  document.getElementById("lng").value = clickLon.toFixed(5);
+  document.getElementById("lon").value = clickLon.toFixed(5);
 }
 
 /*
@@ -113,8 +119,21 @@ function getAddress(location) {
     // This is checking to see if the Geoeode Status is OK before proceeding
     if (status == google.maps.GeocoderStatus.OK) {
 
-      var address = (results[0].formatted_address);
-      document.getElementById("address").value = address;
+
+
+      var streetNumb = (results[0].address_components[0].long_name);
+      var address = streetNumb + " " + (results[0].address_components[1].long_name);
+      var postalCode = (results[0].address_components[6].long_name);
+      var stateProvince = (results[0].address_components[5].long_name);
+      var city= (results[0].address_components[2].long_name);
+      //https://developers.google.com/maps/documentation/geocoding/intro
+        document.getElementById("streetAddress").value = address;
+        document.getElementById("city").value = city;
+        document.getElementById("postalCode").value = postalCode;
+        document.getElementById("stateProvince").value = stateProvince;
+
+
+
     }
   });
 }

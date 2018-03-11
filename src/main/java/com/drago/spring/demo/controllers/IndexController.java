@@ -16,6 +16,6 @@ public class IndexController {
     @RequestMapping("fullscreen_map")
     public String fullScreenMap(Model model){
         model.addAttribute("content","fullscreen_map");
-        return "index";
+        return "fragments/fullscreen_map";
     }
 }

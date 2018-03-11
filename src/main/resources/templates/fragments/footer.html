@@ -1,8 +1,6 @@
 <footer class="footer" xmlns:th="http://www.thymeleaf.org"
                  th:fragment="footer">
     <div class="container">
-        <p>&copy; 2018 Dragutin Horvat</p>
+        <p th:text ="${'&copy;' + ' '  + #dates.year(#dates.createNow()) + ' ' + 'Dragutin Horvat'} "></p>
     </div>
-
-
 </footer>
