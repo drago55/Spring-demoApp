@@ -16,12 +16,12 @@
 
 <!-- Login form -->
 <div class="container">
-    <form class="form-signin" action="#" th:action="@{/processLogin}" th:object="${user}" method="POST">
+    <form class="form-signin" action="#" th:action="@{/processLogin}" th:object="${userLoginDto}" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="user_name" class="sr-only">User name</label>
-        <input type="text" id="user_name" name="user_name" th:field="*{userName}" class="form-control" placeholder="User name" th:required="required"></input>
+        <input type="text" id="user_name" name="user_name" th:field="*{userEmail}" class="form-control" placeholder="User name" th:required="required"></input>
         <label for="input_password" class="sr-only">Password</label>
-        <input type="password" id="input_password" th:field="*{password}" name="input_password" class="form-control" placeholder="Password" th:required="required"></input>
+        <input type="password" id="input_password" th:field="*{userPassword}" name="input_password" class="form-control" placeholder="Password" th:required="required"></input>
         <!--div class="checkbox">
           <label>
             <input type="checkbox" name="remember" value="remember"> Remember me

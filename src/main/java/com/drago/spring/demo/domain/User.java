@@ -2,6 +2,7 @@ package com.drago.spring.demo.domain;
 
 import lombok.Data;
 import lombok.NonNull;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -10,18 +11,23 @@ import java.util.Set;
 
 @Entity
 @Data
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
     @NonNull
     @NotEmpty
-    private String userName;
+    private String firstName;
+
+    @NotEmpty
+    private String lastName;
 
     @NonNull
     @NotEmpty
+    @Email
     private String email;
 
     @NonNull
@@ -29,13 +35,19 @@ public class User {
     private String password;
 
 
-    private String newPassword;
-
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Image> images= new HashSet<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name="user_marker", joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name = "marker_id"))
+    @Transient
     private Set<Marker> markers= new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles=new HashSet<>();
+
     public User(){}
+
 }

@@ -8,10 +8,10 @@ import java.util.Set;
 
 @Entity
 @Data
-public class Marker{
+public class Marker {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
     private String description;
     private String name;
@@ -24,10 +24,10 @@ public class Marker{
 
     private MarkerType markerType;
 
-    @ManyToOne
-    private User user;
+    @ManyToMany
+    private Set<User> user= new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "marker")
-    private Set<Image> images= new HashSet<>();
+    private Set<Image> images = new HashSet<>();
 
 }

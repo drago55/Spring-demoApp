@@ -16,12 +16,12 @@ public class AdministrationController {
 
     //private MarkerRepositry markerRepositry;
 
-    @RequestMapping("addUser")
+    @RequestMapping("/addUser")
     public String addUser() {
         return "";
     }
 
-    @RequestMapping(value = "showMarkers", method = RequestMethod.GET)
+    @RequestMapping(value = "/showMarkers", method = RequestMethod.GET)
     public String showMarkers(Model model) {
 
         model.addAttribute("content", "showMarkers");
