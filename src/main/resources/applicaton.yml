@@ -24,11 +24,11 @@ spring:
 logging:
   level:
     root: WARN
-    com.memorynotfound: DEBUG
+    com.drago.spring.demo: DEBUG
     org.springframework.web: INFO
     org.springframework.security: INFO
 
 security:
    basic:
-    enabled: true
+    enabled: false
      authorize-mode: NONE

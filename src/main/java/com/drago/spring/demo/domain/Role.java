@@ -1,6 +1,7 @@
 package com.drago.spring.demo.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude = {"users"})
 public class Role {
 
     @Id
@@ -18,7 +20,9 @@ public class Role {
     private Long Id;
 
     private String name;
+
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users= new HashSet<>();
+    @Transient
+    private Set<User> users;
 
 }

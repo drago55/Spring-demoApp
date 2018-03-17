@@ -1,6 +1,7 @@
 package com.drago.spring.demo.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude = {"user","images","latLon","location"})
 public class Marker {
 
     @Id

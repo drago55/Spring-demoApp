@@ -10,4 +10,5 @@ public interface UserService extends UserDetailsService {
     User save(UserRegistrationDto userRegistrationDto);
     boolean isValidUser(UserLoginDto userLoginDto);
 
+
 }

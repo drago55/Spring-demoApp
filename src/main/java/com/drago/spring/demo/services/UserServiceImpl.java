@@ -7,6 +7,7 @@ import com.drago.spring.demo.domain.UserRegistrationDto;
 import com.drago.spring.demo.exception.EmailExistsException;
 import com.drago.spring.demo.repositories.RoleRepository;
 import com.drago.spring.demo.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -48,15 +50,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(UserRegistrationDto userRegistrationDto) throws EmailExistsException {
 
-        if (emailExist(userRegistrationDto.getEmail())) {
-            throw new EmailExistsException("There is an account with that email address: " + userRegistrationDto.getEmail());
-        }
         User user = new User();
         user.setFirstName(userRegistrationDto.getFirstName());
         user.setLastName(userRegistrationDto.getLastName());
         user.setEmail(userRegistrationDto.getEmail());
         user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+
         user.setRoles(new HashSet<>(roleRepository.findAll()));
+
+        if (emailExist(userRegistrationDto.getEmail())) {
+            throw new EmailExistsException("There is an account with that email address: " + userRegistrationDto.getEmail());
+        }
+
         return userRepository.save(user);
     }
 
@@ -73,8 +78,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = findUserByEmail(email);
-
+        Optional<User> userOptional = userRepository.findUserByEmail(email);
+        if (!userOptional.isPresent()) {
+            throw new UsernameNotFoundException("User does not exists");
+        }
+        User user = userOptional.get();
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
@@ -84,8 +92,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean emailExist(String email) {
-        User user = findUserByEmail(email);
-        if (user != null) {
+        Optional<User> user = userRepository.findUserByEmail(email);
+        if (user.isPresent()) {
             return true;
         }
         return false;

@@ -21,13 +21,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.headers().frameOptions().disable();
         httpSecurity.csrf().disable();
+        httpSecurity.httpBasic().disable();
         httpSecurity.authorizeRequests()
                 .antMatchers("/js", "/h2-console/**","/","/image", "/css", "/webjars/**", "/errors",
-                        "/registerUser","index", "/processRegistration","/contact","/about","/index", "/processLogin","/fullscreen_map")
+                        "/registerUser/**","index", "/processRegistration/**","/contact","/about","/index", "/processLogin/**","/fullscreen_map")
                     .permitAll()
-           //     .anyRequest().authenticated()
-                //.and()
-              //  .formLogin().loginPage("/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().loginPage("/login").permitAll()
                 .and().logout().permitAll()
                  .logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true)
@@ -48,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 /*
