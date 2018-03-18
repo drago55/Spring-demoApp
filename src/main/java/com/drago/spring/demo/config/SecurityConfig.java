@@ -26,11 +26,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/js", "/h2-console/**","/","/image", "/css", "/webjars/**", "/errors",
                         "/registerUser/**","index", "/processRegistration/**","/contact","/about","/index", "/processLogin/**","/fullscreen_map")
                     .permitAll()
+                .antMatchers("/showMarkers/**","/editMarker","/deleteMarker",
+                        "/addMarker","/showCreateMarker").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and().logout().permitAll()
-                 .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true)
                 .clearAuthentication(true);
 
@@ -40,7 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+    }
+/*
     @Bean
     public DaoAuthenticationConfigurer authenticationProvider() {
         DaoAuthenticationConfigurer auth = new DaoAuthenticationConfigurer(userService);
@@ -48,15 +54,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return auth;
     }
 
-    @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-    }
-/*
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //      auth.authenticationProvider(authenticationProvider());
+             auth.authenticationProvider(authenticationProvider());
              auth.userDetailsService(userService);
 
-    }*/
+    }
+*/
 }

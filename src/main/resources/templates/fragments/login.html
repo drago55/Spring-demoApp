@@ -16,6 +16,11 @@
 
 <!-- Login form -->
 <div class="container">
+    <div th:if="${error!=null}">
+        <div class="alert alert-danger" role="alert">
+            <p th:text="${error}">Username or Password is wrong!!</p>
+        </div>
+    </div>
     <form class="form-signin" action="#" th:action="@{/processLogin}" th:object="${userLoginDto}" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="user_name" class="sr-only">User name</label>

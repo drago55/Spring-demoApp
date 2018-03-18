@@ -1,10 +1,10 @@
 package com.drago.spring.demo.services;
 
-import com.drago.spring.demo.domain.Role;
 import com.drago.spring.demo.domain.User;
 import com.drago.spring.demo.domain.UserLoginDto;
 import com.drago.spring.demo.domain.UserRegistrationDto;
 import com.drago.spring.demo.exception.EmailExistsException;
+import com.drago.spring.demo.exception.InvalidUserException;
 import com.drago.spring.demo.repositories.RoleRepository;
 import com.drago.spring.demo.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -66,13 +67,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isValidUser(UserLoginDto userLoginDto) {
+    public boolean isValidUser(UserLoginDto userLoginDto) throws InvalidUserException, UsernameNotFoundException {
 
-        if (passwordEncoder.matches(userLoginDto.getUserPassword(), findUserByEmail(userLoginDto.getUserEmail()).getPassword())) {
-            return true;
+        Optional<User> userOptional = userRepository.findUserByEmail(userLoginDto.getUserEmail());
+
+        if (!userOptional.isPresent()) {
+            throw new UsernameNotFoundException("Username or Password is wrong!!");
         }
 
-        return false;
+        if (!passwordEncoder.matches(userLoginDto.getUserPassword(), userOptional.get().getPassword())) {
+            throw new InvalidUserException("Username or Password is wrong!!");
+        }
+
+        return true;
     }
 
     @Override
@@ -83,17 +90,19 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User does not exists");
         }
         User user = userOptional.get();
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        user.getRoles().forEach((role) -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                grantedAuthorities);
     }
 
     private boolean emailExist(String email) {
-        Optional<User> user = userRepository.findUserByEmail(email);
-        if (user.isPresent()) {
+
+        if (userRepository.findUserByEmail(email).isPresent()) {
             return true;
         }
         return false;
