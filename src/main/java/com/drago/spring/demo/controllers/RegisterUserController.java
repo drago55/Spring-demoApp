@@ -23,7 +23,7 @@ public class RegisterUserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/registerUser", method = RequestMethod.GET)
+    @RequestMapping(value = "registerUser", method = RequestMethod.GET)
     public String showRegisterUser(Model model) {
         model.addAttribute("user", new UserRegistrationDto());
         model.addAttribute("content", "registerUser");
