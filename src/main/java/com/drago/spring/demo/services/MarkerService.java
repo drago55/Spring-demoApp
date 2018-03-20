@@ -15,4 +15,6 @@ public interface MarkerService {
 
     List<Marker> findAllMarkers();
 
+    void deleteMarkerById(Long id);
+
 }

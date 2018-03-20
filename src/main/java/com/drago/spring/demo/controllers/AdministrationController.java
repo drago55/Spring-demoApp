@@ -13,10 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -33,20 +35,29 @@ public class AdministrationController {
 
     private boolean isSuccessful = false;
 
-    @RequestMapping(value = "/showUsers", method = RequestMethod.GET)
+    @RequestMapping("/showUsers")
     public String showUsers(Model model) {
         log.debug("/showUsers firing");
+
         //TODO implement list of all users
 
         return "index";
     }
 
-    @RequestMapping(value = "/showMarkers", method = RequestMethod.GET)
+    @RequestMapping("/showMarkers")
     public String showMarkers(Model model) {
-        log.debug("/showMarkers firing");
-        //TODO implement list of all markers
+
+        List<Marker> markers= markerRepositry.findAll();
+        model.addAttribute("markers",markers);
         model.addAttribute("content", "showMarkers");
 
+        return "index";
+    }
+
+    @RequestMapping("/deleteMarker/{id}")
+    public String showDelete(@PathVariable Long id, Model model){
+        model.addAttribute("content","deleteMarker");
+        model.addAttribute("id",id);
         return "index";
     }
 
@@ -81,10 +92,12 @@ public class AdministrationController {
 
             markerService.save(marker);
             isSuccessful=true;
+            model.addAttribute("success" , isSuccessful);
+            model.addAttribute("marker",marker);
         }
 
-        model.addAttribute("success" , isSuccessful);
-        return "fragments/createMarker";
+
+        return "redirect:/createMarker";
     }
 
     @RequestMapping(value = "/updateMarker", method = RequestMethod.POST)
@@ -96,15 +109,23 @@ public class AdministrationController {
         return "index";
     }
 
-    @RequestMapping(value = "/deleteMarker", method = RequestMethod.POST)
-    public String deleteMarker(@ModelAttribute("marker") @Valid Marker marker,
-                               BindingResult result, Model model) {
-        //TODO implement delete marker
-        log.debug("delete firing");
+    @RequestMapping("deleteMarker/delete/{id}")
+    public String deleteMarker(@PathVariable Long id, Model model) {
 
-        model.addAttribute("content", "showMarkers");
+        try {
 
-        return "index";
+            markerService.deleteMarkerById(id);
+
+        }catch (RuntimeException e){
+
+            model.addAttribute("error"+e.getMessage());
+            model.addAttribute("id",id);
+            model.addAttribute("content","deleteMarker");
+            return "index";
+        }
+
+
+        return "redirect:/showMarkers";
     }
 }
 

@@ -36,4 +36,9 @@ public class MarkerServiceImpl implements MarkerService {
     public List<Marker> findAllMarkers() {
         return markerRepositry.findAll();
     }
+
+    @Override
+    public void deleteMarkerById(Long id) {
+        markerRepositry.delete(id);
+    }
 }
