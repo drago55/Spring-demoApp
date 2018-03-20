@@ -1,6 +1,6 @@
 package com.drago.spring.demo.controllers;
 
-import com.drago.spring.demo.domain.UserLoginDto;
+import com.drago.spring.demo.data_transfer_objects.UserLoginDto;
 import com.drago.spring.demo.exception.InvalidUserException;
 import com.drago.spring.demo.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +51,7 @@ public class LogInController {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 mav = new ModelAndView("index");
                 mav.addObject("content", "google_map");
-                mav.addObject("firstname", user.getUsername());
+                mav.addObject("user", user);
 
                 log.debug(user.toString());
 

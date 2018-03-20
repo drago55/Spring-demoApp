@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and().logout().permitAll()
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/index?google_map")
                 .invalidateHttpSession(true)
                 .clearAuthentication(true);
 

@@ -1,20 +1,24 @@
-<div class="container" xmlns:th="http://www.thymeleaf.org" th:fragment="addMarker">
+<div class="container" xmlns:th="http://www.thymeleaf.org" th:fragment="insertMarker">
     <!-- Add marker form -->
     <h3>Create marker</h3>
+    <div th:if="${success}">
+        <div class="alert alert-success">
+            You've successfully inserted marker!
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/addMarker}" th:object="${marker}" method="POST">
+            <form action="#" th:action="@{/insertMarker}" th:object="${marker}" method="POST">
+
                 <!-- Name input body -->
                 <div class="form-group">
-                    <p th:hidden="hidden">Id: <input type="text" th:field="*{id}"/></p>
                     <label for="name">Name</label>
                     <input th:autofocus="autofocus" type="text" id="name" th:field="*{name}" class="form-control"
                            value=""
                            th:required="required"></input>
-
                 </div>
                 <!-- Address input body -->
-                <div class="form-group" th:object="${location}">
+                <div class="form-group" th:object="${marker.location}">
                     <label for="city">City</label>
                     <input type="text" th:field="*{city}" id='city' class="form-control" value=""
                            th:required="required"></input>
@@ -28,7 +32,7 @@
                            value=""></input>
                 </div>
                 <!-- Latitude input body -->
-                <div class="form-group" th:object="${latLon}">
+                <div class="form-group" th:object="${marker.latLon}">
                     <label for="lat">Latitutde</label>
                     <input type="text" name="lat" th:field="*{lat}" id='lat' class="form-control" value=""></input>
                     <!-- Longitude body -->
@@ -41,8 +45,10 @@
                 <div class="form-group" th:object="${markerType}">
                     <label for="type">Type</label>
                     <select class="form-control" id="type" name="type">
-                        <option th:each="state : ${markerType}" th:value="${state}"
-                                th:text="${state.displayName}"></option>
+                        <option th:each="state : ${markerType}"
+                                th:text="${state.name}"
+
+                                ></option>
                     </select>
                 </div>
                 <!-- Description body -->
@@ -53,11 +59,6 @@
                     <input type="hidden" name="id" class="form-control" value=""></input>
                 </div>
 
-                <!-- Map body -->
-                <div class="col-md-6">
-                    <h5 class="text-center" for="message">Click on a map to get location</h5>
-                    <div th:replace="@{'fragments/google_map'}"></div>
-                </div>
 
                 <div class="row">
                     <div class="col-md-6">
@@ -79,6 +80,11 @@
                 <!-- Submit button -->
                 <button type="submit" name="create_marker" class="btn btn-default">Submit</button>
             </form>
+        </div>
+        <!-- Map body -->
+        <div class="col-md-6">
+            <h5 class="text-center" for="message">Click on a map to get location</h5>
+            <div th:replace="@{'fragments/google_map'}"></div>
         </div>
     </div>
 </div>

@@ -19,6 +19,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
+    @Column(unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "roles")

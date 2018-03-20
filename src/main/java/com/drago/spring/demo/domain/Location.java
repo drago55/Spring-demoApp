@@ -20,4 +20,12 @@ public class Location {
     private String city;
     private String stateProvince;
 
+    public Location(){}
+
+    public Location(String city, String postalCode, String stateProvince, String streetAddress) {
+            this.city=city;
+            this.postalCode=postalCode;
+            this.stateProvince=stateProvince;
+            this.streetAddress=streetAddress;
+    }
 }

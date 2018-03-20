@@ -4,8 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -18,16 +17,17 @@ public class Marker {
     private String description;
     private String name;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private LatLon latLon;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Location location;
+
 
     private MarkerType markerType;
 
-    @ManyToMany
-    private Set<User> user= new HashSet<>();
+    @ManyToOne
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "marker")
     private Set<Image> images = new HashSet<>();

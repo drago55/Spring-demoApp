@@ -1,6 +1,6 @@
 package com.drago.spring.demo.controllers;
 
-import com.drago.spring.demo.domain.UserRegistrationDto;
+import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
 import com.drago.spring.demo.exception.EmailExistsException;
 import com.drago.spring.demo.services.UserService;
 import lombok.extern.slf4j.Slf4j;

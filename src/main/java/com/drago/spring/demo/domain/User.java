@@ -40,7 +40,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Image> images= new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name="user_marker", joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name = "marker_id"))
     @Transient

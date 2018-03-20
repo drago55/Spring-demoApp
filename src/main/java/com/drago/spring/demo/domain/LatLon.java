@@ -18,4 +18,10 @@ public class LatLon {
     private Float lat;
     private Float lon;
 
+    public LatLon(){}
+
+    public LatLon(Float lat, Float lon) {
+        this.lat=lat;
+        this.lon=lon;
+    }
 }

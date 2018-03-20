@@ -1,8 +1,8 @@
 package com.drago.spring.demo.services;
 
 import com.drago.spring.demo.domain.User;
-import com.drago.spring.demo.domain.UserLoginDto;
-import com.drago.spring.demo.domain.UserRegistrationDto;
+import com.drago.spring.demo.data_transfer_objects.UserLoginDto;
+import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
 import com.drago.spring.demo.exception.EmailExistsException;
 import com.drago.spring.demo.exception.InvalidUserException;
 import com.drago.spring.demo.repositories.RoleRepository;
@@ -17,10 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -80,6 +77,16 @@ public class UserServiceImpl implements UserService {
         }
 
         return true;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User findUseById(Long id) {
+        return userRepository.findOne(id);
     }
 
     @Override

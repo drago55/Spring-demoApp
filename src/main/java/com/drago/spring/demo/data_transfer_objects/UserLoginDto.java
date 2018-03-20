@@ -1,4 +1,4 @@
-package com.drago.spring.demo.domain;
+package com.drago.spring.demo.data_transfer_objects;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
