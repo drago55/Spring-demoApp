@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="/fragments/header :: header"></div>
+
+<body>
+<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
+
+<div class="container">
+
+    <div class="span10 offset1">
+        <div class="row">
+            <h3>Delete a Marker</h3>
+            <div th:if="${error!=null}">
+                <div class="alert alert-danger" role="alert">
+                    <p th:text="${error}">Error !!!</p>
+                </div>
+            </div>
+        </div>
+            <p class="alert alert-error">Are you sure to delete ?</p>
+        <div class="form-actions">
+            <a class="btn btn-danger" th:href="${'/delete/' + id}">Yes</a>
+            <a class="btn " th:href="@{'/showMarkers'}" >No</a>
+        </div>
+
+
+    </div>
+
+</div> <!-- /container -->
+<div th:replace="/fragments/footer :: footer"></div>
+
+</body>
+</html>

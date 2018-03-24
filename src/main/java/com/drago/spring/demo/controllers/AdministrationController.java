@@ -1,31 +1,29 @@
 package com.drago.spring.demo.controllers;
 
 import com.drago.spring.demo.domain.*;
-import com.drago.spring.demo.repositories.MarkerRepositry;
+import com.drago.spring.demo.exception.NoSuchMarkerException;
+import com.drago.spring.demo.repositories.MarkerRepository;
 import com.drago.spring.demo.services.MarkerService;
 import com.drago.spring.demo.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
 public class AdministrationController {
 
     @Autowired
-    private MarkerRepositry markerRepositry;
+    private MarkerRepository markerRepository;
 
     @Autowired
     private UserService userService;
@@ -38,94 +36,101 @@ public class AdministrationController {
     @RequestMapping("/showUsers")
     public String showUsers(Model model) {
         log.debug("/showUsers firing");
-
-        //TODO implement list of all users
-
-        return "index";
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
+        return "admin/showUsers";
     }
 
     @RequestMapping("/showMarkers")
     public String showMarkers(Model model) {
+        List<Marker> markers = markerRepository.findAll();
+        model.addAttribute("markers", markers);
+        return "admin/index";
+    }
 
-        List<Marker> markers= markerRepositry.findAll();
-        model.addAttribute("markers",markers);
-        model.addAttribute("content", "showMarkers");
+    @RequestMapping("/showMarker")
+    public String createMarker(Model model) {
 
-        return "index";
+        model.addAttribute("marker", new Marker());
+        model.addAttribute("markerType", MarkerType.values());
+
+        return "admin/marker";
     }
 
     @RequestMapping("/deleteMarker/{id}")
-    public String showDelete(@PathVariable Long id, Model model){
-        model.addAttribute("content","deleteMarker");
-        model.addAttribute("id",id);
-        return "index";
+    public String showDelete(@PathVariable Long id, Model model) {
+        model.addAttribute("id", id);
+        return "admin/deleteMarker";
     }
 
-    @RequestMapping(value = "/createMarker", method = RequestMethod.GET)
-    public String createMarker(Model model) throws UsernameNotFoundException {
-
-
-        Marker marker= new Marker();
-        model.addAttribute("marker",marker);
+    @RequestMapping("/updateMarker/{id}")
+    public String showMarker(@PathVariable Long id, Model model) {
+        log.debug("update firing");
+        Marker marker= null;
+        try {
+            marker = markerService.findMarkerById(id);
+        } catch (NoSuchMarkerException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("marker", marker);
         model.addAttribute("markerType", MarkerType.values());
 
+        return "admin/marker";
 
-        return "fragments/createMarker";
     }
+
 
     @RequestMapping(value = "/insertMarker", method = RequestMethod.POST)
     public String addMarker(@ModelAttribute("marker") @Valid Marker marker, BindingResult result, Model model) {
 
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.debug(authentication.getName());
-
-        User user=userService.findUserByEmail(authentication.getName());
-
-        log.debug("User over email "+user);
+        User user = getAuthenticatedUser();
 
         marker.setUser(user);
 
-        log.debug(""+marker);
+        log.debug("" + marker);
 
-        if(!result.hasErrors()){
+        if (!result.hasErrors()) {
 
             markerService.save(marker);
-            isSuccessful=true;
-            model.addAttribute("success" , isSuccessful);
-            model.addAttribute("marker",marker);
+            isSuccessful = true;
+            model.addAttribute("success", isSuccessful);
+            model.addAttribute("marker", marker);
         }
-
-
-        return "redirect:/createMarker";
+        return "admin/marker";
     }
+
 
     @RequestMapping(value = "/updateMarker", method = RequestMethod.POST)
-    public String updateMarker(@ModelAttribute("marker") @Valid Marker marker,
-                               BindingResult result, Model model) {
+    public String updateMarker(@ModelAttribute("marker") @Valid Marker marker, BindingResult result, Model model) {
         log.debug("update firing");
-        model.addAttribute("content", "createMarker");
-
-        return "index";
-    }
-
-    @RequestMapping("deleteMarker/delete/{id}")
-    public String deleteMarker(@PathVariable Long id, Model model) {
 
         try {
+            markerService.save(marker);
 
-            markerService.deleteMarkerById(id);
+            model.addAttribute("marker", marker);
+            model.addAttribute("markerType", MarkerType.values());
 
-        }catch (RuntimeException e){
-
-            model.addAttribute("error"+e.getMessage());
-            model.addAttribute("id",id);
-            model.addAttribute("content","deleteMarker");
-            return "index";
+            return "fragments/createMarker";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
         }
 
+        return "redirect:/showMarkers";
+    }
+
+
+    @RequestMapping("delete/{id}")
+    public String deleteMarker(@PathVariable Long id, Model model) {
+
+        markerService.deleteMarkerById(id);
 
         return "redirect:/showMarkers";
+    }
+
+    private User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return userService.findUserByEmail(authentication.getName());
     }
 }
 

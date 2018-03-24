@@ -1,3 +1,11 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="/fragments/header :: header"></div>
+
+<body>
+<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
+
 <div class="container" xmlns:th="http://www.thymeleaf.org" th:fragment="contact">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -66,3 +74,8 @@
 
 
 </div>
+
+<div th:replace="/fragments/footer :: footer"></div>
+
+</body>
+</html>

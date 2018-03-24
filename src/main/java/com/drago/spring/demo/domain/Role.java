@@ -12,7 +12,6 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"users"})
 public class Role {
 
     @Id
@@ -22,8 +21,5 @@ public class Role {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    @Transient
-    private Set<User> users;
 
 }

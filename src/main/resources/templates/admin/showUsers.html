@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="/fragments/header :: header"></div>
+
+<body>
+<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
+
+<div class="container">
+    <div class="row">
+        <h3>List of all Users</h3>
+    </div>
+
+    <div class="row" style="text-align:center">
+        <table class="table table-responsive table-bordered" id="marker-table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Roles</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="user: ${users}">
+                <td th:text="${user.id}" style="vertical-align:middle" class="text-center"></td>
+                <td th:text="${user.email}" style="vertical-align:middle" class="text-center"></td>
+                <td th:text="${user.firstName}" style="vertical-align:middle" class="text-center"></td>
+                <td th:text="${user.lastName}" style="vertical-align:middle" class="text-center"></td>
+                <td  th:if="${user.roles != null}" >
+                    <th:block th:object="${user}">
+                        <ul th:each="role: *{roles}" th:text="${role.name}" style="vertical-align:middle" align="justify"></ul>
+                    </th:block>
+                </td>
+                <td style="vertical-align:middle" class="text-center">
+                    <a class="btn btn-danger btn-lg" th:href="${'/deleteUser/' + user.id}">delete</a>
+                    <a class="btn btn-success btn-lg" th:href="${'/showUser/' + user.id}">edit</a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div th:replace="/fragments/footer :: footer"></div>
+
+</body>
+</html>

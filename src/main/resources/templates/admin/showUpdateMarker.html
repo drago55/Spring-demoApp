@@ -1,14 +1,14 @@
-<div class="container" xmlns:th="http://www.thymeleaf.org" th:fragment="insertMarker">
+<div class="container" xmlns:th="http://www.thymeleaf.org" th:fragment="showUpdateMarker">
     <!-- Add marker form -->
-    <h3>Create marker</h3>
+    <h3>Update marker</h3>
     <div th:if="${success}">
         <div class="alert alert-success">
-            You've successfully inserted marker!
+            You've successfully updated marker!
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/insertMarker}" th:object="${marker}" method="POST">
+            <form action="#" th:action="@{/updateMarker}" th:object="${marker}" method="POST">
 
                 <!-- Name input body -->
                 <div class="form-group">
@@ -48,7 +48,7 @@
                         <option th:each="state : ${markerType}"
                                 th:text="${state.name}"
 
-                                ></option>
+                        ></option>
                     </select>
                 </div>
                 <!-- Description body -->
@@ -78,7 +78,7 @@
                 </div>
 
                 <!-- Submit button -->
-                <button type="submit" name="create_marker" class="btn btn-default">Submit</button>
+                <button type="submit" name="update_marker" class="btn btn-default">Update marker</button>
             </form>
         </div>
         <!-- Map body -->

@@ -26,8 +26,7 @@ public class RegisterUserController {
     @RequestMapping(value = "registerUser", method = RequestMethod.GET)
     public String showRegisterUser(Model model) {
         model.addAttribute("user", new UserRegistrationDto());
-        model.addAttribute("content", "registerUser");
-        return "index";
+        return "/registration/index";
     }
 
 
@@ -35,21 +34,20 @@ public class RegisterUserController {
     public String proccesRegistration(@ModelAttribute("user") @Valid UserRegistrationDto userRegistrationDto,
                                              BindingResult result,  Model model) {
         model.addAttribute("user", userRegistrationDto);
-        model.addAttribute("content", "registerUser");
         if (!result.hasErrors()) {
             try {
                 userService.save(userRegistrationDto);
-
+                isSuccessful=true;
             }catch (EmailExistsException e){
                 model.addAttribute("error",e.getMessage());
                  isSuccessful =false;
-                return "index";
+                return "/registration/index";
             }
-            isSuccessful=true;
+
 
         }
         model.addAttribute("success" , isSuccessful);
-        return "index";
+        return "/registration/index";
     }
 
 }

@@ -30,7 +30,7 @@ public class LogInController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLogin(Model model) {
         model.addAttribute("userLoginDto", new UserLoginDto());
-        return "fragments/login";
+        return "login/index";
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
@@ -39,33 +39,30 @@ public class LogInController {
     }
 
     @RequestMapping(value = "processLogin", method = RequestMethod.POST)
-    public ModelAndView processLogin(@ModelAttribute("userLoginDto") @Valid UserLoginDto userLoginDto,
+    public String processLogin(@ModelAttribute("userLoginDto") @Valid UserLoginDto userLoginDto,
                                      BindingResult result, Model model) {
-        ModelAndView mav = new ModelAndView("fragments/login");
         try {
 
             if (userService.isValidUser(userLoginDto)) {
                 log.debug("user is VALID");
+
                 UserDetails user = userService.loadUserByUsername(userLoginDto.getUserEmail());
                 Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                mav = new ModelAndView("index");
-                mav.addObject("content", "google_map");
-                mav.addObject("user", user);
+                   model.addAttribute("user", user);
 
                 log.debug(user.toString());
 
-                return mav;
+                return "map/index";
             }
         } catch (InvalidUserException e) {
-            mav = new ModelAndView("fragments/login");
-            mav.addObject("error", e.getMessage());
-            mav.addObject(userLoginDto);
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("userLoginDto",userLoginDto);
             log.error("exception " + e.getMessage());
-            return mav;
+            return "login/index";
         }
 
-        return mav;
+        return "login/index";
     }
 
 

@@ -1,4 +1,13 @@
-<div class="container" xmlns:th="http://www.thymeleaf.org" th:fragment="registerUser">
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="/fragments/header :: header"></div>
+
+<body>
+<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
+
+
+<div class="container">
     <div class="row">
         <h4 class="text-center">Register user</h4>
     </div>
@@ -9,7 +18,7 @@
     </div>
     <div th:if="${error!=null}">
         <div class="alert alert-danger" role="alert">
-          <p th:text="${error}">Error email exists</p>
+            <p th:text="${error}">Error email exists</p>
         </div>
     </div>
 
@@ -26,8 +35,8 @@
                    class="form-control"
                    placeholder="First name"></input>
             <p  class="alert alert-danger" role="alert"
-               th:each="error: ${#fields.errors('firstName')}"
-               th:text="${error}">Validation error</p>
+                th:each="error: ${#fields.errors('firstName')}"
+                th:text="${error}">Validation error</p>
         </div>
         <!--    lastName input field        -->
         <div class="form-group">
@@ -36,8 +45,8 @@
                    class="form-control"
                    placeholder="Last name"></input>
             <p  class="alert alert-danger" role="alert"
-               th:each="error : ${#fields.errors('lastName')}"
-               th:text="${error}">Validation error</p>
+                th:each="error : ${#fields.errors('lastName')}"
+                th:text="${error}">Validation error</p>
         </div>
         <!--    email address input field        -->
         <div class="form-group">
@@ -46,8 +55,8 @@
                    class="form-control"
                    placeholder="Email Address"></input>
             <p  class="alert alert-danger" role="alert"
-               th:each="error : ${#fields.errors('email')}"
-               th:text="${error}">Validation error</p>
+                th:each="error : ${#fields.errors('email')}"
+                th:text="${error}">Validation error</p>
         </div>
         <!--   confirm email address input field        -->
         <div class="form-group ">
@@ -56,8 +65,8 @@
                    class="form-control"
                    placeholder="Confirm email address"></input>
             <p  class="alert alert-danger" role="alert"
-               th:each="error : ${#fields.errors('confirmEmail')}"
-               th:text="${error}">Validation error</p>
+                th:each="error : ${#fields.errors('confirmEmail')}"
+                th:text="${error}">Validation error</p>
         </div>
         <!--    password input field        -->
         <div class="form-group ">
@@ -65,8 +74,8 @@
             <input name="password" type="password" th:field="*{password}" id="password" th:required="required"
                    class="form-control" placeholder="password"></input>
             <p  class="alert alert-danger" role="alert"
-               th:each="error : ${#fields.errors('password')}"
-               th:text="${error}">Validation error</p>
+                th:each="error : ${#fields.errors('password')}"
+                th:text="${error}">Validation error</p>
         </div>
         <!--    confirm password input field        -->
         <div class="form-group ">
@@ -76,8 +85,8 @@
                    class="form-control"
                    placeholder="Confirm password"></input>
             <p  class="alert alert-danger" role="alert"
-               th:each="error : ${#fields.errors('confirmPassword')}"
-               th:text="${error}">Validation error</p>
+                th:each="error : ${#fields.errors('confirmPassword')}"
+                th:text="${error}">Validation error</p>
         </div>
         <div class="form-group">
             <button type="submit" id="btn-submit" class="btn btn-success">Register</button>
@@ -88,3 +97,9 @@
 
 </div> <!-- /container -->
 
+
+
+<div th:replace="/fragments/footer :: footer"></div>
+
+</body>
+</html>

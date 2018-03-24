@@ -3,19 +3,20 @@ package com.drago.spring.demo.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
-public class IndexController {
+public class MapController {
 
 
     @RequestMapping({"","/","index"})
-    public String index(Model model){
-        model.addAttribute("content","google_map");
-        return "index";
+    public String index(){
+
+        return "map/index";
     }
     @RequestMapping("fullscreen_map")
-    public String fullScreenMap(Model model){
-        model.addAttribute("content","fullscreen_map");
-        return "fragments/fullscreen_map";
+    public String fullScreenMap(){
+         return "map/fullscreen_map";
+
     }
 }

@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class AboutController {
 
-    @RequestMapping("/about")
-    public String showAbout(Model model) {
-        model.addAttribute("content","about");
-        return "index";
+
+    @RequestMapping("about")
+    public String showAbout() {
+        return "about/index";
     }
 
 }

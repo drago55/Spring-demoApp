@@ -1,7 +1,8 @@
 package com.drago.spring.demo.services;
 
 import com.drago.spring.demo.domain.Marker;
-import com.drago.spring.demo.repositories.MarkerRepositry;
+import com.drago.spring.demo.exception.NoSuchMarkerException;
+import com.drago.spring.demo.repositories.MarkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,20 +12,24 @@ import java.util.Optional;
 @Service
 public class MarkerServiceImpl implements MarkerService {
 
+
     @Autowired
-    private MarkerRepositry markerRepositry;
+    private MarkerRepository markerRepository;
 
 
     @Override
     public Marker save(Marker marker) {
 
-        return markerRepositry.save(marker);
+        return markerRepository.save(marker);
 
     }
 
     @Override
-    public Optional<Marker> findMarkerById(Long id) {
-        return Optional.empty();
+    public Marker findMarkerById(Long id) throws NoSuchMarkerException {
+        if (!markerRepository.exists(id)) {
+            throw new NoSuchMarkerException("Marker don't exists!");
+        }
+        return markerRepository.findOne(id);
     }
 
     @Override
@@ -34,11 +39,11 @@ public class MarkerServiceImpl implements MarkerService {
 
     @Override
     public List<Marker> findAllMarkers() {
-        return markerRepositry.findAll();
+        return markerRepository.findAll();
     }
 
     @Override
     public void deleteMarkerById(Long id) {
-        markerRepositry.delete(id);
+        markerRepository.delete(id);
     }
 }
