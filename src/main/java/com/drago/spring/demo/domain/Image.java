@@ -4,21 +4,36 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"user","marker"})
 public class Image {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    private Byte[] image;
+    private String fileName;
 
-    @ManyToOne
-    private Marker marker;
-    @ManyToOne
-    private User user;
+    @Lob
+    private String image;
 
+    @ManyToMany(mappedBy = "images",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private Set<User> users;
+
+    @ManyToMany(mappedBy = "images",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private Set<Marker> markers;
+    /**
+     * Name and  String Base64 image
+     * @param fileName
+     * @param image
+     */
+    public Image(String fileName, String image) {
+
+        this.fileName = fileName;
+        this.image = image;
+    }
+
+    public Image(){}
 }

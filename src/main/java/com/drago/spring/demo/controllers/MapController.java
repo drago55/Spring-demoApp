@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class MapController {
 
 
-    @RequestMapping({"","/","index"})
+    @RequestMapping({"","/","../index"})
     public String index(){
 
         return "map/index";
     }
-    @RequestMapping("fullscreen_map")
+    @RequestMapping("/fullscreen_map")
     public String fullScreenMap(){
          return "map/fullscreen_map";
 

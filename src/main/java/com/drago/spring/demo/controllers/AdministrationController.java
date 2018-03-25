@@ -3,6 +3,7 @@ package com.drago.spring.demo.controllers;
 import com.drago.spring.demo.domain.*;
 import com.drago.spring.demo.exception.NoSuchMarkerException;
 import com.drago.spring.demo.repositories.MarkerRepository;
+import com.drago.spring.demo.services.ImageService;
 import com.drago.spring.demo.services.MarkerService;
 import com.drago.spring.demo.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Controller
 @Slf4j
@@ -30,6 +35,9 @@ public class AdministrationController {
 
     @Autowired
     private MarkerService markerService;
+
+    @Autowired
+    private ImageService imageService;
 
     private boolean isSuccessful = false;
 
@@ -65,8 +73,8 @@ public class AdministrationController {
 
     @RequestMapping("/updateMarker/{id}")
     public String showMarker(@PathVariable Long id, Model model) {
-        log.debug("update firing");
-        Marker marker= null;
+        log.debug("show update ");
+        Marker marker = null;
         try {
             marker = markerService.findMarkerById(id);
         } catch (NoSuchMarkerException e) {
@@ -75,19 +83,16 @@ public class AdministrationController {
         model.addAttribute("marker", marker);
         model.addAttribute("markerType", MarkerType.values());
 
-        return "admin/marker";
+        return "admin/showUpdateMarker";
 
     }
 
 
     @RequestMapping(value = "/insertMarker", method = RequestMethod.POST)
-    public String addMarker(@ModelAttribute("marker") @Valid Marker marker, BindingResult result, Model model) {
+    public String addMarker(@ModelAttribute("marker") @Valid Marker marker, @RequestParam("file") MultipartFile[] files, BindingResult result, Model model) {
 
-        User user = getAuthenticatedUser();
+        marker = setMarker(marker, files);
 
-        marker.setUser(user);
-
-        log.debug("" + marker);
 
         if (!result.hasErrors()) {
 
@@ -96,13 +101,38 @@ public class AdministrationController {
             model.addAttribute("success", isSuccessful);
             model.addAttribute("marker", marker);
         }
-        return "admin/marker";
+        return "redirect:/showMarkers";
+    }
+
+    private Marker setMarker(Marker marker, MultipartFile[] files) {
+
+        User user = getAuthenticatedUser();
+        marker.setUser(user);
+      //  log.debug(files[0].getOriginalFilename());
+
+     //   log.debug("" + marker);
+
+        Arrays.asList(files).stream().filter(multipartFile -> !multipartFile.isEmpty()).forEach((MultipartFile multipartFile) -> {
+
+            try {
+
+                marker.addImage(new Image(multipartFile.getOriginalFilename(),
+                        Base64.getEncoder().encodeToString(multipartFile.getBytes())));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+    //    log.debug("" + marker);
+
+        return marker;
     }
 
 
     @RequestMapping(value = "/updateMarker", method = RequestMethod.POST)
     public String updateMarker(@ModelAttribute("marker") @Valid Marker marker, BindingResult result, Model model) {
-        log.debug("update firing");
+        log.debug("execute update to database");
 
         try {
             markerService.save(marker);

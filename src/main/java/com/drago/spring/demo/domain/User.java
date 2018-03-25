@@ -37,7 +37,8 @@ public class User {
     private String password;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_images", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Set<Image> images= new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

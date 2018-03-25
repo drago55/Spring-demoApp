@@ -71,9 +71,10 @@
 
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" th:each="img: *{images}">
                         <!-- image preview -->
-                        <img id="marker_icon" class="img-responsive" alt="Responsive image"></img>
+                        <img id="marker_icon" th:src="@{'data:image/jpeg;base64,'+${img.encodedString}}"
+                             class="img-responsive" alt="Responsive image"></img>
                     </div>
                 </div>
 
@@ -84,7 +85,7 @@
         <!-- Map body -->
         <div class="col-md-6">
             <h5 class="text-center" for="message">Click on a map to get location</h5>
-            <div th:replace="@{'fragments/google_map'}"></div>
+            <div th:replace="@{'/fragments/google_map'}"></div>
         </div>
     </div>
 </div>

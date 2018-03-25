@@ -8,7 +8,7 @@ import java.util.*;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"user","images","latLon","location"})
+@EqualsAndHashCode(exclude = {"user", "images", "latLon", "location"})
 public class Marker {
 
     @Id
@@ -29,7 +29,14 @@ public class Marker {
     @ManyToOne
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "marker")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "marker_images", joinColumns = @JoinColumn(name = "marker_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Set<Image> images = new HashSet<>();
+
+    public Marker addImage(Image image) {
+        this.images.add(image);
+        return this;
+    }
+
 
 }
