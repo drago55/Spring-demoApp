@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MapController {
 
 
-    @RequestMapping({"","/","../index"})
+    @RequestMapping({"","/","/index"})
     public String index(){
 
         return "map/index";
