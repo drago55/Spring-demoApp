@@ -19,13 +19,11 @@ public class MarkerServiceImpl implements MarkerService {
 
     @Override
     public Marker save(Marker marker) {
-
         return markerRepository.save(marker);
-
     }
 
     @Override
-    public Marker findMarkerById(Long id) throws NoSuchMarkerException {
+    public Marker findMarkerById(Long id) {
         if (!markerRepository.exists(id)) {
             throw new NoSuchMarkerException("Marker don't exists!");
         }
@@ -39,6 +37,8 @@ public class MarkerServiceImpl implements MarkerService {
 
     @Override
     public List<Marker> findAllMarkers() {
+
+
         return markerRepository.findAll();
     }
 

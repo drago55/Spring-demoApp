@@ -1,6 +1,6 @@
 package com.drago.spring.demo.exception;
 
-public class NoSuchMarkerException extends Exception{
+public class NoSuchMarkerException extends RuntimeException{
 
     public NoSuchMarkerException() {
     }

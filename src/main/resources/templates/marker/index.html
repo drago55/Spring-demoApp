@@ -44,8 +44,8 @@
                 <td th:text="${marker.description}" style="vertical-align:middle" class="text-center"></td>
                 <td th:text="${marker.user.firstName}" style="vertical-align:middle" class="text-center"></td>
                 <td style="vertical-align:middle" class="text-center">
-                    <a class="btn btn-danger btn-lg" th:href="${'/deleteMarker/' + marker.id}">delete</a>
-                    <a class="btn btn-success btn-lg" th:href="${'/updateMarker/' + marker.id}">edit</a>
+                    <a class="btn btn-danger btn-lg" th:href="${'/marker/delete/' + marker.id}">delete</a>
+                    <a class="btn btn-success btn-lg" th:href="${'/marker/edit/' + marker.id}">edit</a>
                 </td>
             </tr>
 
@@ -54,7 +54,7 @@
         <div class="row">
             <div class="col-md-3 ">
                 <p>
-                    <a class="btn btn-success btn-block" th:href="@{'/showMarker'}">Create new marker</a>
+                    <a class="btn btn-success btn-block" th:href="@{'/marker'}">Create new marker</a>
                 </p>
             </div>
 

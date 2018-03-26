@@ -5,7 +5,7 @@
 <body>
 <div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
 
-<div class="container">
+<div class="container"  th:object="${marker}">
 
     <div class="span10 offset1">
         <div class="row">
@@ -16,10 +16,12 @@
                 </div>
             </div>
         </div>
-            <p class="alert alert-error">Are you sure to delete ?</p>
+        <div class="alert alert-error" th:text="${'Are you sure to delete ' + marker.name + ' ?'}">
+
+        </div>
         <div class="form-actions">
-            <a class="btn btn-danger" th:href="${'/delete/' + id}">Yes</a>
-            <a class="btn " th:href="@{'/showMarkers'}" >No</a>
+            <a class="btn btn-danger" th:href="${'/deleteAction/' + id}">Yes</a>
+            <a class="btn " th:href="@{'/markers'}" >No</a>
         </div>
 
 

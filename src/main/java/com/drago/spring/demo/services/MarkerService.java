@@ -10,7 +10,7 @@ public interface MarkerService {
 
     Marker save(Marker marker);
 
-    Marker findMarkerById(Long id) throws NoSuchMarkerException;
+    Marker findMarkerById(Long id);
 
     Optional<Marker> findMarkerByUserId(Long userId);
 

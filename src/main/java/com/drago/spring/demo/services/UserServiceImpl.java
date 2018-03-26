@@ -9,8 +9,10 @@ import com.drago.spring.demo.repositories.RoleRepository;
 import com.drago.spring.demo.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -87,6 +89,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUseById(Long id) {
         return userRepository.findOne(id);
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return this.findUserByEmail(authentication.getName());
     }
 
     @Override
