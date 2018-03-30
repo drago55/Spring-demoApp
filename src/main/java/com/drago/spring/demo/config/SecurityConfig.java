@@ -23,10 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable();
         httpSecurity.httpBasic().disable();
         httpSecurity.authorizeRequests()
-                .antMatchers("/js", "/h2-console/**","/","/image", "/css", "/webjars/**", "/errors",
+                .antMatchers("/js/**", "/h2-console/**","/","/image/**", "/css/**", "/webjars/**", "/errors",
                         "/registerUser/**","index", "/processRegistration/**","/contact","/about","/index", "/processLogin/**","/fullscreen_map")
                     .permitAll()
-                .antMatchers("/showMarkers/**","/editMarker","/deleteMarker",
+                .antMatchers("/showMarkers/**","/editMarker","/deleteMarker","/image/upload-dir/**",
                         "/addMarker","/showCreateMarker").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .anyRequest().authenticated()
                 .and()

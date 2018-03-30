@@ -35,7 +35,7 @@ public class LogInController {
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     public String logOut() {
-        return "";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "processLogin", method = RequestMethod.POST)
@@ -53,7 +53,7 @@ public class LogInController {
 
                 log.debug(user.toString());
 
-                return "map/index";
+                return "redirect:/";
             }
         } catch (InvalidUserException e) {
             model.addAttribute("error", e.getMessage());

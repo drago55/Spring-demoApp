@@ -29,13 +29,13 @@ var locationError=false;
 /*-------------------------------------------------------------------*/
 /*Main function for initilize map*/
 function initMap() {
-
+     console.log("URL  is " + url);
   bounds= new google.maps.LatLngBounds();
   map = new google.maps.Map(document.getElementById('map2'),mapOptions);
 
   initClickListeners();
 
-  //httpRequest("GET","/home/_getAllMarkers");
+  httpRequest("GET","/markers/get_json");
 
   if (typeof info_point_uuid !== "undefined" && info_point_uuid!=='') {
     httpRequest("GET","/home/_getInfoPointOptions/" + info_point_uuid);
@@ -114,6 +114,11 @@ function getDirections() {
 **/
 function callback(data){
   //parsing raw json string and creating json objects
+  console.log("------------in callback function ----------");
+  console.log("URL  is " + url);
+    console.log("--------------DATA-----------------------")
+
+  console.log(data);
   object=JSON.parse(data);
   if (typeof object.markers !== "undefined" && object.markers!==null){
     //json object which holds all location of markers

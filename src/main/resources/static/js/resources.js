@@ -1,4 +1,8 @@
 //icon type for markers
+
+var url= location.href;
+
+
 var icons = {
 
   type1: url + 'image/icon_green.png',

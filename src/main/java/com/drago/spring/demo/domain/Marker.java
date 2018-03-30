@@ -1,9 +1,12 @@
 package com.drago.spring.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.core.io.Resource;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
@@ -24,19 +27,20 @@ public class Marker {
     private Location location;
 
 
-    private MarkerType markerType;
+    private String markerType;
 
     @ManyToOne
     private User user;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "marker_images", joinColumns = @JoinColumn(name = "marker_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
+    @JsonManagedReference
     private Set<Image> images = new HashSet<>();
+
 
     public Marker addImage(Image image) {
         this.images.add(image);
         return this;
     }
-
 
 }

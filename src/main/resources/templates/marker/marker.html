@@ -59,14 +59,13 @@
                     <input type="text" name="lon" id='lon' th:field="*{lon}" class="form-control" value=""></input>
                 </div>
                 <!-- Type input body -->
-                <div class="form-group" th:object="${markerType}">
+                <div class="form-group">
                     <label for="type">Type</label>
-                    <select class="form-control" id="type" name="type">
-                        <option th:each="state : ${markerType}"
-                                th:text="${state.name}"
-
-                        ></option>
+                    <select th:field="*{markerType}" class="form-control" id="type" name="type">
+                        <option th:each="state : ${enum}" th:text="${state.name}" th:value="${{state}}">
+                        </option>
                     </select>
+
                 </div>
                 <!-- Description body -->
                 <div class="form-group">
@@ -83,24 +82,20 @@
                         <div class="form-group">
                             <label>File input</label>
                             <input type="file" id="file1" name="file"
-                                   onchange="document.getElementById('file1').src = window.URL.createObjectURL(this.files[0])"
+                                   onchange="document.getElementById('img1').src = window.URL.createObjectURL(this.files[0])"
                                    multiple="multiple"></input>
                             <input type="file" id="file2" name="file"
-                                   onchange="document.getElementById('file2').src = window.URL.createObjectURL(this.files[1])"
+                                   onchange="document.getElementById('img2').src = window.URL.createObjectURL(this.files[0])"
                                    multiple="multiple"></input>
                             <input type="file" id="file3" name="file"
-                                   onchange="document.getElementById('file3').src = window.URL.createObjectURL(this.files[2])"
+                                   onchange="document.getElementById('img3').src = window.URL.createObjectURL(this.files[0])"
                                    multiple="multiple"></input>
 
                             <p class="help-block">Upload marker image</p>
 
                         </div>
                     </div>
-                    <div class="col-md-6" th:each="img: ${images}">
-                        <!-- image preview -->
-                        <img id="marker_icon" th:src="@{'data:image/jpeg;base64,'+${img.encodedString}}"
-                             class="img-responsive" alt="Responsive image"></img>
-                    </div>
+
                 </div>
 
                 <!-- Submit button -->
@@ -111,6 +106,7 @@
         <div class="col-md-6">
             <h5 class="text-center" for="message">Click on a map to get location</h5>
             <div th:replace="@{'map/google_map'}"></div>
+            <div th:replace="/fragments/images :: images"></div>
         </div>
     </div>
 </div>

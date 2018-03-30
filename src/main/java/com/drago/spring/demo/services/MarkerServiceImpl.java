@@ -22,6 +22,8 @@ public class MarkerServiceImpl implements MarkerService {
         return markerRepository.save(marker);
     }
 
+
+
     @Override
     public Marker findMarkerById(Long id) {
         if (!markerRepository.exists(id)) {

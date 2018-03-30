@@ -1,9 +1,11 @@
 package com.drago.spring.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.Set;
 
 @Entity
@@ -19,21 +21,20 @@ public class Image {
     @Lob
     private String image;
 
-    @ManyToMany(mappedBy = "images",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "images", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<User> users;
 
-    @ManyToMany(mappedBy = "images",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "images", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference
     private Set<Marker> markers;
-    /**
-     * Name and  String Base64 image
-     * @param fileName
-     * @param image
-     */
+
+
     public Image(String fileName, String image) {
 
         this.fileName = fileName;
         this.image = image;
     }
 
-    public Image(){}
+    public Image() {
+    }
 }
