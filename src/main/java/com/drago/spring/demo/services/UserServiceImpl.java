@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(new HashSet<>(roleRepository.findAll()));
 
         if (emailExist(userRegistrationDto.getEmail())) {
-            throw new EmailExistsException("There is an account with that email address: " + userRegistrationDto.getEmail());
+            throw new EmailExistsException("Error email address already exists!");
         }
 
         return userRepository.save(user);

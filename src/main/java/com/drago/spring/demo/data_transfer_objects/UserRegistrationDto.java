@@ -1,6 +1,7 @@
 package com.drago.spring.demo.data_transfer_objects;
 
 import com.drago.spring.demo.constraint.FieldMatch;
+import com.drago.spring.demo.constraint.ValidPassword;
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -22,8 +23,10 @@ public class UserRegistrationDto {
     @Email
     private String confirmEmail;
     @NotEmpty
+    @ValidPassword
     private String password;
     @NotEmpty
+    @ValidPassword
     private String confirmPassword;
 
 

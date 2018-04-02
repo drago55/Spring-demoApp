@@ -38,6 +38,8 @@ public class RegisterUserController {
             try {
                 userService.save(userRegistrationDto);
                 isSuccessful=true;
+                model.addAttribute("success" , isSuccessful);
+                return "/registration/index";
             }catch (EmailExistsException e){
                 model.addAttribute("error",e.getMessage());
                  isSuccessful =false;
@@ -46,6 +48,7 @@ public class RegisterUserController {
 
 
         }
+        isSuccessful=false;
         model.addAttribute("success" , isSuccessful);
         return "/registration/index";
     }
