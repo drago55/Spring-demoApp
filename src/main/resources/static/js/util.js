@@ -32,10 +32,11 @@ function _isMobile(){
 *add marker to map
 */
 function addMarker(location,title, map, icon) {
+
   marker = new google.maps.Marker({
     position:location,
     title:title,
-    map: map,
+    map:map,
     icon:icon
   });
   return marker;

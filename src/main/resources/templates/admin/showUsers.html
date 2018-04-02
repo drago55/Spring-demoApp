@@ -10,8 +10,8 @@
         <h3>List of all Users</h3>
     </div>
 
-    <div class="row" style="text-align:center">
-        <table class="table table-responsive table-bordered" id="marker-table">
+    <div class="table-responsive">
+        <table class="table" id="user-table">
             <thead>
             <tr>
                 <th>Id</th>
@@ -29,17 +29,17 @@
                 <td th:text="${user.email}" style="vertical-align:middle" class="text-center"></td>
                 <td th:text="${user.firstName}" style="vertical-align:middle" class="text-center"></td>
                 <td th:text="${user.lastName}" style="vertical-align:middle" class="text-center"></td>
-                <td  th:if="${user.roles != null}" >
-                    <th:block th:object="${user}">
-                        <ul th:each="role: *{roles}" th:text="${role.name}" style="vertical-align:middle" align="justify"></ul>
-                    </th:block>
+                <td th:if="${user.roles != null}">
+                        <ul th:each="role: ${user.roles}" th:text="${role.name}" style="vertical-align:middle"
+                            align="justify"></ul>
                 </td>
                 <td style="vertical-align:middle" class="text-center">
-                    <a class="btn btn-danger btn-lg" th:href="${'/user/delete/' + user.id}">delete</a>
-                    <a class="btn btn-success btn-lg" th:href="${'/user/edit/' + user.id}">edit</a>
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-danger btn-lg" th:href="${'/user/delete/' + user.id}">delete</a>
+                        <a class="btn btn-success btn-lg" th:href="${'/user/edit/' + user.id}">edit</a>
+                    </div>
                 </td>
             </tr>
-
             </tbody>
         </table>
 

@@ -21,14 +21,6 @@ public class Image {
     @Lob
     private String image;
 
-    @ManyToMany(mappedBy = "images", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<User> users;
-
-    @ManyToMany(mappedBy = "images", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonBackReference
-    private Set<Marker> markers;
-
-
     public Image(String fileName, String image) {
 
         this.fileName = fileName;

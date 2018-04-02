@@ -7,23 +7,29 @@
 
 <div class="container-fluid" lang="en" xmlns:th="http://www.thymeleaf.org"
      th:fragment="about">
+    <div class="jumbotron">
+        <h1 class="display-4">Hello, world!</h1>
+        <p class="lead">This is a web application built with Spring framework!</p>
+        <hr class="my-4"></hr>
+        <p>It has a user registration and login security. Users can create markers and upload images.
+            Administration page for markers. Locations and directions upon clicking on markers.</p>
+        <p>I have used Java 8 in this project.</p>
+        <div class="alert alert-success" role="alert">
+            I am learning Spring framework on this great <a th:href="@{https://www.udemy.com/spring-core/}"
+                                                            class="alert-link">Udemy course.</a>
+        </div>
+        <div class="alert alert-success" role="alert">
+            <a th:href="@{https://spring.io/}">Spring framework</a>
+        </div>
+        <div class="alert alert-success" role="alert">
 
-    <div class="container">
-
-        <h5>
-            UTE d.o.o (Uljanik Tesu Elektronika d.o.o) je društvo s ograničenom odgovornošću za projektiranje,
-            proizvodnju i prodaju električnih i elektroničkih uređaja.
-        </h5>
-        <h5>
-            Od 1975. god postoji na svjetskom tržištu kao proizvođač elektroničke opreme u sklopu holdinga "Uljanik" u
-            Tvornici električnih strojeva i uređaja ( TESU).
-        </h5>
-        <h5>
-            Krajem 1997. god. nastavlja svoj proizvodni ciklus, ali sada kao samostalno poduzeće u privatnom
-            vlasništvu.UTE d.o.o (Uljanik Tesu Elektronika d.o.o) je društvo s ograničenom odgovornošću za
-            projektiranje, proizvodnju i prodaju električnih i elektroničkih uređaja.
-        </h5>
-
+            <a th:href="@{http://www.thymeleaf.org}">Thymeleaf</a>
+        </div>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg"
+               th:href="@{https://github.com/drago55/Spring-demoApp/tree/master/src/main/java/com/drago/spring/demo}"
+               role="button">Check out this project on github.</a>
+        </p>
     </div>
 </div>
 

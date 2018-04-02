@@ -29,13 +29,16 @@ var locationError=false;
 /*-------------------------------------------------------------------*/
 /*Main function for initilize map*/
 function initMap() {
-     console.log("URL  is " + url);
+
   bounds= new google.maps.LatLngBounds();
   map = new google.maps.Map(document.getElementById('map2'),mapOptions);
 
-  initClickListeners();
 
   httpRequest("GET","/markers/get_json");
+    initClickListeners();
+
+
+
 
   if (typeof info_point_uuid !== "undefined" && info_point_uuid!=='') {
     httpRequest("GET","/home/_getInfoPointOptions/" + info_point_uuid);
@@ -43,7 +46,7 @@ function initMap() {
   }
 
   if (_isMobile() && navigator.geolocation && !isInfoPoint) {
-    //if it is mobile and supports locations not info-point get location from user
+    //if it is mobile and supports locations and is not info-point then get location from user
     locationListener();
   }
   //new direction object
@@ -72,6 +75,7 @@ function initMap() {
   });
 
 }
+
 
 /*
 *Callback function to setup user location
@@ -114,15 +118,15 @@ function getDirections() {
 **/
 function callback(data){
   //parsing raw json string and creating json objects
-  console.log("------------in callback function ----------");
-  console.log("URL  is " + url);
-    console.log("--------------DATA-----------------------")
 
-  console.log(data);
-  object=JSON.parse(data);
+     object=JSON.parse(data);
+     addMarkers(object);
+
   if (typeof object.markers !== "undefined" && object.markers!==null){
     //json object which holds all location of markers
-    addMarkers(object.markers);
+     addMarkers(object.markers);
+
+
   }else if (typeof object.mapOptions !== "undefined" && object.mapOptions !==null) {
     //map options
     newMapOptions(object.mapOptions);
@@ -178,13 +182,27 @@ function addMarkers(object) {
 
   //loop true all json objects in array
   for (var i = 0;  i <object.length;  i++) {
+
+  console.log("--------------Adding Markers----------------");
+
+
     var  data=object[i];
+    console.log("--------------Data in add markers----------------------");
+    console.log(data);
+    console.log(data.lat);
+    console.log(data.lon);
+
     //creating markers
-    lat_lng=new google.maps.LatLng(data.lat, data.lng);
-    marker=addMarker(lat_lng,data.name,map,icons[data.type]);
+    lat_lng=new google.maps.LatLng(data.lat, data.lon);
+
+    marker=addMarker(lat_lng, data.markerName, map, icons[data.markerType]);
     //extending bounds of map we are making sure all markers fit in our map
-    bounds.extend(lat_lng);
-    //creating info box
+     bounds.extend(lat_lng);
+
+     console.log(marker==null);
+
+     //creating info box
+
     infobox = info_box_template1();
     (function (marker ,data, infobox, lat_lng) {
       google.maps.event.addListener(marker, 'click', function( e) {
@@ -193,15 +211,19 @@ function addMarkers(object) {
         marker.setAnimation(google.maps.Animation.BOUNCE);
         //set properties
         document.getElementById("lat").value=data.lat;
-        document.getElementById("lng").value=data.lng;
+        document.getElementById("lng").value=data.lon;
 
-        document.getElementById("name").innerHTML=data.name;
+         document.getElementById("name").innerHTML=data.markerName;
+         document.getElementById("description").innerHTML=data.description;
 
-        document.getElementById("address").innerHTML=data.address;
+        //document.getElementById("city").innerHTML=data.city;
+        document.getElementById("address").innerHTML=data.city+" "+data.address+" "+data.postalCode+" "+data.state;
+        //document.getElementById("state").innerHTML=data.state;
+        //document.getElementById("postalCode").innerHTML=data.postalCode;
+        document.getElementById("createdByUser").innerHTML=data.createdByUser;
 
-        document.getElementById("description").innerHTML=data.description;
 
-        document.getElementById("img-info-box").src=url+data.marker_image_path;
+        document.getElementById("img-info-box").src=url+data.images[0];
         //on error load no image
         document.getElementById("img-info-box").onerror = function() {
           noImage();

@@ -104,8 +104,8 @@
         <div class="col-md-6">
             <h5 class="text-center" for="message">Click on a map to get location</h5>
             <div th:replace="@{'map/google_map'}"></div>
-            <div class="col-md-4" style="text-align:center" th:each="i, iterstat: *{images}">
-                <div th:if="${i!=null}">
+            <div class="row" th:each="i, iterstat: *{images}">
+                <div class="col-md-4" th:if="${i!=null}">
                     <img th:src="${'/image/upload-dir/'+ marker.user.lastName +'/'+ i.image}"
                          class="img-fluid img-thumbnail" alt="Responsive image">
                     </img>

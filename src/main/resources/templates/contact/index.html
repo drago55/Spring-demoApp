@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="/fragments/header :: header"></div>
@@ -7,77 +6,35 @@
 <div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
 
 <div class="container" xmlns:th="http://www.thymeleaf.org" th:fragment="contact">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="well well-sm">
-                <form class="form-horizontal" action="" method="post">
-                    <fieldset>
-                        <legend class="text-center">Contact us</legend>
-
-                        <!-- Name input-->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="name">Name</label>
-                            <div class="col-md-9">
-                                <input id="name" name="name" type="text" placeholder="Your name"
-                                       class="form-control"></input>
-                            </div>
-                        </div>
-
-                        <!-- Email input-->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="email">Your E-mail</label>
-                            <div class="col-md-9">
-                                <input id="email" name="email" type="text" placeholder="Your email"
-                                       class="form-control"></input>
-                            </div>
-                        </div>
-
-                        <!-- Message body -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="message">Your message</label>
-                            <div class="col-md-9">
-                                <textarea class="form-control" id="message" name="message"
-                                          placeholder="Please enter your message here..." rows="5"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Form actions -->
-                        <div class="form-group">
-                            <div class="col-md-12 text-right">
-                                <button type="submit" name="submit_contact" class="btn btn-primary btn-lg">Submit
-                                </button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="LI-profile-badge" data-version="v1" data-size="large" data-locale="en_US" data-type="vertical"
+                 data-theme="dark" data-vanity="dragutin-horvat">
+                <a class="LI-simple-link" href='https://ie.linkedin.com/in/dragutin-horvat?trk=profile-badge'>Dragutin
+                    H.</a>
             </div>
-
         </div>
-        <div  class="col-md-6 col-md-offset-3">
-            <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="vertical" data-theme="dark" data-vanity="dragutin-horvat"><a class="LI-simple-link" href='https://ie.linkedin.com/in/dragutin-horvat?trk=profile-badge'>Dragutin H.</a></div>
-
+        <div class="col-md-4">
+            <a class="twitter-timeline" data-width="300" data-height="500" data-dnt="true" data-theme="light"
+               href="https://twitter.com/dragutin_horvat?ref_src=twsrc%5Etfw">Tweets by dragutin_horvat</a>
+            <script async="async" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
-
-
     </div>
-    <div class="text-center">
+</div>
+<div class="text-center">
 
-        <address>
-            <strong>Contact info</strong><br>
-            <strong>Simple web app d.o.o.</strong></br>
-            <br>
-            </br>
-            <abbr title="Phone">T:</abbr>
-            <abbr title="Faks">F:</abbr>
-        </address>
+    <address>
+        <strong>Contact info</strong><br>
+        <strong>Spring demo web app </strong></br>
+        <br>
+        </br>
+        <abbr title="Phone">T:</abbr>
+        <abbr title="Faks">F:</abbr>
+    </address>
 
-        <address>
-            <a href="mailto:#">simple-webapp@domain.com</a>
-        </address>
-
-    </div>
-
+    <address>
+        <a href="mailto:#">simple-webapp@domain.com</a>
+    </address>
 
 </div>
 

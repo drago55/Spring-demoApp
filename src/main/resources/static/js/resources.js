@@ -1,15 +1,15 @@
 //icon type for markers
 
-var url= location.href;
+var url= location.protocol+'//'+location.host;
 
 
 var icons = {
 
-  type1: url + 'image/icon_green.png',
+  TYPE1: url + '/image/icon_green.png',
 
-  type2: url + 'image/boost-marker-mapview.png',
+  TYPE2: url + '/image/boost-marker-mapview.png',
 
-  type3: url + 'image/marker.png',
+  TYPE3: url + '/image/marker.png',
 
 };
 //Icon for info-point 

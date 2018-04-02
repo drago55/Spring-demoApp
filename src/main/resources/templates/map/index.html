@@ -4,7 +4,7 @@
 
 <body>
 <div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
-
+<div class="map_canvas" id="map2"></div>
 <div class="panel-wraper" id="panel-wraper">
     <div class="over_map_right" id="right-panel">
         <p>Total Distance: <span id="total"></span></p>
@@ -16,7 +16,7 @@
 </div>
 
 <div>
-    <div class="map_canvas" id="map2"></div>
+
     <script type="text/javascript" th:src="@{js/resources.js}">
     </script>
     <script type="text/javascript" th:src="@{js/info-box-wrapper.js}">
@@ -27,12 +27,12 @@
     </script>
     <script type="text/javascript" th:src="@{js/directions.js}">
     </script>
-    <script type="text/javascript" th:src="@{js/infobox.js}"></script>
+
     <!-- our main google map javascript -->
     <script type="text/javascript" th:src="@{js/main_google_maps.js}"></script>
-    <script async="async" defer="defer"
-            th:src="@{https://maps.googleapis.com/maps/api/js(key=${'AIzaSyBfDqh0dyOJOWkJ_fmFM179dZ9zVbCspL4'},callback=initMap)}">
+    <script th:src="@{https://maps.googleapis.com/maps/api/js(key=${'AIzaSyBfDqh0dyOJOWkJ_fmFM179dZ9zVbCspL4'},callback=initMap)}">
     </script>
+    <script type="text/javascript" th:src="@{js/infobox.js}"></script>
 </div>
 
 
