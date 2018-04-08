@@ -44,21 +44,16 @@ public class LogInController {
         try {
 
             if (userService.isValidUser(userLoginDto)) {
-                log.debug("user is VALID");
 
                 UserDetails user = userService.loadUserByUsername(userLoginDto.getUserEmail());
                 Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                    model.addAttribute("user", user);
-
-                log.debug(user.toString());
-
-                return "redirect:/";
+              return "redirect:/";
             }
         } catch (InvalidUserException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("userLoginDto",userLoginDto);
-            log.error("exception " + e.getMessage());
             return "login/index";
         }
 

@@ -9,14 +9,18 @@
      th:fragment="about">
     <div class="jumbotron">
         <h1 class="display-4">Hello, world!</h1>
-        <p class="lead">This is a web application built with Spring framework!</p>
+        <p class="lead">This web application is built with Spring framework!</p>
         <hr class="my-4"></hr>
-        <p>It has a user registration and login security. Users can create markers and upload images.
+        <p>This is a demo application with google maps and markers with info window. It has a user registration and login security. Users can create markers and upload images.
             Administration page for markers. Locations and directions upon clicking on markers.</p>
         <p>I have used Java 8 in this project.</p>
         <div class="alert alert-success" role="alert">
             I am learning Spring framework on this great <a th:href="@{https://www.udemy.com/spring-core/}"
                                                             class="alert-link">Udemy course.</a>
+        </div>
+
+        <div class="alert alert-success" role="alert">
+            <a th:href="@{https://developers.google.com/maps/documentation/javascript/}">Google maps JavaScript API</a>
         </div>
         <div class="alert alert-success" role="alert">
             <a th:href="@{https://spring.io/}">Spring framework</a>
@@ -28,7 +32,7 @@
         <p class="lead">
             <a class="btn btn-primary btn-lg"
                th:href="@{https://github.com/drago55/Spring-demoApp/tree/master/src/main/java/com/drago/spring/demo}"
-               role="button">Check out this project on github.</a>
+               role="button">Check this project on github.</a>
         </p>
     </div>
 </div>

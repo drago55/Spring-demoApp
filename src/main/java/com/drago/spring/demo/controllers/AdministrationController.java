@@ -21,13 +21,13 @@ public class AdministrationController {
         return "admin/showUsers";
     }
 
-    @RequestMapping("user/delete/{id}")
+    @RequestMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable Long id, Model model) {
 
         return "";
     }
 
-    @RequestMapping("edit/{id}")
+    @RequestMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
 
         return "";

@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,6 +37,9 @@ public class MarkerController {
 
     @Autowired
     private StorageService storageService;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private MarkerDtoService markerDtoService;
@@ -61,20 +66,22 @@ public class MarkerController {
         return "marker/markerForm";
     }
 
-    @RequestMapping("marker/delete/{id}")
+    @RequestMapping("/marker/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
+
         model.addAttribute("marker", markerService.findMarkerById(id));
         return "marker/deleteMarker";
     }
 
-    @RequestMapping("deleteAction/{id}")
+    @RequestMapping("/deleteAction/{id}")
     public String deleteAction(@PathVariable Long id, Model model) {
+        markerService.findMarkerById(id).getImages().stream().forEach(image -> imageService.deleteImage(image));
         markerService.deleteMarkerById(id);
         return "redirect:/markers";
     }
 
 
-    @RequestMapping("marker/edit/{id}")
+    @RequestMapping("/marker/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
 
 
@@ -90,23 +97,9 @@ public class MarkerController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("marker") @Valid Marker marker, @RequestParam("file") MultipartFile[] files, BindingResult result, Model model) {
 
-        log.debug("Marker type " + marker.getMarkerType());
-
         if (!result.hasErrors()) {
 
-            storageService.setUserDir(Paths.get(userService.getAuthenticatedUser().getLastName()));
-
-            User user = userService.getAuthenticatedUser();
-
-            marker.setUser(user);
-
-            List<MultipartFile> listOfFiles = getCollection(files);
-
-            uploadFiles(listOfFiles);
-
-            setImagePaths(marker, listOfFiles);
-
-            markerService.save(marker);
+            markerService.save(marker, files);
             isSuccessful = true;
             model.addAttribute("success", isSuccessful);
             model.addAttribute("marker", marker);
@@ -114,18 +107,35 @@ public class MarkerController {
         return "redirect:/markers";
     }
 
-    private void setImagePaths(@ModelAttribute("marker") @Valid Marker marker, List<MultipartFile> listOfFiles) {
-        listOfFiles.iterator().forEachRemaining(multipartFile -> marker.addImage(new Image(multipartFile.getOriginalFilename(), multipartFile.getOriginalFilename())));
+
+    private void addImages(Marker marker, List<MultipartFile> listOfFiles) {
+        List<String> listOfFileNames = storageService.getFileNames();
+        Map<String, MultipartFile> map = new HashMap<>();
+        //listOfFiles.forEach(m);
+        listOfFiles.iterator().forEachRemaining(multipartFile -> {
+
+            //marker.addImage(new Image(multipartFile.getOriginalFilename(), storageService.getFileNames()));
+            ;
+
+        });
     }
 
-    private List<MultipartFile> getCollection(@RequestParam("file") MultipartFile[] files) {
+    private String getImagePath(MultipartFile multipartFile) throws IOException {
+        Path path = Paths.get(storageService.loadAsResource(multipartFile.getOriginalFilename()).getURI());
+        final int len = path.getNameCount();
+        return path.subpath(0, len).toString();
+    }
+
+    private List<MultipartFile> filterAndGetCollection(MultipartFile[] files) {
         return Stream.of(files).filter((multipartFile) -> !multipartFile.isEmpty()).collect(Collectors.toList());
     }
 
     private void uploadFiles(List<MultipartFile> files) {
-        files.forEach((multipartFile -> storageService.store(multipartFile)));
+        files.forEach((multipartFile -> {
+            storageService.store(multipartFile);
+        }));
     }
-    
+
 }
 
 

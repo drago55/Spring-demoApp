@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Stream;
 
 public interface StorageService {
@@ -13,7 +14,7 @@ public interface StorageService {
 
     Path setUserDir(Path path);
 
-    void store(MultipartFile file);
+    Path store(MultipartFile file);
 
     Stream<Path> loadAll();
 
@@ -22,5 +23,11 @@ public interface StorageService {
     Resource loadAsResource(String filename);
 
     void deleteAll();
+
+    void deleteFile(String fileName);
+
+    String getFileName(MultipartFile file);
+
+    List<String> getFileNames();
 
 }

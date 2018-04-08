@@ -1,8 +1,11 @@
 //icon type for markers
 
-var url= location.protocol+'//'+location.host;
-
-
+var url= location.protocol+'//'+location.host+location.pathname.substr(0, window.location.pathname.lastIndexOf('/'));
+console.log(url);
+var resource_url= location.protocol+'//'+location.host+"/";
+console.log(resource_url);
+console.log("path name " +location.pathname);
+console.log("path " +location.pathname.substr(0, window.location.pathname.lastIndexOf('/')));
 var icons = {
 
   TYPE1: url + '/image/icon_green.png',

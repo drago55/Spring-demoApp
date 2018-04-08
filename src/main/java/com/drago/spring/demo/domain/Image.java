@@ -1,12 +1,11 @@
 package com.drago.spring.demo.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.springframework.core.io.Resource;
+
 
 import javax.persistence.*;
-import java.sql.Blob;
-import java.util.Set;
+import java.nio.file.Path;
 
 @Entity
 @Data
@@ -19,12 +18,19 @@ public class Image {
     private String fileName;
 
     @Lob
-    private String image;
+    private String imagePath;
 
-    public Image(String fileName, String image) {
+
+    /**
+     * Image
+     *
+     * @param fileName  original name of image
+     * @param imagePath path of image
+     */
+    public Image(String fileName, String imagePath) {
 
         this.fileName = fileName;
-        this.image = image;
+        this.imagePath = imagePath;
     }
 
     public Image() {

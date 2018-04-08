@@ -6,7 +6,6 @@ import com.drago.spring.demo.repositories.MarkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,7 @@ public class MarkerDtoServiceImpl implements MarkerDtoService {
             setMarkerCoordinates(markerDto, marker);
 
 
-            setMarkerImages(markerDto, marker);
+            setImagePaths(markerDto, marker);
 
             return markerDto;
         })).collect(Collectors.toSet());
@@ -39,8 +38,8 @@ public class MarkerDtoServiceImpl implements MarkerDtoService {
 
     }
 
-    private void setMarkerImages(MarkerDto markerDto, Marker marker) {
-        markerDto.setImages(marker.getImages().stream().map((image -> image.getImage())).collect(Collectors.toSet()));
+    private void setImagePaths(MarkerDto markerDto, Marker marker) {
+        markerDto.setImagePaths(marker.getImages().stream().map((image -> image.getImagePath().toString())).collect(Collectors.toSet()));
     }
 
     private void setMarkerLocation(MarkerDto markerDto, Marker marker) {

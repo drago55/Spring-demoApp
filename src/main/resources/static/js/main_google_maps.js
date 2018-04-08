@@ -17,7 +17,6 @@ var mapOptions = {
   center: defaultCenter,
   zoom: 14,
 };
-
 var infobox;
 var bounds;
 var isInfoPoint=false;
@@ -27,7 +26,7 @@ var directionsService;
 var directionsDisplay;
 var locationError=false;
 /*-------------------------------------------------------------------*/
-/*Main function for initilize map*/
+/*Main function for initialize map*/
 function initMap() {
 
   bounds= new google.maps.LatLngBounds();
@@ -148,6 +147,7 @@ function clearAll() {
     newDirections();
     //stop watching user location
     stopWatching();
+
   }
 }
 //
@@ -161,7 +161,7 @@ function setInfoPoint(location) {
 }
 
 /*
-*We are caling this function when we have set new map options
+*We are calling this function when we have set new map options.
 */
 function newMapOptions(options) {
 
@@ -185,7 +185,7 @@ function addMarkers(object) {
 
   console.log("--------------Adding Markers----------------");
 
-
+    console.log(url);
     var  data=object[i];
     console.log("--------------Data in add markers----------------------");
     console.log(data);
@@ -223,7 +223,8 @@ function addMarkers(object) {
         document.getElementById("createdByUser").innerHTML=data.createdByUser;
 
 
-        document.getElementById("img-info-box").src=url+data.images[0];
+        document.getElementById("img-info-box").src=resource_url+data.imagePaths[0];
+        console.log("images "+resource_url+data.imagePaths[0]);
         //on error load no image
         document.getElementById("img-info-box").onerror = function() {
           noImage();
@@ -232,15 +233,13 @@ function addMarkers(object) {
         //setting infobox visible
         infobox.setVisible(true);
         //open infobox
-        infobox.open(map, this);
+         infobox.open(map, this);
+      google.maps.event.addListener(map, 'click', function() {
+                      //On map click close infobox null animation
+                     infobox.setVisible(false);
+                      marker.setAnimation(null);
 
-        google.maps.event.addListener(map, 'click', function() {
-          //On map click close infobox null animation
-
-          infobox.setVisible(false);
-          marker.setAnimation(null);
-
-        });
+                    });
 
       });
     })(marker, data, infobox, lat_lng);
@@ -253,4 +252,7 @@ function addMarkers(object) {
     map.panToBounds(bounds);     // auto-center
 
   }
+
 }
+
+

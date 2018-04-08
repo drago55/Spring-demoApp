@@ -111,19 +111,35 @@ Bootstrap 4 breakpoints
 @media (min-width: 240px) {
   h1 {font-size:.8rem;} /*1rem = 16px*/
   #infobox {
-    width:50px;
-    height: 10px;
-    font-size:0.6rem;}
-    #name {
-      font-size:.8rem;
-    }
+    width:150px;
+    height: 150px;
 
-    #description {
-      max-height: 20px;
-      overflow: auto;
-      margin-right: -10px;
-      padding-right: 10px;
-      text-align: justify;
+    }
+    .title {
+               text-align: center;
+                font-weight: bold;
+                font-size: small;
+              }
+              .description {
+                margin-right: -10px;
+                padding-right: 10px;
+                text-align: justify;
+                max-height: 100px;
+                max-width: 100px;
+                word-wrap: break-word;
+                font-size:x-small;
+              }
+              .address {
+                text-align: left;
+                font-size:xx-small;
+              }
+              .createBy{
+                font-size:xx-small;
+              }
+    .img-responsive {
+        margin: 0 auto;
+        width:150;
+        height:50;
     }
     .panel-wraper{
       font-family: 'Roboto','sans-serif';
@@ -145,24 +161,39 @@ Bootstrap 4 breakpoints
 
     }
   }
-  h1 {font-size:1rem;} /*1rem = 16px*/
+
   @media (min-width: 320px) {
     h1 {font-size:1.1rem;} /*1rem = 16px*/
     #infobox {
       width:150px;
       height: 240px;
-      font-size:0.8rem;}
-      #name {
-        font-size:1.1rem;
-      }
-      #description{
-        max-height: 48px;
-        overflow: auto;
-        margin-right: -10px;
-        padding-right: 10px;
-        text-align: justify;
 
-      }
+      }.title{
+                  text-align: center;
+                   font-weight: bold;
+                   font-size: small;
+                 }
+                 .description {
+                   margin-right: -10px;
+                   padding-right: 10px;
+                   text-align: justify;
+                   max-height: 100px;
+                   max-width: 100px;
+                   word-wrap: break-word;
+                   font-size:x-small;
+                 }
+                 .address {
+                   text-align: left;
+                   font-size:xx-small;
+                 }
+                 .createBy{
+                   font-size:xx-small;
+                 }
+        .img-responsive {
+
+                width:50;
+                height:50;
+            }
       .panel-wraper {
         font-family: 'Roboto','sans-serif';
         width:100%;
@@ -189,18 +220,29 @@ Bootstrap 4 breakpoints
       #infobox {
         width:185px;
         height: auto;
-        font-size:0.9rem;}
-        #name {
-          font-size:1.2rem;
-        }
-        #description {
-          max-height: 50px;
-          overflow: auto;
-          margin-right: -15px;
-          padding-right: 15px;
-          text-align: justify;
 
         }
+        .title {
+                   text-align: center;
+                    font-weight: bold;
+                    font-size: small;
+                  }
+                  .description {
+                    margin-right: -10px;
+                    padding-right: 10px;
+                    text-align: justify;
+                    max-height: 100px;
+                    max-width: 100px;
+                    word-wrap: break-word;
+                    font-size:x-small;
+                  }
+                  .address {
+                    text-align: left;
+                    font-size:xx-small;
+                  }
+                  .createBy{
+                    font-size:xx-small;
+                  }
         .panel-wraper{
           font-family: 'Roboto','sans-serif';
           font-size: 10px;
@@ -228,25 +270,29 @@ Bootstrap 4 breakpoints
           width: 200px;
           margin: auto;
           height: auto;
-          background: #ffffff;
-
-          font-size:1rem;
 
         }
-        #name {
-          font-size:1.25rem;
-        }
-
-        #description {
-
-          margin-right: -20px;
-          padding-right: 20px;
-
-          max-height: 50px;
-
-          text-align: justify;
-
-        }
+        .title {
+                   text-align: center;
+                    font-weight: bold;
+                    font-size: small;
+                  }
+                  .description {
+                    margin-right: -10px;
+                    padding-right: 10px;
+                    text-align: justify;
+                    max-height: 100px;
+                    max-width: 100px;
+                    word-wrap: break-word;
+                    font-size:x-small;
+                  }
+                  .address {
+                    text-align: left;
+                    font-size:xx-small;
+                  }
+                  .createBy{
+                    font-size:xx-small;
+                  }
         .panel-wraper {
           margin: auto;
           font-family: 'Roboto','sans-serif';
@@ -278,17 +324,27 @@ Bootstrap 4 breakpoints
           font-size:1.25rem;
 
         }
-        #name  {
-          font-size:1.5rem;
-        }
-        #description {
-          max-height: 80px;
-
-          margin-right: -10px;
-          padding-right: 10px;
-          text-align: justify;
-
-        }
+        .title {
+                   text-align: center;
+                    font-weight: bold;
+                    font-size: small;
+                  }
+                  .description {
+                    margin-right: -10px;
+                    padding-right: 10px;
+                    text-align: justify;
+                    max-height: 100px;
+                    max-width: 100px;
+                    word-wrap: break-word;
+                    font-size:x-small;
+                  }
+                  .address {
+                    text-align: left;
+                    font-size:xx-small;
+                  }
+                  .createBy{
+                    font-size:xx-small;
+                  }
         .panel-wraper{
           margin: auto;
           font-family: 'Roboto','sans-serif';
@@ -318,16 +374,30 @@ Bootstrap 4 breakpoints
           margin: auto;
           width:auto;
           height: auto;
-          font-size:1.5rem;}
-          #name {
-            font-size:1.6rem;
+            font-family:Lucida Sans Unicode;
           }
-          #description {
-            max-height: 150px;
-            margin-right: -35px;
-            padding-right: 25px;
+          .title {
+                     text-align: center;
+                      font-weight: bold;
+                      font-size: small;
+                    }
+                    .description {
+                      margin-right: -10px;
+                      padding-right: 10px;
+                      text-align: justify;
+                      max-height: 100px;
+                      max-width: 100px;
+                      word-wrap: break-word;
+                      font-size:x-small;
+                    }
+                    .address {
+                      text-align: left;
+                      font-size:xx-small;
+                    }
+                    .createBy{
+                      font-size:xx-small;
+                    }
 
-          }
           .panel-wraper {
             margin: auto;
             font-family: 'Roboto','sans-serif';

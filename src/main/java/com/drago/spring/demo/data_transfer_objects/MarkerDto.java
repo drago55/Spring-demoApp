@@ -1,6 +1,7 @@
 package com.drago.spring.demo.data_transfer_objects;
 
 import lombok.Data;
+import org.springframework.core.io.Resource;
 
 import java.util.Set;
 
@@ -13,7 +14,7 @@ public class MarkerDto {
 
     private String description;
 
-    private Set<String> images;
+    private Set<String> imagePaths;
 
     private Float lat;
 

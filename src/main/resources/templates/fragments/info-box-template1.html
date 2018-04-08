@@ -1,17 +1,20 @@
-<div id="infobox" xmlns:th="http://www.thymeleaf.org" th:fragment="info-box-template1"  class="card border-info" >
-  <div class="card-header bg-transparent border-success">
-    <img class="card-img-top" id="img-info-box" alt="Card image cap"></img>
-  </div>
+<div id="infobox" xmlns:th="http://www.thymeleaf.org" th:fragment="info-box-template1">
+    <div align="middle">
+        <img id="img-info-box" width="100%" height="50%" alt="Card image cap" th:src="@{/image/img1.jpg}"></img>
+        <h5 class="title" id="name">Card title</h5>
+    </div>
 
-  <div class="card-body">
-    <h5 class="card-title" id="name">Card title</h5>
-    <p class="card-text" id="description"></p>
-    <address id="address"></address>
-  </div>
-  <div class="card-footer bg-transparent border-success">
-    <p class="card-text" id="createdByUser"><small class="text-muted">Last updated 3 mins ago</small></p>
-  </div>
-    <a href="#" class="btn btn-primary" onclick="getDirections();" width="auto" height="auto" float="bottom" >Go somewhere</a>
-  <input type="hidden" id="lat" value=""></input>
-  <input type="hidden" id="lng" value=""></input>
+    <div class="container-fluid" id="content">
+
+        <p class="description" id="description"></p>
+
+        <p class="address" id="address"></p>
+
+        <p class="createBy" id="createdByUser">Created by:
+        </p>
+    </div>
+    <input type="hidden" id="lat" value=""></input>
+    <input type="hidden" id="lng" value=""></input>
+    <button href="#" class="btn btn-primary  btn-block" onclick="getDirections();" >Go
+        somewhere</button>
 </div>

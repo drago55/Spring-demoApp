@@ -16,7 +16,7 @@ function httpRequest (method,controler) {
 *set no-image
 */
 function noImage() {
-  document.getElementById("img-info-box").src=url+"img/no-image.png";
+  document.getElementById("img-info-box").src=url+"/image/no-image.png";
 }
 /*
 *Detect mobile browsers

@@ -89,7 +89,7 @@
                                    onchange="document.getElementById('img3').src = window.URL.createObjectURL(this.files[0])"
                                    multiple="multiple"></input>
 
-                            <p class="help-block">Upload marker image</p>
+                            <p class="help-block">Upload marker imagePath</p>
 
                         </div>
                     </div>
@@ -106,8 +106,8 @@
             <div th:replace="@{'map/google_map'}"></div>
             <div class="row" th:each="i, iterstat: *{images}">
                 <div class="col-md-4" th:if="${i!=null}">
-                    <img th:src="${'/image/upload-dir/'+ marker.user.lastName +'/'+ i.image}"
-                         class="img-fluid img-thumbnail" alt="Responsive image">
+                    <img th:src="${'/upload-dir/'+ marker.user.lastName +'/'+ i.imagePath}"
+                         class="img-fluid img-thumbnail" alt="Responsive imagePath">
                     </img>
                 </div>
             </div>
