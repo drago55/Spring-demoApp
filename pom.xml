@@ -6,7 +6,7 @@
     <groupId>com.drago</groupId>
     <artifactId>spring.demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>spring.demo</name>
     <description>Demo project for Spring Boot</description>
@@ -119,14 +119,13 @@
 
     <build>
             <finalName>${project.artifactId}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-
-
-            </plugin>
-        </plugins>
+      <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            
+        </plugin>
+    </plugins>
     </build>
 
 
