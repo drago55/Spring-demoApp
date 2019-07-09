@@ -35,7 +35,7 @@ public class MarkerDtoServiceImpl implements MarkerDtoService {
 	}
 
 	private void setImagePaths(MarkerDto markerDto, Marker marker) {
-		markerDto.setImagePaths(marker.getImages().stream().map((image -> image.getImagePath().toString()))
+		markerDto.setImagePaths(marker.getImages().stream().map((image -> image.getImagePath()))
 				.collect(Collectors.toSet()));
 	}
 

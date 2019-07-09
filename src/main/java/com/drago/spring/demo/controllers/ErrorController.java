@@ -36,9 +36,7 @@ public class ErrorController {
 			errorMsg = "Http Error Code: 500. Internal Server Error";
 			break;
 		}
-		default: {
-
-		}
+		
 		}
 		log.debug("message " + errorMsg);
 		errorPage.addObject("errorMsg", errorMsg);
