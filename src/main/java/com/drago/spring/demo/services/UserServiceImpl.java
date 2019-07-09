@@ -25,102 +25,96 @@ import java.util.*;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+	@Autowired
+	private RoleRepository roleRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
+	@Override
+	public User findUserByEmail(String email) {
 
-    @Override
-    public User findUserByEmail(String email) {
+		Optional<User> userOptional = userRepository.findUserByEmail(email);
 
-        Optional<User> userOptional = userRepository.findUserByEmail(email);
+		if (!userOptional.isPresent()) {
+			throw new UsernameNotFoundException("User not found!");
+		}
 
-        if (!userOptional.isPresent()) {
-            throw new UsernameNotFoundException("User not found!");
-        }
+		return userOptional.get();
+	}
 
-        return userOptional.get();
-    }
+	@Override
+	@Transactional
+	public User save(UserRegistrationDto userRegistrationDto) {
 
-    @Override
-    public User save(UserRegistrationDto userRegistrationDto) throws EmailExistsException {
+		User user = new User();
+		user.setFirstName(userRegistrationDto.getFirstName());
+		user.setLastName(userRegistrationDto.getLastName());
+		user.setEmail(userRegistrationDto.getEmail());
+		user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
 
-        User user = new User();
-        user.setFirstName(userRegistrationDto.getFirstName());
-        user.setLastName(userRegistrationDto.getLastName());
-        user.setEmail(userRegistrationDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+		user.setRoles(new HashSet<>(roleRepository.findAll()));
 
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
+		if (emailExist(userRegistrationDto.getEmail())) {
+			throw new EmailExistsException("Error email address already exists!");
+		}
 
-        if (emailExist(userRegistrationDto.getEmail())) {
-            throw new EmailExistsException("Error email address already exists!");
-        }
+		return userRepository.save(user);
+	}
 
-        return userRepository.save(user);
-    }
+	@Override
+	public boolean isValidUser(UserLoginDto userLoginDto) throws InvalidUserException {
 
-    @Override
-    public boolean isValidUser(UserLoginDto userLoginDto) throws InvalidUserException, UsernameNotFoundException {
+		Optional<User> userOptional = userRepository.findUserByEmail(userLoginDto.getUserEmail());
 
-        Optional<User> userOptional = userRepository.findUserByEmail(userLoginDto.getUserEmail());
+		if (!userOptional.isPresent()) {
+			throw new UsernameNotFoundException("Username or Password is wrong!!");
+		}
 
-        if (!userOptional.isPresent()) {
-            throw new UsernameNotFoundException("Username or Password is wrong!!");
-        }
+		if (!passwordEncoder.matches(userLoginDto.getUserPassword(), userOptional.get().getPassword())) {
+			throw new InvalidUserException("Username or Password is wrong!!");
+		}
 
-        if (!passwordEncoder.matches(userLoginDto.getUserPassword(), userOptional.get().getPassword())) {
-            throw new InvalidUserException("Username or Password is wrong!!");
-        }
+		return true;
+	}
 
-        return true;
-    }
+	@Override
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
 
-    @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
+	@Override
+	public User findUseById(Long id) {
+		return userRepository.findOne(id);
+	}
 
-    @Override
-    public User findUseById(Long id) {
-        return userRepository.findOne(id);
-    }
+	@Override
+	public User getAuthenticatedUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    @Override
-    public User getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return this.findUserByEmail(authentication.getName());
+	}
 
-        return this.findUserByEmail(authentication.getName());
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String email) {
+		Optional<User> userOptional = userRepository.findUserByEmail(email);
+		if (!userOptional.isPresent()) {
+			throw new UsernameNotFoundException("User does not exists");
+		}
+		User user = userOptional.get();
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+		user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findUserByEmail(email);
-        if (!userOptional.isPresent()) {
-            throw new UsernameNotFoundException("User does not exists");
-        }
-        User user = userOptional.get();
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        user.getRoles().forEach((role) -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+				grantedAuthorities);
+	}
 
+	private boolean emailExist(String email) {
+		return userRepository.findUserByEmail(email).isPresent();
+	}
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                grantedAuthorities);
-    }
-
-    private boolean emailExist(String email) {
-
-        if (userRepository.findUserByEmail(email).isPresent()) {
-            return true;
-        }
-        return false;
-    }
 }

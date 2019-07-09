@@ -1,15 +1,20 @@
 package com.drago.spring.demo.exception;
 
-public class NoSuchMarkerException extends RuntimeException{
+public class NoSuchMarkerException extends RuntimeException {
 
-    public NoSuchMarkerException() {
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1175647012359015792L;
 
-    public NoSuchMarkerException(String message) {
-        super(message);
-    }
+	public NoSuchMarkerException() {
+	}
 
-    public NoSuchMarkerException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public NoSuchMarkerException(String message) {
+		super(message);
+	}
+
+	public NoSuchMarkerException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

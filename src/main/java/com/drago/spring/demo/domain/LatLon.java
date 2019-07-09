@@ -13,7 +13,7 @@ public class LatLon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    private Long id;
 
     private Float lat;
     private Float lon;

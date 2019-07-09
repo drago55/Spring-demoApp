@@ -1,11 +1,11 @@
 package com.drago.spring.demo.services;
 
-import com.drago.spring.demo.domain.Marker;
-import com.drago.spring.demo.exception.NoSuchMarkerException;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.drago.spring.demo.domain.Marker;
 
 public interface MarkerService {
 
