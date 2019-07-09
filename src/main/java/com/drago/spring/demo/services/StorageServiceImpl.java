@@ -39,7 +39,7 @@ public class StorageServiceImpl implements StorageService {
 		try {
 			Files.createDirectories(uploadLocation);
 		} catch (IOException e) {
-			log.error("Greska ", e);
+			log.error("Failed to create upload directory!! ", e);
 			throw new RuntimeException("Failed to create upload directory!!");
 		}
 	}
@@ -51,7 +51,7 @@ public class StorageServiceImpl implements StorageService {
 		try {
 			Files.createDirectories(storedLocation);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("Failed to create upload directory for specific user " + path.toString(), e);
 		}
 
 		return storedLocation;
