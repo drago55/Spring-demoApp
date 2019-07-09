@@ -19,78 +19,71 @@ import java.util.Optional;
 @Slf4j
 public class MarkerServiceImpl implements MarkerService {
 
+	@Autowired
+	private MarkerRepository markerRepository;
 
-    @Autowired
-    private MarkerRepository markerRepository;
+	@Autowired
+	private StorageService storageService;
 
-    @Autowired
-    private StorageService storageService;
+	@Autowired
+	private ImageService imageService;
 
-    @Autowired
-    private ImageService imageService;
+	@Autowired
+	private UserService userService;
 
-    @Autowired
-    private UserService userService;
+	@Override
+	public Marker save(Marker marker, MultipartFile[] files) {
 
-    @Override
-    public Marker save(Marker marker, MultipartFile[] files) {
+		storageService.setUserDir(Paths.get(userService.getAuthenticatedUser().getLastName()));
 
-        storageService.setUserDir(Paths.get(userService.getAuthenticatedUser().getLastName()));
+		User user = userService.getAuthenticatedUser();
 
-        User user = userService.getAuthenticatedUser();
+		marker.setUser(user);
 
-        marker.setUser(user);
+		List<MultipartFile> listOfImages = imageService.filterAndGetCollection(files);
 
+		uploadImages(marker, listOfImages);
 
-        List<MultipartFile> listOfImages = imageService.filterAndGetCollection(files);
+		if (marker.getId() != null) {
+			log.debug("it is update resolve orphan images!");
+			log.debug("-------------paths of new marker images-------------");
+			marker.getImages().forEach(image -> log.debug(Paths.get(image.getImagePath()).getFileName().toString()));
+			log.debug("-----------------paths of old marker images---------");
+			markerRepository.getOne(marker.getId()).getImages()
+					.forEach(image -> log.debug((Paths.get(image.getImagePath()).getFileName().toString())));
+		}
 
+		return markerRepository.save(marker);
+	}
 
-        uploadImages(marker, listOfImages);
+	private void uploadImages(Marker marker, List<MultipartFile> listOfFiles) {
+		listOfFiles.forEach(multipartFile -> {
+			Path path = imageService.uploadImage(multipartFile);
+			marker.addImage(new Image(multipartFile.getOriginalFilename(), path.toString()));
+		});
+	}
 
-        if (marker.getId() != null) {
-            log.debug("it is update resolve orphans!");
-            log.debug("-------------paths of new marker images-------------");
-            marker.getImages().forEach(image -> System.out.println(Paths.get(image.getImagePath()).getFileName()));
-            log.debug("-----------------paths of old marker images---------");
-            markerRepository.getOne(marker.getId()).getImages().forEach(image -> System.out.println(Paths.get(image.getImagePath()).getFileName()));
-            
+	@Override
+	public Marker findMarkerById(Long id) {
+		if (!markerRepository.exists(id)) {
+			throw new NoSuchMarkerException("Marker don't exists!");
+		}
+		return markerRepository.findOne(id);
+	}
 
-            //markerRepository.getOne(marker.getId()).getImages().forEach(storageService.store();
-        }
+	@Override
+	public Optional<Marker> findMarkerByUserId(Long userId) {
+		return Optional.empty();
+	}
 
-        return markerRepository.save(marker);
-    }
+	@Override
+	public List<Marker> findAllMarkers() {
+		return markerRepository.findAll();
+	}
 
-    private void uploadImages(Marker marker, List<MultipartFile> listOfFiles) {
-        listOfFiles.forEach(multipartFile -> {
-            Path path = imageService.uploadImage(multipartFile);
-            marker.addImage(new Image(multipartFile.getOriginalFilename(), path.toString()));
-        });
-    }
-
-
-    @Override
-    public Marker findMarkerById(Long id) {
-        if (!markerRepository.exists(id)) {
-            throw new NoSuchMarkerException("Marker don't exists!");
-        }
-        return markerRepository.findOne(id);
-    }
-
-    @Override
-    public Optional<Marker> findMarkerByUserId(Long userId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<Marker> findAllMarkers() {
-        return markerRepository.findAll();
-    }
-
-    @Override
-    public void deleteMarkerById(Long id) {
-        markerRepository.delete(id);
-    }
-
+	@Override
+	public void deleteMarkerById(Long id) {
+		markerRepository.delete(id);
+	}
 
 }

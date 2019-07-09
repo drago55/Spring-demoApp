@@ -15,35 +15,33 @@ import java.util.stream.Stream;
 @Slf4j
 public class ImageServiceImpl implements ImageService {
 
-    @Autowired
-    private StorageService storageService;
+	@Autowired
+	private StorageService storageService;
 
-    @Override
-    public Path uploadImage(MultipartFile multipartFile) {
-        return storageService.store(multipartFile);
-    }
+	@Override
+	public Path uploadImage(MultipartFile multipartFile) {
+		return storageService.store(multipartFile);
+	}
 
-    @Override
-    public void deleteAllImage() {
-        storageService.deleteAll();
-    }
+	@Override
+	public void deleteAllImage() {
+		storageService.deleteAll();
+	}
 
-    @Override
-    public List<MultipartFile> filterAndGetCollection(MultipartFile[] files) {
-        return Stream.of(files).filter((multipartFile) -> !multipartFile.isEmpty()).collect(Collectors.toList());
-    }
+	@Override
+	public List<MultipartFile> filterAndGetCollection(MultipartFile[] files) {
+		return Stream.of(files).filter(multipartFile -> !multipartFile.isEmpty()).collect(Collectors.toList());
+	}
 
+	@Override
+	public void deleteImage(Image image) {
+		log.debug("deleting image " + image.getImagePath());
+		storageService.deleteFile(image.getImagePath());
+	}
 
-    @Override
-    public void deleteImage(Image image) {
-        log.debug("deleting image " + image.getImagePath());
-        storageService.deleteFile(image.getImagePath());
-    }
-
-
-    @Override
-    public void uploadImages(List<MultipartFile> files) {
-        files.forEach((multipartFile -> storageService.store(multipartFile)));
-    }
+	@Override
+	public void uploadImages(List<MultipartFile> files) {
+		files.forEach((multipartFile -> storageService.store(multipartFile)));
+	}
 
 }
