@@ -62,9 +62,7 @@ public class StorageServiceImpl implements StorageService {
 
 		String filename = getFileName(file);
 		Path path = this.storedLocation.resolve(filename);
-		if (storedLocation == null) {
-			throw new RuntimeException("Set user upload directory!");
-		}
+		
 		try {
 			if (filename.isEmpty()) {
 				throw new StorageException("Failed to store empty file " + filename);
