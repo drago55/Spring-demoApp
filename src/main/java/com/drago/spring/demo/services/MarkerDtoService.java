@@ -9,5 +9,5 @@ public interface MarkerDtoService {
 
     Set<MarkerDto> getAllMarkers();
 
-    Set<Marker> getMarkersOfUserId(Long userId);
+    Set<Marker> getMarkersByUserId(Long userId);
 }

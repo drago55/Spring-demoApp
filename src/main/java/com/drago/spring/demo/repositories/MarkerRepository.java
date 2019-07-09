@@ -1,10 +1,13 @@
 package com.drago.spring.demo.repositories;
 
-import com.drago.spring.demo.domain.Marker;
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import com.drago.spring.demo.domain.Marker;
 
-public interface MarkerRepository extends JpaRepository<Marker,Long>{
+public interface MarkerRepository extends JpaRepository<Marker, Long> {
+
+	Set<Marker> findByUserId(Long id);
 
 }
