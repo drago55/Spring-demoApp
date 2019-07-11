@@ -57,11 +57,7 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
 
 		user.setRoles(new HashSet<>(roleRepository.findAll()));
-
-		if (emailExist(userRegistrationDto.getEmail())) {
-			throw new EmailExistsException("Error email address already exists!");
-		}
-
+		
 		return userRepository.save(user);
 	}
 

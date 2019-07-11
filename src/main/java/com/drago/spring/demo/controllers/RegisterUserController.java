@@ -25,10 +25,9 @@ public class RegisterUserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping(value = "registerUser")
+	@GetMapping(value = "/registerUser")
 	public String showRegisterUser(Model model) {
 		log.debug("Showing user registration page.");
-
 		model.addAttribute("user", new UserRegistrationDto());
 		return REGISTRATION_INDEX;
 	}
@@ -39,17 +38,14 @@ public class RegisterUserController {
 		log.debug("Starting process of user registration.");
 		boolean isSuccessful = false;
 		model.addAttribute("user", userRegistrationDto);
+		
 		if (!result.hasErrors()) {
-			try {
-				userService.save(userRegistrationDto);
-				isSuccessful = true;
-				model.addAttribute("success", isSuccessful);
-				log.debug("User registration completed sucessfull.");
-				return REGISTRATION_INDEX;
-			} catch (EmailExistsException e) {
-				model.addAttribute("error", e.getMessage());
-				return REGISTRATION_INDEX;
-			}
+			
+			userService.save(userRegistrationDto);
+			isSuccessful = true;
+			model.addAttribute("success", isSuccessful);
+			log.debug("User registration completed sucessfull.");
+			return REGISTRATION_INDEX;
 
 		}
 		isSuccessful = false;
