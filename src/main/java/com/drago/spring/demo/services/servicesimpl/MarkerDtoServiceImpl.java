@@ -1,11 +1,17 @@
-package com.drago.spring.demo.services;
+package com.drago.spring.demo.services.servicesimpl;
 
+import com.drago.spring.demo.ObjectMapperUtils;
 import com.drago.spring.demo.data_transfer_objects.MarkerDto;
 import com.drago.spring.demo.domain.Marker;
 import com.drago.spring.demo.repositories.MarkerRepository;
+import com.drago.spring.demo.services.MarkerDtoService;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,11 +20,22 @@ public class MarkerDtoServiceImpl implements MarkerDtoService {
 
 	@Autowired
 	private MarkerRepository markerRepository;
-
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	@Override
 	public Set<MarkerDto> getAllMarkers() {
-
-		return markerRepository.findAll().stream().map((marker -> {
+		
+		List<Marker> lisOfMarker = markerRepository.findAll();
+		
+		MarkerDto one = modelMapper.map(lisOfMarker.get(0), MarkerDto.class);
+		
+		Set<MarkerDto> setOfMarkerDto = new HashSet<MarkerDto>(ObjectMapperUtils
+				.mapAll(lisOfMarker, MarkerDto.class));
+		return  setOfMarkerDto;
+		
+		/*return markerRepository.findAll().stream().map((marker -> {
 
 			final MarkerDto markerDto = new MarkerDto();
 			setMarkerMetaData(markerDto, marker);
@@ -30,7 +47,7 @@ public class MarkerDtoServiceImpl implements MarkerDtoService {
 			setImagePaths(markerDto, marker);
 
 			return markerDto;
-		})).collect(Collectors.toSet());
+		})).collect(Collectors.toSet());*/
 
 	}
 

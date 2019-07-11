@@ -1,6 +1,8 @@
-package com.drago.spring.demo.services;
+package com.drago.spring.demo.services.servicesimpl;
 
 import com.drago.spring.demo.exception.StorageException;
+import com.drago.spring.demo.services.StorageService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

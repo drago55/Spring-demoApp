@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
-import com.drago.spring.demo.exception.EmailExistsException;
 import com.drago.spring.demo.services.UserService;
 
 import lombok.extern.slf4j.Slf4j;

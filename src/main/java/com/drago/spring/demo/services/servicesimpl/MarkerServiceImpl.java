@@ -1,10 +1,15 @@
-package com.drago.spring.demo.services;
+package com.drago.spring.demo.services.servicesimpl;
 
 import com.drago.spring.demo.domain.Image;
 import com.drago.spring.demo.domain.Marker;
 import com.drago.spring.demo.domain.User;
 import com.drago.spring.demo.exception.NoSuchMarkerException;
 import com.drago.spring.demo.repositories.MarkerRepository;
+import com.drago.spring.demo.services.ImageService;
+import com.drago.spring.demo.services.MarkerService;
+import com.drago.spring.demo.services.StorageService;
+import com.drago.spring.demo.services.UserService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

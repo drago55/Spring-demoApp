@@ -1,6 +1,9 @@
-package com.drago.spring.demo.services;
+package com.drago.spring.demo.services.servicesimpl;
 
 import com.drago.spring.demo.domain.Image;
+import com.drago.spring.demo.services.ImageService;
+import com.drago.spring.demo.services.StorageService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
 import com.drago.spring.demo.services.UserService;
-import com.drago.spring.demo.services.UserServiceImpl;
+import com.drago.spring.demo.services.servicesimpl.UserServiceImpl;
 
 public class RegisterUserControllerTest {
 
