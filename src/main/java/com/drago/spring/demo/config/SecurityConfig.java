@@ -18,7 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.authorizeRequests()
 				.antMatchers("/js/**", "/h2-console/**", "/", "/imagePath/**", "/css/**", "/webjars/**", "/errors",
 						"/registerUser/**", "index", "/processRegistration/**", "/contact", "/about", "/index",
-						"/processLogin/**", "/fullscreen_map")
+						"/processLogin/**","/image/**" ,"/fullscreen_map")
 				.permitAll()
 				.antMatchers("/showMarkers/**", "/editMarker", "/deleteMarker", "/imagePath/upload-dir/**",
 						"/addMarker", "/showCreateMarker")

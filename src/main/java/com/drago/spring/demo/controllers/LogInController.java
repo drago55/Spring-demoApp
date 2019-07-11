@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LogInController {
 
 	private static final String LOGIN_INDEX = "login/index";
+	
 	@Autowired
 	private UserService userService;
 
