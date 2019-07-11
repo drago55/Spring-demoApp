@@ -1,5 +1,6 @@
 package com.drago.spring.demo.data_transfer_objects;
 
+import com.drago.spring.demo.constraint.EmailNotInUse;
 import com.drago.spring.demo.constraint.FieldMatch;
 import com.drago.spring.demo.constraint.ValidPassword;
 import lombok.Data;
@@ -16,9 +17,11 @@ public class UserRegistrationDto {
 	private String lastName;
 	@NotEmpty
 	@Email
+	@EmailNotInUse
 	private String email;
 	@NotEmpty
 	@Email
+	@EmailNotInUse
 	private String confirmEmail;
 	@NotEmpty
 	@ValidPassword
