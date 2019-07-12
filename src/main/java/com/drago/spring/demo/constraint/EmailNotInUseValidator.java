@@ -15,14 +15,17 @@ public class EmailNotInUseValidator implements ConstraintValidator<EmailNotInUse
 	@Override
 	public void initialize(EmailNotInUse constraintAnnotation) {
 	}
-
+	
+	/**
+	 * Email validation 
+	 */
 	@Override
 	public boolean isValid(String email, ConstraintValidatorContext context) {
-		return emailExist(email);
+		return !isEmailPresent(email);
 	}
 
-	private boolean emailExist(String email) {
-		return !userRepository.findUserByEmail(email).isPresent();
+	private boolean isEmailPresent(String email) {
+		return userRepository.findUserByEmail(email).isPresent();
 	}
 
 }
