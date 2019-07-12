@@ -220,13 +220,16 @@ function addMarkers(object) {
         document.getElementById("address").innerHTML=data.city+" "+data.address+" "+data.postalCode+" "+data.state;
         //document.getElementById("state").innerHTML=data.state;
         //document.getElementById("postalCode").innerHTML=data.postalCode;
-        document.getElementById("createdByUser").innerHTML=data.createdByUser;
-
-
-        document.getElementById("img-info-box").src=resource_url+data.imagePaths[0];
-        console.log("images "+resource_url+data.imagePaths[0]);
+        document.getElementById("createdByUser").innerHTML=data.userFirstName;
+        
+        //set if not null
+        if(typeof data.images !== "undefined" && data.images != null){
+        	 document.getElementById("img-info-box").src=resource_url+data.images[0].imagePath;
+             console.log("images "+resource_url+data.images[0].imagePath);
+          
+        }
         //on error load no image
-        document.getElementById("img-info-box").onerror = function() {
+        if(!document.getElementById("img-info-box").hasAttribute("src")) {
           noImage();
         };
 

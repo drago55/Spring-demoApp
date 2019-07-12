@@ -1,18 +1,19 @@
 package com.drago.spring.demo.services.servicesimpl;
 
-import com.drago.spring.demo.domain.Image;
-import com.drago.spring.demo.services.ImageService;
-import com.drago.spring.demo.services.StorageService;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.drago.spring.demo.data_transfer_objects.ImageDto;
+import com.drago.spring.demo.services.ImageService;
+import com.drago.spring.demo.services.StorageService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -37,7 +38,7 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	public void deleteImage(Image image) {
+	public void deleteImage(ImageDto image) {
 		log.debug("deleting image " + image.getImagePath());
 		storageService.deleteFile(image.getImagePath());
 	}

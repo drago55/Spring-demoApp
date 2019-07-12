@@ -33,16 +33,16 @@
 
             <tr th:each="marker: ${markers}">
                 <td th:text="${marker.id}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${marker.name}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${marker.location.streetAddress}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${marker.location.city}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${marker.location.stateProvince}" style="vertical-align:middle" align="justify"></td>
-                <td th:text="${marker.location.postalCode}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${marker.latLon.lat}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${marker.latLon.lon}" style="vertical-align:middle" align="justify"></td>
+                <td th:text="${marker.markerName}" style="vertical-align:middle" class="text-center"></td>
+                <td th:text="${marker.address}" style="vertical-align:middle" class="text-center"></td>
+                <td th:text="${marker.city}" style="vertical-align:middle" class="text-center"></td>
+                <td th:text="${marker.state}" style="vertical-align:middle" align="justify"></td>
+                <td th:text="${marker.postalCode}" style="vertical-align:middle" class="text-center"></td>
+                <td th:text="${marker.lat}" style="vertical-align:middle" class="text-center"></td>
+                <td th:text="${marker.lon}" style="vertical-align:middle" align="justify"></td>
                 <td th:text="${marker.markerType}" style="vertical-align:middle" class="text-center"></td>
                 <td th:text="${marker.description}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${marker.user.firstName}" style="vertical-align:middle" class="text-center"></td>
+                <td th:text="${marker.userFirstName}" style="vertical-align:middle" class="text-center"></td>
                 <td style="vertical-align:middle" class="text-center">
                     <div class="btn-group" role="group">
                         <a class="btn btn-danger btn-lg" th:href="${'marker/delete/' + marker.id}">delete</a>

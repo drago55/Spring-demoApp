@@ -52,8 +52,8 @@ public class MarkerDtoServiceImpl implements MarkerDtoService {
 	}
 
 	private void setImagePaths(MarkerDto markerDto, Marker marker) {
-		markerDto.setImagePaths(marker.getImages().stream().map((image -> image.getImagePath()))
-				.collect(Collectors.toSet()));
+	/*	markerDto.setImagePaths(marker.getImages().stream().map((image -> image.getImagePath()))
+				.collect(Collectors.toSet()));*/
 	}
 
 	private void setMarkerLocation(MarkerDto markerDto, Marker marker) {
@@ -71,7 +71,7 @@ public class MarkerDtoServiceImpl implements MarkerDtoService {
 	private void setMarkerMetaData(MarkerDto markerDto, Marker marker) {
 		markerDto.setMarkerName(marker.getName());
 		markerDto.setDescription(marker.getDescription());
-		markerDto.setCreatedByUser(marker.getUser().getFirstName());
+	//	markerDto.setCreatedByUser(marker.getUser().getFirstName());
 		markerDto.setMarkerType(marker.getMarkerType());
 	}
 

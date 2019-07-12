@@ -7,19 +7,23 @@ import lombok.Data;
 @Data
 public class MarkerDto {
 
+	private Long id;
+
 	private String markerName;
 
 	private String markerType;
 
 	private String description;
 
-	private Set<String> imagePaths;
+	private Set<ImageDto> images;
 
 	private Float lat;
 
 	private Float lon;
 
-	private String createdByUser;
+	private String userFirstName;
+
+	private String userLastName;
 
 	private String city;
 

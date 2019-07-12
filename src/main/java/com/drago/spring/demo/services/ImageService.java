@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.drago.spring.demo.domain.Image;
+import com.drago.spring.demo.data_transfer_objects.ImageDto;
 
 public interface ImageService {
 
@@ -15,7 +15,7 @@ public interface ImageService {
 
 	List<MultipartFile> filterAndGetCollection(MultipartFile[] files);
 
-	void deleteImage(Image image);
+	void deleteImage(ImageDto image);
 
 	void uploadImages(List<MultipartFile> files);
 

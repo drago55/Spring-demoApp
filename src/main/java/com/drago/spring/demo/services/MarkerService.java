@@ -1,22 +1,22 @@
 package com.drago.spring.demo.services;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.drago.spring.demo.domain.Marker;
+import com.drago.spring.demo.data_transfer_objects.MarkerDto;
 
 public interface MarkerService {
 
-    Marker save(Marker marker, MultipartFile[] multipartFile);
+	MarkerDto save(MarkerDto marker, MultipartFile[] multipartFile);
 
-    Marker findMarkerById(Long id);
+	MarkerDto findMarkerById(Long id);
 
-    Optional<Marker> findMarkerByUserId(Long userId);
+	Optional<MarkerDto> findMarkerByUserId(Long userId);
 
-    List<Marker> findAllMarkers();
+	Set<MarkerDto> findAllMarkers();
 
-    void deleteMarkerById(Long id);
+	void deleteMarkerById(Long id);
 
 }

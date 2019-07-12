@@ -1,5 +1,4 @@
 package com.drago.spring.demo.controllers;
-
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -17,10 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.drago.spring.demo.data_transfer_objects.MarkerDto;
-import com.drago.spring.demo.domain.Marker;
 import com.drago.spring.demo.domain.MarkerType;
 import com.drago.spring.demo.services.ImageService;
-import com.drago.spring.demo.services.MarkerDtoService;
 import com.drago.spring.demo.services.MarkerService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,13 +36,10 @@ public class MarkerController {
 	@Autowired
 	private ImageService imageService;
 
-	@Autowired
-	private MarkerDtoService markerDtoService;
-
 	@GetMapping(value = { "markers/get_json", "index/markers/get_json", "fullscreen_map/markers/get_json" })
 	public @ResponseBody Set<MarkerDto> produceJson() {
 		log.debug("Rest api has been called! Serving json content!");
-		return markerDtoService.getAllMarkers();
+		return markerService.findAllMarkers();
 	}
 
 	@GetMapping("/markers")
@@ -58,7 +52,7 @@ public class MarkerController {
 	@GetMapping("/marker")
 	public String createMarker(Model model) {
 		log.debug("Marker form.");
-		model.addAttribute(MARKER, new Marker());
+		model.addAttribute(MARKER, new MarkerDto());
 		model.addAttribute(MARKER_TYPE, MarkerType.values());
 		return "marker/markerForm";
 	}
@@ -88,7 +82,7 @@ public class MarkerController {
 	}
 
 	@PostMapping(value = "/save")
-	public String save(@ModelAttribute(MARKER) @Valid Marker marker, @RequestParam("file") MultipartFile[] files,
+	public String save(@ModelAttribute(MARKER) @Valid MarkerDto marker, @RequestParam("file") MultipartFile[] files,
 			BindingResult result, Model model) {
 		log.debug("Saving/Update marker...");
 		boolean isSuccessful = false;
