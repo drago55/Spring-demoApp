@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.drago.spring.demo.services.UserService;
 import com.drago.spring.demo.services.servicesimpl.UserServiceImpl;
 
+@PropertySource("classpath:application.properties")
 public class AdministrationControllerTest {
 
 	private MockMvc mockMvc;
@@ -29,7 +31,7 @@ public class AdministrationControllerTest {
 
 	@Before
 	public void setup() {
-		MockitoAnnotations.initMocks(this); 
+		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(administrationController).build();
 	}
 
