@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.drago.spring.demo.ObjectMapperUtils;
+import com.drago.spring.demo.data_transfer_objects.UserDto;
 import com.drago.spring.demo.data_transfer_objects.UserLoginDto;
 import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
 import com.drago.spring.demo.domain.User;
@@ -81,8 +83,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> findAll() {
-		return userRepository.findAll();
+	public List<UserDto> findAll() {
+		return ObjectMapperUtils.mapAll(userRepository.findAll(), UserDto.class);
 	}
 
 	@Override
