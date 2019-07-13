@@ -1,9 +1,21 @@
 package com.drago.spring.demo.services.servicesimpl;
 
-import com.drago.spring.demo.exception.StorageException;
-import com.drago.spring.demo.services.StorageService;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -11,19 +23,19 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Stream;
+import com.drago.spring.demo.exception.StorageException;
+import com.drago.spring.demo.services.StorageService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class StorageServiceImpl implements StorageService {
 
-	private final Path uploadLocation = Paths.get("/upload-dir");
+	@Value("${upload.path}")
+	private String path;
+
+	private Path uploadLocation;
 
 	private Path storedLocation;
 
@@ -37,8 +49,10 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
+	@PostConstruct
 	public void init() {
 		try {
+			uploadLocation = Paths.get(path);
 			Files.createDirectories(uploadLocation);
 		} catch (IOException e) {
 			log.error("Failed to create upload directory!! ", e);
@@ -64,7 +78,7 @@ public class StorageServiceImpl implements StorageService {
 
 		String filename = getFileName(file);
 		Path path = this.storedLocation.resolve(filename);
-		
+
 		try {
 			if (filename.isEmpty()) {
 				throw new StorageException("Failed to store empty file " + filename);
