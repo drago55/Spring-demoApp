@@ -53,7 +53,7 @@ public class MarkerServiceImpl implements MarkerService {
 		
 		List<MultipartFile> listOfImages = imageService.filterAndGetCollection(files);
 
-		uploadImages(marker, listOfImages);
+		uploadImagesAndSetPaths(marker, listOfImages);
 
 		if (marker.getId() != null) {
 			log.debug("it is update resolve orphan images!");
@@ -67,7 +67,7 @@ public class MarkerServiceImpl implements MarkerService {
 		return ObjectMapperUtils.map(markerRepository.save(marker), MarkerDto.class);
 	}
 
-	private void uploadImages(Marker marker, List<MultipartFile> listOfFiles) {
+	private void uploadImagesAndSetPaths(Marker marker, List<MultipartFile> listOfFiles) {
 		marker.setImages(new HashSet<>());
 		listOfFiles.forEach(multipartFile -> {
 			Path path = imageService.uploadImage(multipartFile);
