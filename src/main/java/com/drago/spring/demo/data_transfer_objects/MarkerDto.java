@@ -3,8 +3,10 @@ package com.drago.spring.demo.data_transfer_objects;
 import java.util.Set;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode
 public class MarkerDto {
 
 	private Long id;
