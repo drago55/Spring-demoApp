@@ -6,16 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import com.drago.spring.demo.ApplicationTests;
 import com.drago.spring.demo.domain.Role;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
-public class RolesRepositoryTest {
+public class RolesRepositoryTest extends ApplicationTests {
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -30,7 +28,7 @@ public class RolesRepositoryTest {
 
 	@Test
 	public void testGetAllRoles() {
-		List<Role> roles =roleRepository.findAll();
+		List<Role> roles = roleRepository.findAll();
 		assertThat(roles).containsExactlyElementsOf(getRoles());
 	}
 

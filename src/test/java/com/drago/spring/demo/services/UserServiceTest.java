@@ -8,15 +8,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.drago.spring.demo.ApplicationTests;
 import com.drago.spring.demo.data_transfer_objects.UserDto;
 import com.drago.spring.demo.data_transfer_objects.UserLoginDto;
 import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
@@ -25,10 +23,8 @@ import com.drago.spring.demo.domain.User;
 import com.drago.spring.demo.exception.InvalidUserException;
 import com.drago.spring.demo.services.servicesimpl.UserServiceImpl;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
 @Transactional
-public class UserServiceTest {
+public class UserServiceTest extends ApplicationTests {
 
 	@Autowired
 	private UserServiceImpl userService;
@@ -108,11 +104,11 @@ public class UserServiceTest {
 	}
 
 	@Test
-	@WithMockUser(username = "drago@net.hr", authorities = { "ADMIN"})
+	@WithMockUser(username = "drago@net.hr", authorities = { "ADMIN" })
 	public void test_user_loged_in() {
-		//When
+		// When
 		User user = userService.getAuthenticatedUser();
-		//Then
+		// Then
 		assertThat(user).isNotNull();
 		assertThat(user.getRoles()).containsAll(getRoles());
 		assertThat(user.getEmail()).isEqualTo(getUserLoginDto().getUserEmail());

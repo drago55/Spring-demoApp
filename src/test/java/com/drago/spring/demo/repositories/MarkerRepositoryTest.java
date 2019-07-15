@@ -1,14 +1,13 @@
 package com.drago.spring.demo.repositories;
 
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
+import com.drago.spring.demo.ApplicationTests;
+
 @DataJpaTest
-public class MarkerRepositoryTest {
-	
+public class MarkerRepositoryTest extends ApplicationTests {
+
 	@Autowired
 	private MarkerRepository markerRepository;
 

@@ -2,23 +2,19 @@ package com.drago.spring.demo.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-
+import com.drago.spring.demo.ApplicationTests;
 import com.drago.spring.demo.domain.User;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
-public class UserRepositoryTest {
+public class UserRepositoryTest extends ApplicationTests {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -71,18 +67,18 @@ public class UserRepositoryTest {
 		assertThat(listOfUsers.get(1).getId()).isEqualTo(user2.getId());
 
 	}
-	
+
 	@Test
 	@Transactional
 	public void testDeleteUser() {
-		
-		//When
+
+		// When
 		User savedUser = userRepository.save(getUser());
 		assertThat(getUser().getId()).isEqualTo(savedUser.getId());
-		//Then
+		// Then
 		userRepository.delete(savedUser);
 		assertThat(userRepository.findOne(savedUser.getId())).isNull();
-		
+
 	}
 
 	private User getUser() {
