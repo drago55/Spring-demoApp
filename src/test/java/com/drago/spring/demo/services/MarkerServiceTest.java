@@ -3,7 +3,7 @@ package com.drago.spring.demo.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Test;
@@ -13,7 +13,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.drago.spring.demo.ApplicationTests;
-import com.drago.spring.demo.data_transfer_objects.ImageDto;
 import com.drago.spring.demo.data_transfer_objects.MarkerDto;
 import com.drago.spring.demo.domain.MarkerType;
 import com.drago.spring.demo.exception.NoSuchMarkerException;
@@ -24,6 +23,39 @@ public class MarkerServiceTest extends ApplicationTests {
 
 	@Autowired
 	private MarkerServiceImpl service;
+	
+	@Test
+	@WithMockUser(username = "drago@net.hr", authorities = { "ADMIN" })
+	public void testGetMarkerByUserId() {
+		//When
+		Optional<MarkerDto> marker = service.findMarkerByUserId(1l);
+		//Then
+		assertThat(marker).isNotNull();
+		assertThat(marker.get().getUserFirstName()).isEqualTo("Dragutin");
+	}
+	
+	@Test
+	@WithMockUser(username = "drago@net.hr", authorities = { "ADMIN" })
+	public void testUpdateMarker() {
+		
+		//When
+		MockMultipartFile[] files = { new MockMultipartFile("1f3bed2c-539e-4239-a9fb-43749ddafb61.jpg",
+				"WIN_20190609_20_48_55_Pro.jpg", null, "bar".getBytes()) };
+		MarkerDto savedMarker = service.save(getMarkerDto(), files);
+		assertThat(savedMarker).isNotNull();
+		assertThat(savedMarker.getId()).isNotNull();
+		savedMarker.setMarkerName("UpdatedMarker");
+		//Then
+		MockMultipartFile[] updateFiles = { new MockMultipartFile("NewUpdateImage-539e-4239-a9fb-43749ddafb61.jpg",
+						"NewImage.jpg", null, "bar".getBytes()) };
+		MarkerDto updateMarker = service.save(savedMarker, updateFiles);
+		
+		assertThat(updateMarker).isNotNull();
+		assertThat(updateMarker.getMarkerName()).isEqualTo(savedMarker.getMarkerName());
+		
+		assertThat(updateMarker.getImages()).isNotEmpty();
+
+	}
 
 	@Test
 	@WithMockUser(username = "drago@net.hr", authorities = { "ADMIN" })
@@ -90,15 +122,6 @@ public class MarkerServiceTest extends ApplicationTests {
 
 		return marker;
 
-	}
-
-	private Set<ImageDto> getImages() {
-		ImageDto image = new ImageDto();
-		image.setFileName("WIN_20190609_20_48_55_Pro.jpg");
-		image.setImagePath("\\upload-dir\\Horvat\\1f3bed2c-539e-4239-a9fb-43749ddafb61.jpg");
-		Set<ImageDto> images = new HashSet<>();
-		images.add(image);
-		return images;
 	}
 
 }
