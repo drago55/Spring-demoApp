@@ -222,9 +222,9 @@ function addMarkers(object) {
         //document.getElementById("postalCode").innerHTML=data.postalCode;
         document.getElementById("createdByUser").innerHTML=data.userFirstName;
         
-        //set if not null
-        if(typeof data.images !== "undefined" && data.images != null){
-        	 document.getElementById("img-info-box").src=resource_url+data.images[0].imagePath;
+        //set if not null     
+        if(data.images.length != 0 ){
+        document.getElementById("img-info-box").src=resource_url+data.images[0].imagePath;
              console.log("images "+resource_url+data.images[0].imagePath);
           
         }
