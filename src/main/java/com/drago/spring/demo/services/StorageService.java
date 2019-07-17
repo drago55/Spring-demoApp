@@ -1,18 +1,16 @@
 package com.drago.spring.demo.services;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 import org.springframework.core.io.Resource;
-
-import java.nio.file.Path;
-import java.util.List;
-import java.util.stream.Stream;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
 
     void init();
 
-    Path setUserDir(Path path);
+    Path setUserUploadLocation(Path path);
 
     Path store(MultipartFile file);
 
@@ -27,7 +25,5 @@ public interface StorageService {
     void deleteFile(String fileName);
 
     String getFileName(MultipartFile file);
-
-    List<String> getFileNames();
 
 }

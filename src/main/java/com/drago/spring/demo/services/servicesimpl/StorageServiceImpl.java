@@ -8,8 +8,6 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -35,49 +33,52 @@ public class StorageServiceImpl implements StorageService {
 	@Value("${upload.path}")
 	private String path;
 
-	private Path uploadLocation;
+	private Path rootUploadLocation;
 
-	private Path storedLocation;
-
-	private List<String> fileNames = new ArrayList<>();
+	private Path userUploadLocation;
 
 	public StorageServiceImpl() {
 	}
 
 	public StorageServiceImpl(Path storedLocation) {
-		this.storedLocation = storedLocation;
+		this.userUploadLocation = storedLocation;
 	}
 
 	@Override
 	@PostConstruct
 	public void init() {
 		try {
-			uploadLocation = Paths.get(path);
-			Files.createDirectories(uploadLocation);
+			rootUploadLocation = Paths.get(path);
+			Files.createDirectories(rootUploadLocation);
 		} catch (IOException e) {
 			log.error("Failed to create upload directory!! ", e);
-			throw new RuntimeException("Failed to create upload directory!!");
+			throw new StorageException("Failed to create upload directory!!");
 		}
 	}
 
 	@Override
-	public Path setUserDir(Path path) {
+	public Path setUserUploadLocation(Path path) {
 
-		this.storedLocation = uploadLocation.resolve(path);
+		this.userUploadLocation = rootUploadLocation.resolve(path);
 		try {
-			Files.createDirectories(storedLocation);
+			Files.createDirectories(userUploadLocation);
 		} catch (IOException e) {
 			log.error("Failed to create upload directory for specific user " + path.toString(), e);
 		}
 
-		return storedLocation;
+		return userUploadLocation;
 	}
 
 	@Override
 	public Path store(MultipartFile file) {
 
 		String filename = getFileName(file);
-		Path path = this.storedLocation.resolve(filename);
+
+		if (this.userUploadLocation == null) {
+			throw new StorageException("Can't upload to root location! Set upload location for user!");
+		}
+
+		Path path = this.userUploadLocation.resolve(filename);
 
 		try {
 			if (filename.isEmpty()) {
@@ -105,15 +106,10 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public List<String> getFileNames() {
-		return this.fileNames;
-	}
-
-	@Override
 	public Stream<Path> loadAll() {
 		try {
-			return Files.walk(this.storedLocation, 1).filter(path -> !path.equals(this.storedLocation))
-					.map(path -> this.storedLocation.relativize(path));
+			return Files.walk(this.userUploadLocation, 1).filter(path -> !path.equals(this.userUploadLocation))
+					.map(path -> this.userUploadLocation.relativize(path));
 		} catch (IOException e) {
 			throw new StorageException("Failed to read stored files", e);
 		}
@@ -127,26 +123,26 @@ public class StorageServiceImpl implements StorageService {
 	@Override
 	public Resource loadAsResource(String filename) {
 		try {
-			Path file = storedLocation.resolve(filename);
+			Path file = userUploadLocation.resolve(filename);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
 				return resource;
 			} else {
-				throw new RuntimeException("Fail resource doesn't exist or its not readable!");
+				throw new StorageException("Fail resource doesn't exist or its not readable!");
 			}
 		} catch (MalformedURLException e) {
-			throw new RuntimeException("FAIL!");
+			throw new StorageException("FAIL!", e);
 		}
 	}
 
 	@Override
 	public void deleteAll() {
-		FileSystemUtils.deleteRecursively(uploadLocation.toFile());
+		FileSystemUtils.deleteRecursively(rootUploadLocation.toFile());
 	}
 
 	@Override
 	public void deleteFile(String fileName) {
-		final Path path = storedLocation.resolve(fileName);
+		final Path path = userUploadLocation.resolve(fileName);
 		try {
 			Files.delete(path);
 		} catch (NoSuchFileException x) {
@@ -157,6 +153,18 @@ public class StorageServiceImpl implements StorageService {
 			// File permission problems are caught here.
 			log.error("Exception while trying to delete file" + x);
 		}
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public Path getRootUploadLocation() {
+		return rootUploadLocation;
+	}
+
+	public Path getUserUploadLocation() {
+		return userUploadLocation;
 	}
 
 }
