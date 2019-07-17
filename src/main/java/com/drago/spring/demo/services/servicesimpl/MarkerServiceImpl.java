@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -35,9 +37,6 @@ public class MarkerServiceImpl implements MarkerService {
 	private StorageService storageService;
 
 	@Autowired
-	private ImageService imageService;
-
-	@Autowired
 	private UserService userService;
 
 	@Override
@@ -45,13 +44,13 @@ public class MarkerServiceImpl implements MarkerService {
 		
 		Marker marker = ObjectMapperUtils.map(markerDto, Marker.class);
 
-		storageService.setUserDir(Paths.get(userService.getAuthenticatedUser().getLastName()));
+		storageService.setUserUploadLocation(Paths.get(userService.getAuthenticatedUser().getLastName()));
 
 		User user = userService.getAuthenticatedUser();
 
 		marker.setUser(user);
 		
-		List<MultipartFile> listOfImages = imageService.filterAndGetCollection(files);
+		List<MultipartFile> listOfImages = filterAndGetListOfImages(files);
 
 		uploadImagesAndSetPaths(marker, listOfImages);
 
@@ -67,10 +66,14 @@ public class MarkerServiceImpl implements MarkerService {
 		return ObjectMapperUtils.map(markerRepository.save(marker), MarkerDto.class);
 	}
 
+	private List<MultipartFile> filterAndGetListOfImages(MultipartFile[] files) {
+		return Stream.of(files).filter(multipartFile -> !multipartFile.isEmpty()).collect(Collectors.toList());
+	}
+
 	private void uploadImagesAndSetPaths(Marker marker, List<MultipartFile> listOfFiles) {
 		marker.setImages(new HashSet<>());
 		listOfFiles.forEach(multipartFile -> {
-			Path path = imageService.uploadImage(multipartFile);
+			Path path = storageService.store(multipartFile);
 			marker.addImage(new Image(multipartFile.getOriginalFilename(), path.toString()));
 		});
 	}
