@@ -77,7 +77,7 @@ public class UserRepositoryTest extends ApplicationTests {
 		assertThat(getUser().getId()).isEqualTo(savedUser.getId());
 		// Then
 		userRepository.delete(savedUser);
-		assertThat(userRepository.findOne(savedUser.getId())).isNull();
+		assertThat(userRepository.getOne(savedUser.getId())).isNull();
 
 	}
 

@@ -21,7 +21,7 @@ public class RolesRepositoryTest extends ApplicationTests {
 	@Test
 	public void testSaveRoles() {
 		// When
-		List<Role> insertedRoles = roleRepository.save(getRoles());
+		List<Role> insertedRoles = roleRepository.saveAll(getRoles());
 
 		assertThat(insertedRoles).isNotNull();
 	}

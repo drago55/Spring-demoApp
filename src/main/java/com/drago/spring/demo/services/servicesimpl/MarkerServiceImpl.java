@@ -14,6 +14,9 @@ import com.drago.spring.demo.services.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -80,10 +83,10 @@ public class MarkerServiceImpl implements MarkerService {
 
 	@Override
 	public MarkerDto findMarkerById(Long id) {
-		if (!markerRepository.exists(id)) {
+		if (!markerRepository.existsById(id)) {
 			throw new NoSuchMarkerException("Marker don't exists!");
 		}
-		return ObjectMapperUtils.map(markerRepository.findOne(id), MarkerDto.class);
+		return ObjectMapperUtils.map(markerRepository.getOne(id), MarkerDto.class);
 	}
 
 	@Override
@@ -95,10 +98,19 @@ public class MarkerServiceImpl implements MarkerService {
 	public Set<MarkerDto> findAllMarkers() {
 		return new HashSet<>(ObjectMapperUtils.mapAll(markerRepository.findAll(), MarkerDto.class));
 	}
+	
+	@Override
+	public Page<MarkerDto> findPaginatedMarkers(Pageable pagable) {
+		
+		//markerRepository.findAll(pagable).stream().map((marker) -> ObjectMapperUtils.map(marker, MarkerDto.class)).collect(Collectors.to);
+		
+		List<MarkerDto> listOfMarkers = ObjectMapperUtils.mapAll(markerRepository.findAll(), MarkerDto.class);
+		return new PageImpl<>(listOfMarkers, pagable, listOfMarkers.size());
+	}
 
 	@Override
 	public void deleteMarkerById(Long id) {
-		markerRepository.delete(id);
+		markerRepository.deleteById(id);
 	}
 
 }
