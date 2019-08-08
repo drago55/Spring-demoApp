@@ -1,15 +1,10 @@
 package com.drago.spring.demo.controllers;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -27,7 +22,6 @@ import com.drago.spring.demo.data_transfer_objects.MarkerDto;
 import com.drago.spring.demo.domain.MarkerType;
 import com.drago.spring.demo.services.ImageService;
 import com.drago.spring.demo.services.MarkerService;
-
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,21 +48,9 @@ public class MarkerController {
 	@GetMapping("/markers")
 	public String showMarkers(Model model, @PageableDefault(size=5) Pageable pageable) {
 		
-		//int currentPage = page.orElse(1);
-		//int pageSize = size.orElse(5);
-		
 		Page<MarkerDto> markers = markerService.findPaginatedMarkers(pageable);
 		model.addAttribute("markers", markers);
 		
-		/*int totalPages = markers.getTotalPages(); 
-		
-		if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-		*/
 		log.debug("Showing markers.");
 		
 		return "marker/index";

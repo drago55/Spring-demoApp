@@ -21,6 +21,6 @@ public interface MarkerService {
 
 	void deleteMarkerById(Long id);
 	
-	Page<MarkerDto> findPaginatedMarkers(Pageable pagable);
+	Page<MarkerDto> findPaginatedMarkers(Pageable pageable);
 	
 }

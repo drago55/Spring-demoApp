@@ -1,25 +1,5 @@
 package com.drago.spring.demo.services.servicesimpl;
 
-import com.drago.spring.demo.ObjectMapperUtils;
-import com.drago.spring.demo.data_transfer_objects.MarkerDto;
-import com.drago.spring.demo.domain.Image;
-import com.drago.spring.demo.domain.Marker;
-import com.drago.spring.demo.domain.User;
-import com.drago.spring.demo.exception.NoSuchMarkerException;
-import com.drago.spring.demo.repositories.MarkerRepository;
-import com.drago.spring.demo.services.ImageService;
-import com.drago.spring.demo.services.MarkerService;
-import com.drago.spring.demo.services.StorageService;
-import com.drago.spring.demo.services.UserService;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -28,6 +8,26 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.drago.spring.demo.ObjectMapperUtils;
+import com.drago.spring.demo.data_transfer_objects.MarkerDto;
+import com.drago.spring.demo.domain.Image;
+import com.drago.spring.demo.domain.Marker;
+import com.drago.spring.demo.domain.User;
+import com.drago.spring.demo.exception.NoSuchMarkerException;
+import com.drago.spring.demo.repositories.MarkerRepository;
+import com.drago.spring.demo.services.MarkerService;
+import com.drago.spring.demo.services.StorageService;
+import com.drago.spring.demo.services.UserService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -100,12 +100,9 @@ public class MarkerServiceImpl implements MarkerService {
 	}
 	
 	@Override
-	public Page<MarkerDto> findPaginatedMarkers(Pageable pagable) {
-		
-		//markerRepository.findAll(pagable).stream().map((marker) -> ObjectMapperUtils.map(marker, MarkerDto.class)).collect(Collectors.to);
-		
-		List<MarkerDto> listOfMarkers = ObjectMapperUtils.mapAll(markerRepository.findAll(), MarkerDto.class);
-		return new PageImpl<>(listOfMarkers, pagable, listOfMarkers.size());
+	public Page<MarkerDto> findPaginatedMarkers(Pageable pageable) {
+		Page<Marker> page = markerRepository.findAll(pageable);
+		return new PageImpl<>(ObjectMapperUtils.mapAll(page.getContent(), MarkerDto.class), pageable, page.getTotalElements());
 	}
 
 	@Override
