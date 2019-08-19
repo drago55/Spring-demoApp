@@ -1,51 +1,76 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sd="http://www.thymeleaf.org/spring-data"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div th:replace="/fragments/header :: header"></div>
 
 <body>
-<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
+	<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
 
-<div class="container">
-    <div class="row">
-        <h3>List of all Users</h3>
-    </div>
+	<div class="container">
+		<div class="row">
+			<h3>List of all Users</h3>
+		</div>
+			<h6>
+			Show<span sd:page-size-selector="javascript"></span>entries
+		</h6>
+		<table class="table table-striped table-hover" id="user-table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Email</th>
+					<th>First name</th>
+					<th>Last name</th>
+					<th>Status</th>
+					<th>Roles</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
 
-    <div class="table-responsive">
-        <table class="table" id="user-table">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Roles</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
+				<tr th:each="user: ${users}">
+					<td th:text="${user.id}" style="vertical-align: middle"
+						class="text-center"></td>
+					<td th:text="${user.email}" style="vertical-align: middle"
+						class="text-center"></td>
+					<td th:text="${user.firstName}" style="vertical-align: middle"
+						class="text-center"></td>
+					<td th:text="${user.lastName}" style="vertical-align: middle"
+						class="text-center"></td>
+						<td th:text="${user.description}" style="vertical-align: middle"
+						class="text-center"></td>
+					<td th:if="${user.roles != null}">
+						<ul th:each="role: ${user.roles}" th:text="${role.name}"
+							style="vertical-align: middle" align="justify"></ul>
+					</td>
+					<td><a class="btn btn-danger"
+						th:href="@{/user/delete/{id} (id=${user.id})}"> <i
+							class="fa fa-trash-o fa-lg"></i> Disable
+					</a></td>
+					<td><a class="btn btn-primary"
+						th:href="@{/user/edit/{id} (id=${user.id})}"> <i
+							class="fa fa-pencil fa-fw"></i> Edit
+					</a></td>
+				</tr>
+			</tbody>
+		</table>
 
-            <tr th:each="user: ${users}">
-                <td th:text="${user.id}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${user.email}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${user.firstName}" style="vertical-align:middle" class="text-center"></td>
-                <td th:text="${user.lastName}" style="vertical-align:middle" class="text-center"></td>
-                <td th:if="${user.roles != null}">
-                        <ul th:each="role: ${user.roles}" th:text="${role.name}" style="vertical-align:middle"
-                            align="justify"></ul>
-                </td>
-                <td style="vertical-align:middle" class="text-center">
-                    <div class="btn-group" role="group">
-                        <a class="btn btn-danger btn-lg" th:href="${'/user/delete/' + user.id}">delete</a>
-                        <a class="btn btn-success btn-lg" th:href="${'/user/edit/' + user.id}">edit</a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
 
-    </div>
-</div>
-<div th:replace="/fragments/footer :: footer"></div>
+
+		<div class="row">
+			<nav class="pull-right">
+				<ul class="pagination" sd:pagination-split="7" sd:pagination="full">
+					<!-- 	 Pagination created by SpringDataDialect, this content is just for mockup      -->
+					<li class="disabled"><a href="#" aria-label="Previous"><span
+							aria-hidden="true">&laquo;</span></a></li>
+					<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+	</div>
+	<div th:replace="/fragments/footer :: footer"></div>
 
 </body>
 </html>
