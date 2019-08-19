@@ -22,9 +22,15 @@ public class AdministrationController {
 		return "admin/showUsers";
 	}
 
-	@GetMapping(value = "/user/delete/{id}")
-	public String deleteUser(@PathVariable Long id, Model model) {
-		userService.deleteUser(id);
+	@GetMapping(value = "/user/disable/{id}")
+	public String disableUser(@PathVariable Long id, Model model) {
+		userService.disableUser(id);
+		return "redirect:/users";
+	}
+	
+	@GetMapping(value = "/user/enable/{id}")
+	public String enableUser(@PathVariable Long id, Model model) {
+		userService.enableUser(id);
 		return "redirect:/users";
 	}
 

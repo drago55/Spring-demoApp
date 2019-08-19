@@ -28,6 +28,8 @@ public interface UserService extends UserDetailsService {
 
 	Page<UserDto> findPaginatedUsers(Pageable pageable);
 	
-	void deleteUser(Long id);
+	void disableUser(Long id);
+	
+	void enableUser(Long id);
 
 }

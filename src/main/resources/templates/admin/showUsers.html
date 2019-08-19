@@ -37,16 +37,21 @@
 						class="text-center"></td>
 					<td th:text="${user.lastName}" style="vertical-align: middle"
 						class="text-center"></td>
-						<td th:text="${user.description}" style="vertical-align: middle"
+						<td th:text="${user.statusDescription}" style="vertical-align: middle"
 						class="text-center"></td>
 					<td th:if="${user.roles != null}">
 						<ul th:each="role: ${user.roles}" th:text="${role.name}"
 							style="vertical-align: middle" align="justify"></ul>
 					</td>
-					<td><a class="btn btn-danger"
-						th:href="@{/user/delete/{id} (id=${user.id})}"> <i
-							class="fa fa-trash-o fa-lg"></i> Disable
-					</a></td>
+					<td><a class="btn btn-danger" th:if="${user.statusDescription == 'Active'}"
+						th:href="@{/user/disable/{id} (id=${user.id})}" > <i
+							class="fa-toggle-off"></i> Disable
+					</a>
+					<a class="btn btn-primary" th:if="${user.statusDescription == 'Inactive'}"
+						th:href="@{/user/enable/{id} (id=${user.id})}" > 
+						<i class="fa-toggle-on"></i> Enable
+					</a>
+					</td>
 					<td><a class="btn btn-primary"
 						th:href="@{/user/edit/{id} (id=${user.id})}"> <i
 							class="fa fa-pencil fa-fw"></i> Edit

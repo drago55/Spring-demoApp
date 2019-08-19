@@ -107,7 +107,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getAuthenticatedUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
 		return this.findUserByEmail(authentication.getName());
 	}
 
@@ -122,42 +121,52 @@ public class UserServiceImpl implements UserService {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 		user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
-		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+				grantedAuthorities);
 	}
 
 	private boolean userNotPresentOrNotActive(Optional<User> userOptional) {
-		return !userOptional.isPresent() || userOptional.get().getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode());
+		return !userOptional.isPresent()
+				|| userOptional.get().getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode());
 	}
 
 	@Override
 	public Page<UserDto> findPaginatedUsers(Pageable pageable) {
 		Page<User> page = userRepository.findAll(pageable);
-		return new PageImpl<>(ObjectMapperUtils.mapAll(page.getContent(), UserDto.class), pageable, page.getTotalElements());
+		return new PageImpl<>(ObjectMapperUtils.mapAll(page.getContent(), UserDto.class), pageable,
+				page.getTotalElements());
 	}
 
 	@Override
-	@Transactional
-	public void deleteUser(Long id) {
+	public void disableUser(Long id) {
 		Optional<User> optionalUser = userRepository.findById(id);
+		Status disableStatus = statusRepository.findByStatusCode(StatusEnum.INACTIVE.getStatusCode());
 		if (!optionalUser.isPresent()) {
 			throw new UserNotExistException("User does not exists");
 		}
-		Status userStatus = statusRepository.findByStatusCode(optionalUser.get().getStatus().getStatusCode());
 
 		User user = optionalUser.get();
 
 		if (user.equals(getAuthenticatedUser())) {
 			throw new IllegalStateException("Can't disable current user!");
 		}
+		user.setStatus(disableStatus);
+		userRepository.save(user);
+	}
 
-		if (userStatus.getStatusCode().equals(StatusEnum.ACTIVE.getStatusCode())) {
+	@Override
+	public void enableUser(Long id) {
+		Optional<User> optionalUser = userRepository.findById(id);
+		Status enabledStatus = statusRepository.findByStatusCode(StatusEnum.ACTIVE.getStatusCode());
 
-			user.getStatus().setStatusCode(StatusEnum.INACTIVE.getStatusCode());
-
+		if (!optionalUser.isPresent()) {
+			throw new UserNotExistException("User does not exists");
 		}
 
-		user.getStatus().setStatusCode(StatusEnum.ACTIVE.getStatusCode());
+		User user = optionalUser.get();
+		user.setStatus(enabledStatus);
 		userRepository.save(user);
+
 	}
 
 }
