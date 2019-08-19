@@ -20,9 +20,12 @@ import com.drago.spring.demo.ObjectMapperUtils;
 import com.drago.spring.demo.data_transfer_objects.MarkerDto;
 import com.drago.spring.demo.domain.Image;
 import com.drago.spring.demo.domain.Marker;
+import com.drago.spring.demo.domain.Status;
 import com.drago.spring.demo.domain.User;
+import com.drago.spring.demo.enums.StatusEnum;
 import com.drago.spring.demo.exception.NoSuchMarkerException;
 import com.drago.spring.demo.repositories.MarkerRepository;
+import com.drago.spring.demo.repositories.StatusRepository;
 import com.drago.spring.demo.services.MarkerService;
 import com.drago.spring.demo.services.StorageService;
 import com.drago.spring.demo.services.UserService;
@@ -42,9 +45,12 @@ public class MarkerServiceImpl implements MarkerService {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private StatusRepository statusRepository;
+
 	@Override
 	public MarkerDto save(MarkerDto markerDto, MultipartFile[] files) {
-		
+
 		Marker marker = ObjectMapperUtils.map(markerDto, Marker.class);
 
 		storageService.setUserUploadLocation(Paths.get(userService.getAuthenticatedUser().getLastName()));
@@ -52,7 +58,7 @@ public class MarkerServiceImpl implements MarkerService {
 		User user = userService.getAuthenticatedUser();
 
 		marker.setUser(user);
-		
+
 		List<MultipartFile> listOfImages = filterAndGetListOfImages(files);
 
 		uploadImagesAndSetPaths(marker, listOfImages);
@@ -62,8 +68,7 @@ public class MarkerServiceImpl implements MarkerService {
 			log.debug("-------------paths of new marker images-------------");
 			marker.getImages().forEach(image -> log.debug(Paths.get(image.getImagePath()).getFileName().toString()));
 			log.debug("-----------------paths of old marker images---------");
-			markerRepository.getOne(marker.getId()).getImages()
-					.forEach(image -> log.debug((Paths.get(image.getImagePath()).getFileName().toString())));
+			markerRepository.getOne(marker.getId()).getImages().forEach(image -> log.debug((Paths.get(image.getImagePath()).getFileName().toString())));
 		}
 
 		return ObjectMapperUtils.map(markerRepository.save(marker), MarkerDto.class);
@@ -96,18 +101,28 @@ public class MarkerServiceImpl implements MarkerService {
 
 	@Override
 	public Set<MarkerDto> findAllMarkers() {
-		return new HashSet<>(ObjectMapperUtils.mapAll(markerRepository.findAll(), MarkerDto.class));
+		Status markerStatus = statusRepository.findByStatusCode(StatusEnum.ACTIVE.getStatusCode());
+		List<Marker> markers =markerRepository.findAllByStatus(markerStatus);
+		return new HashSet<>(ObjectMapperUtils.mapAll(markers, MarkerDto.class));
 	}
-	
+
 	@Override
 	public Page<MarkerDto> findPaginatedMarkers(Pageable pageable) {
-		Page<Marker> page = markerRepository.findAll(pageable);
+		Status markerStatus = statusRepository.findByStatusCode(StatusEnum.ACTIVE.getStatusCode());
+		Page<Marker> page = markerRepository.findAllByStatus(pageable, markerStatus);
 		return new PageImpl<>(ObjectMapperUtils.mapAll(page.getContent(), MarkerDto.class), pageable, page.getTotalElements());
 	}
 
 	@Override
 	public void deleteMarkerById(Long id) {
-		markerRepository.deleteById(id);
+		Status markerStatus = statusRepository.findByStatusCode(StatusEnum.INACTIVE.getStatusCode());
+		Optional<Marker> markerOptional = markerRepository.findById(id);
+		if (markerOptional.isPresent()) {
+			Marker marker = markerOptional.get();
+			marker.setStatus(markerStatus);
+			markerRepository.save(marker);
+		}
+
 	}
 
 }

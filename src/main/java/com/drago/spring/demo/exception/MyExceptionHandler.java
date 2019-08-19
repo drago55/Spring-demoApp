@@ -23,7 +23,7 @@ public class MyExceptionHandler {
 		return model;
 	}
 
-	@ExceptionHandler(value = { InvalidUserException.class, NoSuchMarkerException.class })
+	@ExceptionHandler(value = { InvalidUserException.class, NoSuchMarkerException.class, UserNotExistException.class, RuntimeException.class })
 	public ModelAndView handleUserExceptions(Exception ex, WebRequest request) {
 		ModelAndView model = new ModelAndView();
 		ErrorMessage error = new ErrorMessage(ex.getMessage(), "");

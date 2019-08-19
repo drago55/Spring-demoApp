@@ -7,6 +7,9 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,9 +24,13 @@ import com.drago.spring.demo.ObjectMapperUtils;
 import com.drago.spring.demo.data_transfer_objects.UserDto;
 import com.drago.spring.demo.data_transfer_objects.UserLoginDto;
 import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
+import com.drago.spring.demo.domain.Status;
 import com.drago.spring.demo.domain.User;
+import com.drago.spring.demo.enums.StatusEnum;
 import com.drago.spring.demo.exception.InvalidUserException;
+import com.drago.spring.demo.exception.UserNotExistException;
 import com.drago.spring.demo.repositories.RoleRepository;
+import com.drago.spring.demo.repositories.StatusRepository;
 import com.drago.spring.demo.repositories.UserRepository;
 import com.drago.spring.demo.services.UserService;
 
@@ -38,6 +45,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private RoleRepository roleRepository;
+
+	@Autowired
+	private StatusRepository statusRepository;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -60,9 +70,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User save(UserRegistrationDto userRegistrationDto) {
+		Status userStatus = statusRepository.findByStatusCode(StatusEnum.ACTIVE.getStatusCode());
 		User user = modelMapper.map(userRegistrationDto, User.class);
 		user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
 		user.setRoles(new HashSet<>(roleRepository.findAll()));
+		user.setStatus(userStatus);
 		return userRepository.save(user);
 	}
 
@@ -103,15 +115,49 @@ public class UserServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String email) {
 		Optional<User> userOptional = userRepository.findUserByEmail(email);
-		if (!userOptional.isPresent()) {
+		if (userNotPresentOrNotActive(userOptional)) {
 			throw new UsernameNotFoundException("User does not exists");
 		}
 		User user = userOptional.get();
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 		user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
-		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-				grantedAuthorities);
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
+	}
+
+	private boolean userNotPresentOrNotActive(Optional<User> userOptional) {
+		return !userOptional.isPresent() || userOptional.get().getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode());
+	}
+
+	@Override
+	public Page<UserDto> findPaginatedUsers(Pageable pageable) {
+		Page<User> page = userRepository.findAll(pageable);
+		return new PageImpl<>(ObjectMapperUtils.mapAll(page.getContent(), UserDto.class), pageable, page.getTotalElements());
+	}
+
+	@Override
+	@Transactional
+	public void deleteUser(Long id) {
+		Optional<User> optionalUser = userRepository.findById(id);
+		if (!optionalUser.isPresent()) {
+			throw new UserNotExistException("User does not exists");
+		}
+		Status userStatus = statusRepository.findByStatusCode(optionalUser.get().getStatus().getStatusCode());
+
+		User user = optionalUser.get();
+
+		if (user.equals(getAuthenticatedUser())) {
+			throw new IllegalStateException("Can't disable current user!");
+		}
+
+		if (userStatus.getStatusCode().equals(StatusEnum.ACTIVE.getStatusCode())) {
+
+			user.getStatus().setStatusCode(StatusEnum.INACTIVE.getStatusCode());
+
+		}
+
+		user.getStatus().setStatusCode(StatusEnum.ACTIVE.getStatusCode());
+		userRepository.save(user);
 	}
 
 }

@@ -2,6 +2,8 @@ package com.drago.spring.demo.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.drago.spring.demo.data_transfer_objects.UserDto;
@@ -23,5 +25,9 @@ public interface UserService extends UserDetailsService {
 	User findUseById(Long id);
 
 	User getAuthenticatedUser();
+
+	Page<UserDto> findPaginatedUsers(Pageable pageable);
+	
+	void deleteUser(Long id);
 
 }
