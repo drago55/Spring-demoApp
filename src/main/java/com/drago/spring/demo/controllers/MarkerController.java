@@ -46,7 +46,7 @@ public class MarkerController {
 	}
 
 	@GetMapping("/markers")
-	public String showMarkers(Model model, @PageableDefault(size=5) Pageable pageable) {
+	public String showMarkers(Model model,Pageable pageable) {
 		
 		Page<MarkerDto> markers = markerService.findPaginatedMarkers(pageable);
 		model.addAttribute("markers", markers);
