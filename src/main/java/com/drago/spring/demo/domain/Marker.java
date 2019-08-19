@@ -40,7 +40,7 @@ public class Marker {
 
 	private String markerType;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private User user;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -52,5 +52,8 @@ public class Marker {
 		this.images.add(image);
 		return this;
 	}
+
+	@ManyToOne
+	private Status status;
 
 }
