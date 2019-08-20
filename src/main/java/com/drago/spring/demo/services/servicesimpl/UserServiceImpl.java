@@ -26,6 +26,7 @@ import com.drago.spring.demo.data_transfer_objects.UserLoginDto;
 import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
 import com.drago.spring.demo.domain.Status;
 import com.drago.spring.demo.domain.User;
+import com.drago.spring.demo.enums.RoleEnum;
 import com.drago.spring.demo.enums.StatusEnum;
 import com.drago.spring.demo.exception.InvalidUserException;
 import com.drago.spring.demo.exception.UserNotExistException;
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
 		Status userStatus = statusRepository.findByStatusCode(StatusEnum.ACTIVE.getStatusCode());
 		User user = modelMapper.map(userRegistrationDto, User.class);
 		user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
-		user.setRoles(new HashSet<>(roleRepository.findAll()));
+		user.setRoles(new HashSet<>(roleRepository.findAllByName(RoleEnum.USER.getName())));
 		user.setStatus(userStatus);
 		return userRepository.save(user);
 	}
