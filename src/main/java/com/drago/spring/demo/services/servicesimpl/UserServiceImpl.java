@@ -139,9 +139,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void disableUser(Long id) {
+	public void disableOrEnableUser(Long id) {
 		Optional<User> optionalUser = userRepository.findById(id);
-		Status disableStatus = statusRepository.findByStatusCode(StatusEnum.INACTIVE.getStatusCode());
+		List<Status> listOfStatus = statusRepository.findAll();
 		if (!optionalUser.isPresent()) {
 			throw new UserNotExistException("User does not exists");
 		}
@@ -151,23 +151,29 @@ public class UserServiceImpl implements UserService {
 		if (user.equals(getAuthenticatedUser())) {
 			throw new IllegalStateException("Can't disable current user!");
 		}
-		user.setStatus(disableStatus);
+		
+		if(user.getStatus().getStatusCode().equals(StatusEnum.ACTIVE.getStatusCode())){
+			
+			user.setStatus(getStatusByCode(listOfStatus, StatusEnum.INACTIVE));
+			
+		}else if(user.getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode())){
+			
+			user.setStatus(getStatusByCode(listOfStatus, StatusEnum.ACTIVE));
+		}
+		
 		userRepository.save(user);
+		
 	}
 
-	@Override
-	public void enableUser(Long id) {
-		Optional<User> optionalUser = userRepository.findById(id);
-		Status enabledStatus = statusRepository.findByStatusCode(StatusEnum.ACTIVE.getStatusCode());
-
-		if (!optionalUser.isPresent()) {
-			throw new UserNotExistException("User does not exists");
+	private Status getStatusByCode(List<Status> listOfStatus, StatusEnum statusEnum) {
+		Optional<Status> optionaOfStatus = listOfStatus
+				.stream()
+				.filter(status -> status.getStatusCode().equals(statusEnum.getStatusCode()))
+				.findFirst();
+		if(!optionaOfStatus.isPresent()) {
+			throw new IllegalStateException("Status doesn't exist in database!");
 		}
-
-		User user = optionalUser.get();
-		user.setStatus(enabledStatus);
-		userRepository.save(user);
-
+		return optionaOfStatus.get();
 	}
 
 }

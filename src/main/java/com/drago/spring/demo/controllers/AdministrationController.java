@@ -21,16 +21,10 @@ public class AdministrationController {
 		model.addAttribute("users", userService.findPaginatedUsers(pageable));
 		return "admin/showUsers";
 	}
-
-	@GetMapping(value = "admin/user/disable/{id}")
-	public String disableUser(@PathVariable Long id, Model model) {
-		userService.disableUser(id);
-		return "redirect:/admin/show_users";
-	}
 	
-	@GetMapping(value = "admin/user/enable/{id}")
-	public String enableUser(@PathVariable Long id, Model model) {
-		userService.enableUser(id);
+	@GetMapping(value = "admin/user/disableOrEnableUser/{id}")
+	public String disableOrEnableUser(@PathVariable Long id, Model model) {
+		userService.disableOrEnableUser(id);
 		return "redirect:/admin/show_users";
 	}
 
