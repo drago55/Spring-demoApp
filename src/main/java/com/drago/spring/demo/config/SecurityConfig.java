@@ -22,7 +22,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.antMatchers("/showMarkers/**", "/editMarker", "/deleteMarker", "/imagePath/upload-dir/**",
 						"/addMarker", "/showCreateMarker")
-				.hasAnyAuthority("ROLE_ADMIN", "ROLE_USER").anyRequest().authenticated().and().formLogin()
+				.hasAnyRole("ADMIN", "USER")
+				.antMatchers("/admin/**")
+				.hasAnyRole("ADMIN")
+				.anyRequest().authenticated()
+				.and()
+				.formLogin()
 				.loginPage("/login").permitAll().and().logout().permitAll().logoutSuccessUrl("/index?google_map")
 				.invalidateHttpSession(true).clearAuthentication(true);
 
