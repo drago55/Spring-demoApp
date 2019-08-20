@@ -16,25 +16,25 @@ public class AdministrationController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping(value = "/users")
+	@GetMapping(value = "admin/show_users")
 	public String showUsers(Model model, @PageableDefault(size = 5) Pageable pageable) {
 		model.addAttribute("users", userService.findPaginatedUsers(pageable));
 		return "admin/showUsers";
 	}
 
-	@GetMapping(value = "/user/disable/{id}")
+	@GetMapping(value = "admin/user/disable/{id}")
 	public String disableUser(@PathVariable Long id, Model model) {
 		userService.disableUser(id);
-		return "redirect:/users";
+		return "redirect:/admin/show_users";
 	}
 	
-	@GetMapping(value = "/user/enable/{id}")
+	@GetMapping(value = "admin/user/enable/{id}")
 	public String enableUser(@PathVariable Long id, Model model) {
 		userService.enableUser(id);
-		return "redirect:/users";
+		return "redirect:/admin/show_users";
 	}
 
-	@GetMapping("/edit/{id}")
+	@GetMapping("admin/user/edit/{id}")
 	public String edit(@PathVariable Long id, Model model) {
 		return "";
 	}
