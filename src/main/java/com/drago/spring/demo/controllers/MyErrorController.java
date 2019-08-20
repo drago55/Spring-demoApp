@@ -18,7 +18,7 @@ public class MyErrorController implements ErrorController {
 	@GetMapping(value = "/error")
 	public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
 
-		ModelAndView errorPage = new ModelAndView("error");
+		ModelAndView errorPage = new ModelAndView("error/errorPage");
 
 		String errorMsg = "";
 		int httpErrorCode = getErrorCode(httpRequest);
@@ -33,6 +33,10 @@ public class MyErrorController implements ErrorController {
 			errorMsg = "Http Error Code: 401. Unauthorized";
 			break;
 		}
+		case 403: {
+			errorMsg = "Http Error Code: 403. Forbidden";
+			break;
+		}
 		case 404: {
 			errorMsg = "Http Error Code: 404. Resource not found";
 			break;
@@ -40,6 +44,9 @@ public class MyErrorController implements ErrorController {
 		case 500: {
 			errorMsg = "Http Error Code: 500. Internal Server Error";
 			break;
+		}
+		default : {
+			errorPage.setViewName("error/default");
 		}
 
 		}
