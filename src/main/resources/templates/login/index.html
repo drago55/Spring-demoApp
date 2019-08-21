@@ -6,7 +6,7 @@
 <div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
 
 <!-- Login form -->
-<div class="container">
+<div class=container style="text-align:center">
     <div th:if="${error!=null}">
         <div class="alert alert-danger" role="alert">
             <p th:text="${error}">Username or Password is wrong!!</p>
@@ -14,23 +14,39 @@
     </div>
     <form class="form-signin" action="#" th:action="@{/processLogin}" th:object="${userLoginDto}" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
+        
         <label for="user_name" class="sr-only">User name</label>
         <input type="text" id="user_name" name="user_name" th:field="*{userEmail}" class="form-control"
                placeholder="User name" th:required="required"></input>
+        
         <label for="input_password" class="sr-only">Password</label>
         <input type="password" id="input_password" th:field="*{userPassword}" name="input_password" class="form-control"
                placeholder="Password" th:required="required"></input>
-        <!--div class="checkbox">
+        
+        <div class="checkbox">
           <label>
             <input type="checkbox" name="remember" value="remember"> Remember me
           </label>
-        </div-->
-        <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit_login">Sign in</button>
-    </form>
-
+        </div>
+		
+		<button class="btn btn-success btn-block" type="submit">
+			<i class="fas fa-sign-in-alt"></i> Sign in
+		</button>
+		<hr>
+		<a th:href="@{/registration/forgotPasswordPage}" id="forgot_pswd">Forgot password?</a>
+		<hr>
+		</form>
+		<form class="form-signin" th:action="@{/registerUser}">
+		<!-- <p>Don't have an account!</p>  -->
+		<button class="btn btn-primary btn-block"  type="submit" id="btn-signup">
+			<i class="fa fa-user-plus"></i> Sign up New Account
+		</button>
+		</form>
+		
+		
 </div> <!-- /container -->
 
-
+		
 <div th:replace="/fragments/footer :: footer"></div>
 
 </body>
