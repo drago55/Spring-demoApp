@@ -18,13 +18,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.authorizeRequests()
 				.antMatchers("/js/**", "/h2-console/**", "/", "/imagePath/**", "/css/**", "/webjars/**", "/errors",
 						"/registerUser/**", "index", "/processRegistration/**", "/contact", "/about", "/index",
-						"/processLogin/**","/image/**" ,"/fullscreen_map")
+						"/processLogin/**","/image/**" ,"/fullscreen_map", "/registration/forgotPasswordPage")
 				.permitAll()
 				.antMatchers("/showMarkers/**", "/editMarker", "/deleteMarker", "/imagePath/upload-dir/**",
 						"/addMarker", "/showCreateMarker")
 				.hasAnyRole("ADMIN", "USER")
 				.antMatchers("/admin/**")
 				.hasAnyRole("ADMIN")
+				.antMatchers("/registration/updatePassword/**",
+	                     "/registration/savePassword/**",
+	                     "/updatePassword/**")
+				.hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
