@@ -24,12 +24,14 @@ import com.drago.spring.demo.ObjectMapperUtils;
 import com.drago.spring.demo.data_transfer_objects.UserDto;
 import com.drago.spring.demo.data_transfer_objects.UserLoginDto;
 import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
+import com.drago.spring.demo.domain.PasswordResetToken;
 import com.drago.spring.demo.domain.Status;
 import com.drago.spring.demo.domain.User;
 import com.drago.spring.demo.enums.RoleEnum;
 import com.drago.spring.demo.enums.StatusEnum;
 import com.drago.spring.demo.exception.InvalidUserException;
-import com.drago.spring.demo.exception.UserNotExistException;
+import com.drago.spring.demo.exception.UserNotFoundException;
+import com.drago.spring.demo.repositories.PasswordTokenRepository;
 import com.drago.spring.demo.repositories.RoleRepository;
 import com.drago.spring.demo.repositories.StatusRepository;
 import com.drago.spring.demo.repositories.UserRepository;
@@ -56,13 +58,16 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private PasswordTokenRepository passwordResetToken;
+
 	@Override
 	public User findUserByEmail(String email) {
 
 		Optional<User> userOptional = userRepository.findUserByEmail(email);
 
 		if (!userOptional.isPresent()) {
-			throw new UsernameNotFoundException("User not found!");
+			throw new UserNotFoundException("User not found!");
 		}
 
 		return userOptional.get();
@@ -96,6 +101,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
+	public void createPasswordResetTokenForUser(User user, String token) {
+		PasswordResetToken myToken = new PasswordResetToken(token, user);
+		passwordResetToken.save(myToken);
+	}
+
+	@Override
 	public List<UserDto> findAll() {
 		return ObjectMapperUtils.mapAll(userRepository.findAll(), UserDto.class);
 	}
@@ -122,20 +134,17 @@ public class UserServiceImpl implements UserService {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 		user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
-		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-				grantedAuthorities);
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
 	}
 
 	private boolean userNotPresentOrNotActive(Optional<User> userOptional) {
-		return !userOptional.isPresent()
-				|| userOptional.get().getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode());
+		return !userOptional.isPresent() || userOptional.get().getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode());
 	}
 
 	@Override
 	public Page<UserDto> findPaginatedUsers(Pageable pageable) {
 		Page<User> page = userRepository.findAll(pageable);
-		return new PageImpl<>(ObjectMapperUtils.mapAll(page.getContent(), UserDto.class), pageable,
-				page.getTotalElements());
+		return new PageImpl<>(ObjectMapperUtils.mapAll(page.getContent(), UserDto.class), pageable, page.getTotalElements());
 	}
 
 	@Override
@@ -143,7 +152,7 @@ public class UserServiceImpl implements UserService {
 		Optional<User> optionalUser = userRepository.findById(id);
 		List<Status> listOfStatus = statusRepository.findAll();
 		if (!optionalUser.isPresent()) {
-			throw new UserNotExistException("User does not exists");
+			throw new UserNotFoundException("User does not exists");
 		}
 
 		User user = optionalUser.get();
@@ -151,26 +160,23 @@ public class UserServiceImpl implements UserService {
 		if (user.equals(getAuthenticatedUser())) {
 			throw new IllegalStateException("Can't disable current user!");
 		}
-		
-		if(user.getStatus().getStatusCode().equals(StatusEnum.ACTIVE.getStatusCode())){
-			
+
+		if (user.getStatus().getStatusCode().equals(StatusEnum.ACTIVE.getStatusCode())) {
+
 			user.setStatus(getStatusByCode(listOfStatus, StatusEnum.INACTIVE));
-			
-		}else if(user.getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode())){
-			
+
+		} else if (user.getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode())) {
+
 			user.setStatus(getStatusByCode(listOfStatus, StatusEnum.ACTIVE));
 		}
-		
+
 		userRepository.save(user);
-		
+
 	}
 
 	private Status getStatusByCode(List<Status> listOfStatus, StatusEnum statusEnum) {
-		Optional<Status> optionaOfStatus = listOfStatus
-				.stream()
-				.filter(status -> status.getStatusCode().equals(statusEnum.getStatusCode()))
-				.findFirst();
-		if(!optionaOfStatus.isPresent()) {
+		Optional<Status> optionaOfStatus = listOfStatus.stream().filter(status -> status.getStatusCode().equals(statusEnum.getStatusCode())).findFirst();
+		if (!optionaOfStatus.isPresent()) {
 			throw new IllegalStateException("Status doesn't exist in database!");
 		}
 		return optionaOfStatus.get();

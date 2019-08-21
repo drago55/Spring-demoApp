@@ -29,5 +29,7 @@ public interface UserService extends UserDetailsService {
 	Page<UserDto> findPaginatedUsers(Pageable pageable);
 
 	void disableOrEnableUser(Long id);
+	
+	public void createPasswordResetTokenForUser(User user, String token);
 
 }
