@@ -1,20 +1,20 @@
 package com.drago.spring.demo.exception;
 
-public class UserNotExistException extends RuntimeException {
+public class UserNotFoundException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8310060787511058120L;
 
-	public UserNotExistException() {
+	public UserNotFoundException() {
 	}
 
-	public UserNotExistException(String message) {
+	public UserNotFoundException(String message) {
 		super(message);
 	}
 
-	public UserNotExistException(String message, Throwable cause) {
+	public UserNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }
