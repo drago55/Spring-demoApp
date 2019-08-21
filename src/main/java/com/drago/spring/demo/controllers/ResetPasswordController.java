@@ -1,7 +1,5 @@
 package com.drago.spring.demo.controllers;
 
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,7 @@ public class ResetPasswordController {
 	@PostMapping("/resetPassword")
 	public ModelAndView resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
 		
-		securityService.sendResetPassword(request.getContextPath(), userEmail);
+		securityService.sendResetPassword(request.getRequestURI(), userEmail);
 		
 		return null;
 	}
