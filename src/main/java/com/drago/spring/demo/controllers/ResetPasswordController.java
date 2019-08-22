@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.drago.spring.demo.data_transfer_objects.PasswordDto;
-import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
 import com.drago.spring.demo.services.SecurityService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,8 +65,8 @@ public class ResetPasswordController {
 	}
 	
 	@PostMapping(value = "/savePassword")
-	public String saveNewPassword(@ModelAttribute("password") @Valid PasswordDto passwordDto, RedirectAttributes redirectAttrs,
-			BindingResult result, Model model) {
+	public String saveNewPassword(@ModelAttribute("password") @Valid PasswordDto passwordDto, BindingResult result,  RedirectAttributes redirectAttrs,
+			Model model) {
 		
 		
 		
