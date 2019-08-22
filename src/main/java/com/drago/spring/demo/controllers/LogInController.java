@@ -29,14 +29,14 @@ public class LogInController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping(value = "/login")
+	@GetMapping({"/", "/index", "/login"})
 	public String showLogin(Model model) {
 		log.debug("Opening login page.");
 		model.addAttribute("userLoginDto", new UserLoginDto());
 		return LOGIN_INDEX;
 	}
 
-	@GetMapping(value = "logout")
+	@GetMapping({"/logout"})
 	public String logOut() {
 		log.debug("Logout redirect to home page.");
 		return "redirect:/";
@@ -56,7 +56,7 @@ public class LogInController {
 						user.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 				model.addAttribute("user", user);
-				return "redirect:/";
+				return "redirect:/map";
 			}
 		} catch (InvalidUserException e) {
 			model.addAttribute("error", e.getMessage());
