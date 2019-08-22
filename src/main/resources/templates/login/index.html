@@ -12,6 +12,11 @@
             <p th:text="${error}">Username or Password is wrong!!</p>
         </div>
     </div>
+    <div th:if="${message}">
+        <div class="alert alert-success" >
+           <p th:text="${message}">Mail</p>
+        </div>
+    </div>
     <form class="form-signin" action="#" th:action="@{/processLogin}" th:object="${userLoginDto}" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
         

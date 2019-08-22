@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.drago.spring.demo.domain.PasswordResetToken;
 import com.drago.spring.demo.domain.User;
-import com.drago.spring.demo.exception.UserNotFoundException;
 import com.drago.spring.demo.repositories.PasswordTokenRepository;
 import com.drago.spring.demo.services.EmailService;
 import com.drago.spring.demo.services.SecurityService;
@@ -62,7 +61,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 		userService.createPasswordResetTokenForUser(user, token);
 
-		String url = contextPath + "/registration/changePassword?id=" + user.getId() + "&token=" + token;
+		String url = contextPath + "/registration/changePassword/" + user.getId() + "/" + token;
 
 		eMailService.sendEmail(user.getEmail(), "Reset Password", message + " \r\n" + url);
 
