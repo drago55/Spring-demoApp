@@ -18,11 +18,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.authorizeRequests()
 				.antMatchers("/js/**", "/h2-console/**", "/", "/imagePath/**", "/css/**", "/webjars/**", "/errors",
 						"/registerUser/**", "index", "/processRegistration/**", "/contact", "/about", "/index",
-						"/processLogin/**","/image/**" ,"/fullscreen_map", "/registration/forgotPasswordPage", "/registration/resetPassword", 
+						"/processLogin/**","/image/**", "/registration/forgotPasswordPage", "/registration/resetPassword", 
 						"/registration/changePassword/**")
 				.permitAll()
 				.antMatchers("/showMarkers/**", "/editMarker", "/deleteMarker", "/upload-dir/**",
-						"/addMarker", "/showCreateMarker")
+						"/addMarker", "/showCreateMarker","/map","/fullscreen_map")
 				.hasAnyRole("ADMIN", "USER")
 				.antMatchers("/admin/**")
 				.hasAnyRole("ADMIN")
