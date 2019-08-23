@@ -29,7 +29,7 @@ public class RegisterUserControllerTest {
 	private UserService userService = new UserServiceImpl();
 
 	@InjectMocks
-	private RegisterUserController registerUserController = new RegisterUserController();
+	private RegistrationController registerUserController = new RegistrationController();
 
 	@Before
 	public void setup() {
