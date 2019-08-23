@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -90,7 +93,7 @@ public class UserServiceImpl implements UserService {
 		Optional<User> userOptional = userRepository.findUserByEmail(userLoginDto.getUserEmail());
 
 		if (!userOptional.isPresent()) {
-			throw new UsernameNotFoundException("Username or Password is wrong!!");
+			throw new UserNotFoundException("Username or Password is wrong!!");
 		}
 
 		if (!passwordEncoder.matches(userLoginDto.getUserPassword(), userOptional.get().getPassword())) {
@@ -113,7 +116,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findUseById(Long id) {
+	public User findUserById(Long id) {
 		return userRepository.getOne(id);
 	}
 
@@ -181,5 +184,20 @@ public class UserServiceImpl implements UserService {
 		}
 		return optionaOfStatus.get();
 	}
+
+	@Override
+	public void logoutUser(HttpServletRequest request) {
+		log.info("Logging out user...");
+		HttpSession session = request.getSession();
+		session.invalidate();
+		SecurityContextHolder.clearContext();
+	}
+
+	@Override
+	public void changeUserPassword(User user, String password) {
+		  user.setPassword(passwordEncoder.encode(password));
+		  userRepository.save(user);
+	}
+
 
 }
