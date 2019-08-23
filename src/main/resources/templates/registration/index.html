@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <form class="form-signing" action="#" th:action="@{/processRegistration}" th:object="${user}" method="POST">
+    <form class="form-signing" action="#" th:action="@{/registration/process}" th:object="${user}" method="POST">
 
         <p class="alert alert-danger" role="alert"
            th:if="${#fields.hasGlobalErrors()}"

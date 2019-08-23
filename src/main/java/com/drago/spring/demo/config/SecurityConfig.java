@@ -17,22 +17,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.httpBasic().disable();
 		httpSecurity.authorizeRequests()
 				.antMatchers("/js/**", "/h2-console/**", "/", "/imagePath/**", "/css/**", "/webjars/**", "/errors",
-						"/registerUser/**", "index", "/processRegistration/**", "/contact", "/about", "/index",
-						"/processLogin/**","/image/**", "/registration/forgotPasswordPage", "/registration/resetPassword", 
-						"/registration/changePassword/**")
+						"/image/**", "/processLogin")
 				.permitAll()
-				.antMatchers("/showMarkers/**", "/editMarker", "/deleteMarker", "/upload-dir/**",
-						"/addMarker", "/showCreateMarker","/map","/fullscreen_map")
+				.antMatchers("/showMarkers", "/editMarker", "/deleteMarker", "/upload-dir/**",
+						"/addMarker", "/showCreateMarker","/map","/fullscreen_map","/about", "/contact")
 				.hasAnyRole("ADMIN", "USER")
 				.antMatchers("/admin/**")
 				.hasAnyRole("ADMIN")
-				.antMatchers("/registration/updatePassword/**",
-	                     "/registration/savePassword/**")
+				.antMatchers("/registration/updatePassword",
+	                     "/registration/savePassword")
 				.hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
+				.antMatchers("/registration/**", "/login").not().hasAnyRole("ADMIN", "USER")
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
-				.loginPage("/login").permitAll().and().logout().permitAll().logoutSuccessUrl("/index?google_map")
+				.loginPage("/login").permitAll().and().logout().permitAll().logoutSuccessUrl("/login")
 				.invalidateHttpSession(true).clearAuthentication(true);
 
 	}
