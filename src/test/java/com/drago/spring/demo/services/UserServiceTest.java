@@ -61,7 +61,7 @@ public class UserServiceTest extends ApplicationTests {
 	public void testSave() {
 		User createdUser = userService.save(getUserRegistrationDto());
 		assertThat(createdUser.getEmail()).isSameAs(getUserRegistrationDto().getEmail());
-		assertThat(userService.findUseById(createdUser.getId())).isNotNull();
+		assertThat(userService.findUserById(createdUser.getId())).isNotNull();
 
 	}
 
