@@ -2,8 +2,11 @@ package com.drago.spring.demo.services;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.drago.spring.demo.data_transfer_objects.UserDto;
@@ -22,7 +25,7 @@ public interface UserService extends UserDetailsService {
 
 	List<UserDto> findAll();
 
-	User findUseById(Long id);
+	User findUserById(Long id);
 
 	User getAuthenticatedUser();
 
@@ -30,6 +33,11 @@ public interface UserService extends UserDetailsService {
 
 	void disableOrEnableUser(Long id);
 	
-	public void createPasswordResetTokenForUser(User user, String token);
-
+	void createPasswordResetTokenForUser(User user, String token);
+	
+	UserDetails loadUserByUsername(String email);
+	
+	void logoutUser(HttpServletRequest request);
+	
+	void changeUserPassword(User user, String password);
 }
