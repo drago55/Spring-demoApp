@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.drago.spring.demo.domain.PasswordResetToken;
 import com.drago.spring.demo.domain.User;
@@ -31,7 +32,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Autowired
 	private UserService userService;
 
-	@Value("${spring.mail.from.email}")
+	@Value("${spring.mail.message}")
 	private String message;
 
 	public String validatePasswordResetToken(long id, String token) {
@@ -43,7 +44,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 		Calendar cal = Calendar.getInstance();
 		if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-			return "expired";
+			return "token expired";
 		}
 
 		User user = passToken.getUser();
@@ -53,7 +54,7 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	public void sendResetPassword(String contextPath, String userEmail) {
+	public void sendResetPasswordMail(String contextPath, String userEmail) {
 		
 		User user = userService.findUserByEmail(userEmail);
 
@@ -65,6 +66,12 @@ public class SecurityServiceImpl implements SecurityService {
 
 		eMailService.sendEmail(user.getEmail(), "Reset Password", message + " \r\n" + url);
 
+	}
+
+	@Override
+	@Transactional
+	public void deleteToken(String token) {
+		passwordTokenRepository.deleteByToken(token);
 	}
 
 }
