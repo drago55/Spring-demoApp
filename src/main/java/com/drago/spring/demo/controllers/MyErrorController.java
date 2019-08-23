@@ -44,10 +44,7 @@ public class MyErrorController implements ErrorController {
 		case 500: {
 			errorMsg = "Http Error Code: 500. Internal Server Error";
 			break;
-		}
-		default : {
-			errorPage.setViewName("error/default");
-		}
+		}	
 
 		}
 		log.debug("message " + errorMsg);

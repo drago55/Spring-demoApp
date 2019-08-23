@@ -10,15 +10,16 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 @Slf4j
 public class MyExceptionHandler {
-
+	
 	private static final String ERROR = "error";
+	private static final String ERROR_PAGE = "error/errorPage";
 
 	@ExceptionHandler(value = { Exception.class })
 	public ModelAndView handleAnyException(Exception ex, WebRequest request) {
 		ModelAndView model = new ModelAndView();
 		ErrorMessage error = new ErrorMessage("General exception check log file!", "");
 		model.addObject(ERROR, error);
-		model.setViewName(ERROR);
+		model.setViewName(ERROR_PAGE);
 		log.error("Greska !", ex);
 		return model;
 	}
@@ -28,7 +29,7 @@ public class MyExceptionHandler {
 		ModelAndView model = new ModelAndView();
 		ErrorMessage error = new ErrorMessage(ex.getMessage(), "");
 		model.addObject(ERROR, error);
-		model.setViewName(ERROR);
+		model.setViewName(ERROR_PAGE);
 		log.error("Greska !", ex);
 		return model;
 	}
@@ -38,7 +39,7 @@ public class MyExceptionHandler {
 		ModelAndView model = new ModelAndView();
 		ErrorMessage error = new ErrorMessage(ex.getMessage(), "");
 		model.addObject(ERROR, error);
-		model.setViewName(ERROR);
+		model.setViewName(ERROR_PAGE);
 		log.error("Greska !", ex);
 		return model;
 	}
