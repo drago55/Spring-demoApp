@@ -119,7 +119,6 @@ public class UserServiceTest extends ApplicationTests {
 
 		UserRegistrationDto user = new UserRegistrationDto();
 		user.setEmail("test@net.hr");
-		user.setConfirmEmail("test@net.hr");
 		user.setFirstName("TestUser");
 		user.setLastName("TestUser");
 		user.setPassword("123456");

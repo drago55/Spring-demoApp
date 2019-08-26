@@ -4,102 +4,109 @@
 <div th:replace="/fragments/header :: header"></div>
 
 <body>
-<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
-
-
-<div class="container">
-    <div class="row">
-        <h4 class="text-center">Register user</h4>
-    </div>
-    <div th:if="${success}">
-        <div class="alert alert-success">
-            You've successfully registered to our awesome app!
-        </div>
-    </div>
-    <div th:if="${error!=null}">
-        <div class="alert alert-danger" role="alert">
-            <p th:text="${error}">Error email exists</p>
-        </div>
-    </div>
-
-    <form class="form-signing" action="#" th:action="@{/registration/process}" th:object="${user}" method="POST">
-
-        <p class="alert alert-danger" role="alert"
-           th:if="${#fields.hasGlobalErrors()}"
-           th:each="error : ${#fields.errors('global')}"
-           th:text="${error}">Validation error</p>
-        <!--    firstName input field        -->
-        <div class="form-group">
-            <label for="firstName">First name</label>
-            <input name="firstName" type="text" th:required="required" th:field="*{firstName}" id="firstName"
-                   class="form-control"
-                   placeholder="First name"></input>
-            <p  class="alert alert-danger" role="alert"
-                th:each="error: ${#fields.errors('firstName')}"
-                th:text="${error}">Validation error</p>
-        </div>
-        <!--    lastName input field        -->
-        <div class="form-group">
-            <label for="lastName">Last name</label>
-            <input name="lastName" type="text" th:required="required" th:field="*{lastName}" id="lastName"
-                   class="form-control"
-                   placeholder="Last name"></input>
-            <p  class="alert alert-danger" role="alert"
-                th:each="error : ${#fields.errors('lastName')}"
-                th:text="${error}">Validation error</p>
-        </div>
-        <!--    email address input field        -->
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input name="email" th:required="required" id="email" th:field="*{email}" type="text"
-                   class="form-control"
-                   placeholder="Email Address"></input>
-            <p  class="alert alert-danger" role="alert"
-                th:each="error : ${#fields.errors('email')}"
-                th:text="${error}">Validation error</p>
-        </div>
-        <!--   confirm email address input field        -->
-        <div class="form-group ">
-            <label for="confirmEmail">Confirm email address</label>
-            <input name="email" th:required="required" id="confirmEmail" th:field="*{confirmEmail}" type="text"
-                   class="form-control"
-                   placeholder="Confirm email address"></input>
-            <p  class="alert alert-danger" role="alert"
-                th:each="error : ${#fields.errors('confirmEmail')}"
-                th:text="${error}">Validation error</p>
-        </div>
-        <!--    password input field        -->
-        <div class="form-group ">
-            <label for="password">Password</label>
-            <input name="password" type="password" th:field="*{password}" id="password" th:required="required"
-                   class="form-control" placeholder="password"></input>
-            <p  class="alert alert-danger" role="alert"
-                th:each="error : ${#fields.errors('password')}"
-                th:text="${error}">Validation error</p>
-        </div>
-        <!--    confirm password input field        -->
-        <div class="form-group ">
-            <label for="confirmPassword">Confirm password</label>
-            <input name="confirm_password" type="password" th:field="*{confirmPassword}" id="confirmPassword"
-                   th:required="required"
-                   class="form-control"
-                   placeholder="Confirm password"></input>
-            <p  class="alert alert-danger" role="alert"
-                th:each="error : ${#fields.errors('confirmPassword')}"
-                th:text="${error}">Validation error</p>
-        </div>
-        <div class="form-group">
-            <button type="submit" id="btn-submit" class="btn btn-success">Register</button>
-
-        </div>
-    </form>
-    <span>Already registered? <a href="/" th:href="@{/login}">Login here</a></span>
-
-</div> <!-- /container -->
+	<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
 
 
 
-<div th:replace="/fragments/footer :: footer"></div>
+	<div class="container" style="text-align: center">
+		
+		<div th:if="${success}">
+			<div class="alert alert-success">You've successfully registered
+				to our awesome app!</div>
+		</div>
+		<div th:if="${error!=null}">
+			<div class="alert alert-danger" role="alert">
+				<p th:text="${error}">Error email exists</p>
+			</div>
+		</div>
+		<div class="row justify-content-md-center">
+
+			<form class="form-signing" action="#"
+				th:action="@{/registration/process}" th:object="${user}"
+				method="POST">
+				<h2>Register</h2>
+				<p class="hint-text">Create your account. It's free and only
+					takes a minute.</p>
+
+				<p class="alert alert-danger" role="alert"
+					th:if="${#fields.hasGlobalErrors()}"
+					th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
+					error</p>
+
+				<div class="form-group">
+					<div class="row">
+						<!--    firstName input field        -->
+						<div class="col-md-6  ">
+							<input name="firstName" type="text" th:required="required"
+								th:field="*{firstName}" id="firstName" class="form-control"
+								placeholder="First name"></input>
+							<p class="alert alert-danger" role="alert"
+								th:each="error: ${#fields.errors('firstName')}"
+								th:text="${error}">Validation error</p>
+						</div>
+						<!--    lastName input field        -->
+						<div class="col-md-6 .offset-md-3">
+							<input name="lastName" type="text" th:required="required"
+								th:field="*{lastName}" id="lastName" class="form-control"
+								placeholder="Last name"></input>
+							<p class="alert alert-danger" role="alert"
+								th:each="error : ${#fields.errors('lastName')}"
+								th:text="${error}">Validation error</p>
+						</div>
+					</div>
+				</div>
+				<!--    email address input field        -->
+				<div class="form-group">
+					<input name="email" th:required="required" id="email"
+						th:field="*{email}" type="text" class="form-control"
+						placeholder="Email Address"></input>
+					<p class="alert alert-danger" role="alert"
+						th:each="error : ${#fields.errors('email')}" th:text="${error}">Validation
+						error</p>
+				</div>
+				<!--    password input field        -->
+				<div class="form-group ">
+					<input name="password" type="password" th:field="*{password}"
+						id="password" th:required="required" class="form-control"
+						placeholder="password"></input>
+					<p class="alert alert-danger" role="alert"
+						th:each="error : ${#fields.errors('password')}" th:text="${error}">Validation
+						error</p>
+				</div>
+				<!--    confirm password input field        -->
+				<div class="form-group ">
+					<input name="confirm_password" type="password"
+						th:field="*{confirmPassword}" id="confirmPassword"
+						th:required="required" class="form-control"
+						placeholder="Confirm password"></input>
+					<p class="alert alert-danger" role="alert"
+						th:each="error : ${#fields.errors('confirmPassword')}"
+						th:text="${error}">Validation error</p>
+				</div>
+
+
+				<div class="form-group">
+					<label class="checkbox-inline"><input type="checkbox"
+						required="required"> I accept the <a href="#">Terms of
+							Use</a> &amp; <a href="#">Privacy Policy</a></label>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-success btn-lg btn-block">Register
+						Now</button>
+
+				</div>
+
+			</form>
+
+		</div>
+
+		<div class="text-center">
+			Already have an account? <a href="/" th:href="@{/login}">Sign in</a>
+		</div>
+	</div>
+	<!-- /container -->
+
+	<div th:replace="/fragments/footer :: footer"></div>
 
 </body>
 </html>
