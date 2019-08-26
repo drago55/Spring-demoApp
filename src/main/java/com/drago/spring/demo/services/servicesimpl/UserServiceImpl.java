@@ -27,14 +27,14 @@ import com.drago.spring.demo.ObjectMapperUtils;
 import com.drago.spring.demo.data_transfer_objects.UserDto;
 import com.drago.spring.demo.data_transfer_objects.UserLoginDto;
 import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
-import com.drago.spring.demo.domain.PasswordResetToken;
+import com.drago.spring.demo.domain.VerificationToken;
 import com.drago.spring.demo.domain.Status;
 import com.drago.spring.demo.domain.User;
 import com.drago.spring.demo.enums.RoleEnum;
 import com.drago.spring.demo.enums.StatusEnum;
 import com.drago.spring.demo.exception.InvalidUserException;
 import com.drago.spring.demo.exception.UserNotFoundException;
-import com.drago.spring.demo.repositories.PasswordTokenRepository;
+import com.drago.spring.demo.repositories.VerificatinTokenRepository;
 import com.drago.spring.demo.repositories.RoleRepository;
 import com.drago.spring.demo.repositories.UserRepository;
 import com.drago.spring.demo.services.StatusService;
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 	private ModelMapper modelMapper;
 
 	@Autowired
-	private PasswordTokenRepository passwordResetToken;
+	private VerificatinTokenRepository passwordResetToken;
 
 	@Autowired
 	private StatusService statusService;
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User save(UserRegistrationDto userRegistrationDto) {
-		Status userStatus = statusService.getStatusByCode(StatusEnum.ACTIVE);
+		Status userStatus = statusService.getStatusByCode(StatusEnum.INACTIVE);
 		User user = modelMapper.map(userRegistrationDto, User.class);
 		user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
 		user.setRoles(new HashSet<>(roleRepository.findAllByName(RoleEnum.USER.getName())));
@@ -105,8 +105,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void createPasswordResetTokenForUser(User user, String token) {
-		PasswordResetToken myToken = new PasswordResetToken(token, user);
+	public void createVerificationTokenForUser(User user, String token) {
+		VerificationToken myToken = new VerificationToken(token, user);
 		passwordResetToken.save(myToken);
 	}
 

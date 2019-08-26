@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class PasswordResetToken {
+public class VerificationToken {
 
 	private static final int EXPIRATION = 60 * 24;
 
@@ -33,13 +33,13 @@ public class PasswordResetToken {
 
 	private Timestamp expiryDate;
 	
-	public PasswordResetToken(String token, User user) {
+	public VerificationToken(String token, User user) {
 		this.token = token;
 		this.user = user;
 		this.expiryDate = Timestamp.valueOf(LocalDateTime.now().plusMinutes(EXPIRATION));
 	}
 	
-	public PasswordResetToken() {
+	public VerificationToken() {
 		
 	}
 }

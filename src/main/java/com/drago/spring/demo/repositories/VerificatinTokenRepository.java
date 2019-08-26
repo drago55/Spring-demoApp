@@ -6,16 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.drago.spring.demo.domain.PasswordResetToken;
+import com.drago.spring.demo.domain.VerificationToken;
 
-public interface PasswordTokenRepository extends JpaRepository<PasswordResetToken, Long>{
+public interface VerificatinTokenRepository extends JpaRepository<VerificationToken, Long>{
 
-	PasswordResetToken findByToken(String token);
+	VerificationToken findByToken(String token);
 
 	void deleteByToken(String token);
 
 	@Modifying
-	@Query("delete from PasswordResetToken t where t.expiryDate <= ?1")
+	@Query("delete from VerificationToken t where t.expiryDate <= ?1")
 	void deleteAllExpiredTokens(Timestamp now);
 
 }

@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.drago.spring.demo.repositories.PasswordTokenRepository;
+import com.drago.spring.demo.repositories.VerificatinTokenRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TokenPurgeScheduler implements Scheduler {
 
 	@Autowired
-	private PasswordTokenRepository passwordTokenRepository;
+	private VerificatinTokenRepository passwordTokenRepository;
 	
 	@Override
 	@Transactional

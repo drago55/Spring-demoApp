@@ -33,7 +33,7 @@ public interface UserService extends UserDetailsService {
 
 	void disableOrEnableUser(Long id);
 	
-	void createPasswordResetTokenForUser(User user, String token);
+	void createVerificationTokenForUser(User user, String token);
 	
 	UserDetails loadUserByUsername(String email);
 	

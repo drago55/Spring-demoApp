@@ -1,9 +1,12 @@
 package com.drago.spring.demo.controllers;
 
+import java.util.Arrays;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +50,7 @@ public class RegistrationController {
 	}
 
 	@PostMapping(value = "/process")
-	public String proccesRegistration(@ModelAttribute("user") @Valid UserRegistrationDto userRegistrationDto, BindingResult result, Model model) {
+	public String proccesRegistration(HttpServletRequest request, @ModelAttribute("user") @Valid UserRegistrationDto userRegistrationDto, BindingResult result, Model model) {
 		log.debug("Starting process of user registration.");
 		boolean isSuccessful = false;
 		model.addAttribute("user", userRegistrationDto);
@@ -55,6 +58,7 @@ public class RegistrationController {
 		if (!result.hasErrors()) {
 
 			userService.save(userRegistrationDto);
+			securityService.sendVerificationTokenMail(getAppUrl(request), userRegistrationDto.getEmail());
 			isSuccessful = true;
 			model.addAttribute("success", isSuccessful);
 			log.debug("User registration completed sucessfull.");
@@ -65,6 +69,23 @@ public class RegistrationController {
 		log.debug("User registration failed.");
 		model.addAttribute("success", isSuccessful);
 		return REGISTRATION_INDEX;
+	}
+
+	@GetMapping("/confirm/{id}/{token}")
+	public String confirmRegistration( Model model, @PathVariable("id") Long id, @PathVariable("token") String token, 
+			RedirectAttributes redirectAttrs) {
+
+		String result = securityService.validateVerificationToken(id, token);
+		if (result != null) {
+			redirectAttrs.addFlashAttribute("error", "Error " + result);
+			return REDIRECT_LOGIN;
+		}
+		
+		userService.disableOrEnableUser(id);
+
+		securityService.deleteToken(token);
+
+		return REDIRECT_LOGIN;
 	}
 
 	@GetMapping("/forgotPasswordPage")
@@ -85,12 +106,13 @@ public class RegistrationController {
 	@GetMapping(value = "/changePassword/{id}/{token}")
 	public String showChangePasswordPage(Model model, @PathVariable("id") Long id, @PathVariable("token") String token, RedirectAttributes redirectAttrs) {
 
-		String result = securityService.validatePasswordResetToken(id, token);
+		String result = securityService.validateVerificationToken(id, token);
 		if (result != null) {
 			redirectAttrs.addFlashAttribute("error", "Error " + result);
 			return REDIRECT_LOGIN;
 		}
 		securityService.deleteToken(token);
+		securityService.grantUserAutority(id,  Arrays.asList(new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE")));
 		return "redirect:/registration/showUpdatePassword";
 	}
 
@@ -118,9 +140,9 @@ public class RegistrationController {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 			userService.changeUserPassword(user, passwordDto.getPassword());
-			
+
 			userService.logoutUser(request);
-			
+
 			return REDIRECT_LOGIN;
 		}
 		log.info("There are errors...");
