@@ -36,8 +36,8 @@ import com.drago.spring.demo.exception.InvalidUserException;
 import com.drago.spring.demo.exception.UserNotFoundException;
 import com.drago.spring.demo.repositories.PasswordTokenRepository;
 import com.drago.spring.demo.repositories.RoleRepository;
-import com.drago.spring.demo.repositories.StatusRepository;
 import com.drago.spring.demo.repositories.UserRepository;
+import com.drago.spring.demo.services.StatusService;
 import com.drago.spring.demo.services.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,9 +53,6 @@ public class UserServiceImpl implements UserService {
 	private RoleRepository roleRepository;
 
 	@Autowired
-	private StatusRepository statusRepository;
-
-	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
@@ -63,6 +60,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PasswordTokenRepository passwordResetToken;
+
+	@Autowired
+	private StatusService statusService;
 
 	@Override
 	public User findUserByEmail(String email) {
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User save(UserRegistrationDto userRegistrationDto) {
-		Status userStatus = statusRepository.findByStatusCode(StatusEnum.ACTIVE.getStatusCode());
+		Status userStatus = statusService.getStatusByCode(StatusEnum.ACTIVE);
 		User user = modelMapper.map(userRegistrationDto, User.class);
 		user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
 		user.setRoles(new HashSet<>(roleRepository.findAllByName(RoleEnum.USER.getName())));
@@ -153,7 +153,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void disableOrEnableUser(Long id) {
 		Optional<User> optionalUser = userRepository.findById(id);
-		List<Status> listOfStatus = statusRepository.findAll();
 		if (!optionalUser.isPresent()) {
 			throw new UserNotFoundException("User does not exists");
 		}
@@ -166,23 +165,15 @@ public class UserServiceImpl implements UserService {
 
 		if (user.getStatus().getStatusCode().equals(StatusEnum.ACTIVE.getStatusCode())) {
 
-			user.setStatus(getStatusByCode(listOfStatus, StatusEnum.INACTIVE));
+			user.setStatus(statusService.getStatusByCode(StatusEnum.INACTIVE));
 
 		} else if (user.getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode())) {
 
-			user.setStatus(getStatusByCode(listOfStatus, StatusEnum.ACTIVE));
+			user.setStatus(statusService.getStatusByCode(StatusEnum.ACTIVE));
 		}
 
 		userRepository.save(user);
 
-	}
-
-	private Status getStatusByCode(List<Status> listOfStatus, StatusEnum statusEnum) {
-		Optional<Status> optionaOfStatus = listOfStatus.stream().filter(status -> status.getStatusCode().equals(statusEnum.getStatusCode())).findFirst();
-		if (!optionaOfStatus.isPresent()) {
-			throw new IllegalStateException("Status doesn't exist in database!");
-		}
-		return optionaOfStatus.get();
 	}
 
 	@Override
@@ -195,9 +186,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void changeUserPassword(User user, String password) {
-		  user.setPassword(passwordEncoder.encode(password));
-		  userRepository.save(user);
+		user.setPassword(passwordEncoder.encode(password));
+		userRepository.save(user);
 	}
-
 
 }

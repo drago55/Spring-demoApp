@@ -25,8 +25,8 @@ import com.drago.spring.demo.domain.User;
 import com.drago.spring.demo.enums.StatusEnum;
 import com.drago.spring.demo.exception.NoSuchMarkerException;
 import com.drago.spring.demo.repositories.MarkerRepository;
-import com.drago.spring.demo.repositories.StatusRepository;
 import com.drago.spring.demo.services.MarkerService;
+import com.drago.spring.demo.services.StatusService;
 import com.drago.spring.demo.services.StorageService;
 import com.drago.spring.demo.services.UserService;
 
@@ -46,7 +46,7 @@ public class MarkerServiceImpl implements MarkerService {
 	private UserService userService;
 
 	@Autowired
-	private StatusRepository statusRepository;
+	private StatusService statusService;
 
 	@Override
 	public MarkerDto save(MarkerDto markerDto, MultipartFile[] files) {
@@ -56,7 +56,9 @@ public class MarkerServiceImpl implements MarkerService {
 		storageService.setUserUploadLocation(Paths.get(userService.getAuthenticatedUser().getLastName()));
 
 		User user = userService.getAuthenticatedUser();
-
+		
+		marker.setStatus(statusService.getStatusByCode(StatusEnum.ACTIVE));
+		
 		marker.setUser(user);
 
 		List<MultipartFile> listOfImages = filterAndGetListOfImages(files);
@@ -101,28 +103,26 @@ public class MarkerServiceImpl implements MarkerService {
 
 	@Override
 	public Set<MarkerDto> findAllMarkers() {
-		Status markerStatus = statusRepository.findByStatusCode(StatusEnum.ACTIVE.getStatusCode());
+		Status markerStatus = statusService.getStatusByCode(StatusEnum.ACTIVE);
 		List<Marker> markers =markerRepository.findAllByStatus(markerStatus);
 		return new HashSet<>(ObjectMapperUtils.mapAll(markers, MarkerDto.class));
 	}
 
 	@Override
 	public Page<MarkerDto> findPaginatedMarkers(Pageable pageable) {
-		Status markerStatus = statusRepository.findByStatusCode(StatusEnum.ACTIVE.getStatusCode());
+		Status markerStatus = statusService.getStatusByCode(StatusEnum.ACTIVE);
 		Page<Marker> page = markerRepository.findAllByStatus(pageable, markerStatus);
 		return new PageImpl<>(ObjectMapperUtils.mapAll(page.getContent(), MarkerDto.class), pageable, page.getTotalElements());
 	}
 
 	@Override
 	public void deleteMarkerById(Long id) {
-		Status markerStatus = statusRepository.findByStatusCode(StatusEnum.INACTIVE.getStatusCode());
+		Status markerStatus = statusService.getStatusByCode(StatusEnum.INACTIVE);
 		Optional<Marker> markerOptional = markerRepository.findById(id);
 		if (markerOptional.isPresent()) {
 			Marker marker = markerOptional.get();
 			marker.setStatus(markerStatus);
 			markerRepository.save(marker);
 		}
-
 	}
-
 }
