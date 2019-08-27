@@ -3,117 +3,125 @@
 <div th:replace="/fragments/header :: header"></div>
 
 <body>
-<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
+	<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
 
-<div class="container" xmlns:th="http://www.thymeleaf.org" th:fragment="insertMarker">
-    <!-- Add marker form -->
-    <h3>Create marker</h3>
-    <div th:if="${success}">
-        <div th:if="${id!=null}">
-            <div class="alert alert-success">
-                You've successfully updated marker!
-            </div>
-        </div>
-        <div class="alert alert-success">
-            You've successfully inserted marker!
-        </div>
-    </div>
+	<div th:if="${success}">
+		<div th:if="${id!=null}">
+			<div class="alert alert-success">You've successfully updated
+				marker!</div>
+		</div>
+		<div class="alert alert-success">You've successfully inserted
+			marker!</div>
+	</div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <form action="#" th:action="@{/save}" th:object="${marker}" method="POST"
-                  enctype="multipart/form-data">
-                <!-- Name input body -->
-                <div class="form-group">
-                 <input type="hidden" th:field="*{id}"/>
-                    <label for="name">Name</label>
-                    <input th:autofocus="autofocus" type="text" id="name" th:field="*{markerName}" class="form-control"
-                           value=""
-                           th:required="required"></input>
-                </div>
-                <!-- Address input body -->
+	<div class="container">
+		<h3>Create marker</h3>
 
-                <div class="form-group" th:object="${marker}">
-                    <label for="city">City</label>
-                    <input type="text" th:field="*{city}" id='city' class="form-control" value=""
-                           th:required="required"></input>
-                    <label for="postalCode">Postal code</label>
-                    <input type="text" th:field="*{postalCode}" id='postalCode' class="form-control" value=""></input>
-                    <label for="streetAddress">Street address</label>
-                    <input type="text" th:field="*{address}" id='streetAddress' class="form-control"
-                           value=""></input>
-                    <label for="stateProvince">State</label>
-                    <input type="text" th:field="*{state}" id='stateProvince' class="form-control"
-                           value=""></input>
-                </div>
-                <!-- Latitude input body -->
-                <div class="form-group" th:object="${marker}">
-                    <label for="lat">Latitutde</label>
-                    <input type="text" name="lat" th:field="*{lat}" id='lat' class="form-control" value=""></input>
-                    <!-- Longitude body -->
-                    <label for="lon">Longitude</label>
-                    <input type="text" name="lon" id='lon' th:field="*{lon}" class="form-control" value=""></input>
-                </div>
-                <!-- Type input body -->
-                <div class="form-group">
-                    <label for="type">Type</label>
-                    <select th:field="*{markerType}" class="form-control" id="type" name="type">
-                        <option th:each="state : ${enum}" th:text="${state.name}" th:value="${{state}}">
-                        </option>
-                    </select>
+		<form action="#" th:action="@{/save}" th:object="${marker}"
+			method="POST" enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-md-6">
+					<!-- Name input body -->
+					<div class="form-group">
+						<input type="hidden" th:field="*{id}" /> <input
+							th:autofocus="autofocus" type="text" id="name"
+							th:field="*{markerName}" class="form-control" value=""
+							placeholder="Name" th:required="required"></input>
+					</div>
+					<!-- Address input body -->
+					<div class="form-group">
+						<input type="text" th:field="*{city}" id='city'
+							class="form-control" value="" th:required="required"
+							placeholder="City"></input>
+					</div>
 
-                </div>
-                <!-- Description body -->
-                <div class="form-group">
-                    <label class="col-md-3 control-label" for="description">Description</label>
-                    <textarea class="form-control" id="description" th:field="*{description}" name="description"
-                              placeholder=""></textarea>
-                    <input type="hidden" name="id" class="form-control" value=""></input>
-                </div>
+					<div class="form-group">
+						<input type="text" th:field="*{postalCode}" id='postalCode'
+							class="form-control" value="" placeholder="Postal code"></input>
+					</div>
+					<div class="form-group">
+						<input type="text" th:field="*{address}" id='streetAddress'
+							class="form-control" placeholder="Street address" value=""></input>
+					</div>
+					<div class="form-group">
+						<input type="text" th:field="*{state}" id='stateProvince'
+							class="form-control" placeholder="State" value=""></input>
+					</div>
 
+					<!-- Latitude input body -->
+					<div class="form-group">
+						<input type="text" name="lat" th:field="*{lat}" id='lat'
+							class="form-control" placeholder="Latitude"></input>
+					</div>
+					<div class="form-group">
+						<!-- Longitude body -->
+						<input type="text" name="lon" id='lon' th:field="*{lon}"
+							class="form-control" placeholder="Longitude" value=""></input>
+					</div>
+					<!-- Type input body -->
+					<div class="form-group">
+						<label for="type">Type</label> <select th:field="*{markerType}"
+							class="form-control" id="type" name="type">
+							<option th:each="state : ${enum}" th:text="${state.name}"
+								th:value="${{state}}"></option>
+						</select>
+					</div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <!-- file input body -->
-                        <div class="form-group">
-                            <label>File input</label>
-                            <input type="file" id="file1" name="file"
-                                   onchange="document.getElementById('img1').src = window.URL.createObjectURL(this.files[0])"
-                                   multiple="multiple"></input>
-                            <input type="file" id="file2" name="file"
-                                   onchange="document.getElementById('img2').src = window.URL.createObjectURL(this.files[0])"
-                                   multiple="multiple"></input>
-                            <input type="file" id="file3" name="file"
-                                   onchange="document.getElementById('img3').src = window.URL.createObjectURL(this.files[0])"
-                                   multiple="multiple"></input>
+				</div>
+				<div class="col-md-6">
 
-                            <p class="help-block">Upload marker imagePath</p>
+					<!-- Map body -->
+					<div class="form-group">
+						<h5 class="text-center">Click on a map to get location</h5>
+						<div th:replace="@{'map/google_map'}"></div>
+						<div class="row" th:each="image, iterstat: ${marker.images}">
+							<div class="col-md-4" th:if="${image!=null}">
+								<img th:src="${image.imagePath}" class="img-fluid img-thumbnail"
+									alt="Responsive imagePath">
+							</div>
+						</div>
 
-                        </div>
-                    </div>
+					</div>
 
-                </div>
+				</div>
+			</div>
 
-                <!-- Submit button -->
-                <button type="submit" name="create_marker" class="btn btn-default">Submit</button>
-            </form>
-        </div>
-        <!-- Map body -->
-        <div class="col-md-6">
-            <h5 class="text-center" for="message">Click on a map to get location</h5>
-            <div th:replace="@{'map/google_map'}"></div>
-            <div class="row" th:each="image, iterstat: ${marker.images}">
-                <div class="col-md-4" th:if="${image!=null}">
-                    <img th:src="${image.imagePath}"
-                         class="img-fluid img-thumbnail" alt="Responsive imagePath">
-                    </img>
-                </div>
-            </div>
-            <div th:replace="/fragments/images :: images"></div>
-        </div>
-    </div>
-</div>
-<div th:replace="/fragments/footer :: footer"></div>
+			<div class="row">
+				<div class="col-md-6">
+					<!-- Description body -->
+					<div class="form-group">
+						<textarea class="form-control" id="description"
+							th:field="*{description}" name="description"
+							placeholder="Description"></textarea>
+						<input type="hidden" name="id" class="form-control" value=""></input>
+					</div>
+					<!-- file input body -->
+					<div class="form-group">
+						<div class="custom-file">
+							<input type="file" class="custom-file-input" id="file1"
+								onchange="document.getElementById('img1').src = window.URL.createObjectURL(this.files[0])"
+								multiple="multiple"> <label class="custom-file-label"
+								for="customFile">Choose image</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6" style="text-align: center">
+					<div class="form-group">
+						<img id="img1" height="200" width="200" th:src="@{/image/no-image.png}"
+							class="img-fluid img-thumbnail" alt="Responsive image">
+					</div>
+				</div>
+			</div>
+
+			<!-- Submit button -->
+			<div class="form-group">
+				<button type="submit" name="create_marker"
+					class="btn btn-success btn-lg btn-block">Submit</button>
+			</div>
+		</form>
+	</div>
+
+	<div th:replace="/fragments/footer :: footer"></div>
 
 </body>
 </html>
