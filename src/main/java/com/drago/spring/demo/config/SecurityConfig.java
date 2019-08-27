@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.httpBasic().disable();
 		httpSecurity.authorizeRequests()
 				.antMatchers("/js/**", "/h2-console/**", "/", "/imagePath/**", "/css/**", "/webjars/**", "/errors",
-						"/image/**", "/processLogin")
+						"/image/**", "/processLogin", "/registration/confirm")
 				.permitAll()
 				.antMatchers("/showMarkers", "/editMarker", "/deleteMarker", "/upload-dir/**",
 						"/addMarker", "/showCreateMarker","/map","/fullscreen_map","/about", "/contact")
