@@ -9,11 +9,13 @@
 
 
 	<div class="container" style="text-align: center">
-		
-		<div th:if="${success}">
-			<div class="alert alert-success">You've successfully registered
-				to our awesome app!</div>
+
+		<div th:if="${message}">
+			<div class="alert alert-success">
+				<p th:text="${message}">Mail</p>
+			</div>
 		</div>
+
 		<div th:if="${error!=null}">
 			<div class="alert alert-danger" role="alert">
 				<p th:text="${error}">Error email exists</p>

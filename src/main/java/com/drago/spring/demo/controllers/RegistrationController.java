@@ -52,22 +52,21 @@ public class RegistrationController {
 	@PostMapping(value = "/process")
 	public String proccesRegistration(HttpServletRequest request, @ModelAttribute("user") @Valid UserRegistrationDto userRegistrationDto, BindingResult result, Model model) {
 		log.debug("Starting process of user registration.");
-		boolean isSuccessful = false;
 		model.addAttribute("user", userRegistrationDto);
 
 		if (!result.hasErrors()) {
 
 			userService.save(userRegistrationDto);
 			securityService.sendVerificationTokenMail(getAppUrl(request), userRegistrationDto.getEmail());
-			isSuccessful = true;
-			model.addAttribute("success", isSuccessful);
+		
+			model.addAttribute("message", "You've successfully registered to our awesome app!");
 			log.debug("User registration completed sucessfull.");
 			return REGISTRATION_INDEX;
 
 		}
-		isSuccessful = false;
+		
 		log.debug("User registration failed.");
-		model.addAttribute("success", isSuccessful);
+		model.addAttribute("error", "User registration failed.");
 		return REGISTRATION_INDEX;
 	}
 
@@ -81,10 +80,12 @@ public class RegistrationController {
 			return REDIRECT_LOGIN;
 		}
 		
-		userService.disableOrEnableUser(id);
+		userService.enableUser(id);
 
 		securityService.deleteToken(token);
-
+		
+		redirectAttrs.addFlashAttribute("message", "You have successfully confirmed your account. Please login...");
+		
 		return REDIRECT_LOGIN;
 	}
 
@@ -140,6 +141,8 @@ public class RegistrationController {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 			userService.changeUserPassword(user, passwordDto.getPassword());
+			
+			userService.enableUser(user.getId());
 
 			userService.logoutUser(request);
 
