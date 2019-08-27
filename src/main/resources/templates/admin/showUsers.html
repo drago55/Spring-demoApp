@@ -43,10 +43,10 @@
 							style="vertical-align: middle" align="justify"></ul>
 					</td>
 					<td><a class="btn btn-danger" th:if="${user.statusDescription == 'Active'}"
-						th:href="@{/admin/user/disableOrEnableUser/{id} (id=${user.id})}">Disable
+						th:href="@{/admin/user/disableOrEnableUser/{id}/{disableUser} (id=${user.id}, disableUser= ${true} ) } ">Disable
 					</a>
 					<a class="btn btn-primary" th:if="${user.statusDescription == 'Inactive'}"
-						th:href="@{/admin/user/disableOrEnableUser/{id} (id=${user.id})}">Enable
+						th:href="@{/admin/user/disableOrEnableUser/{id}/{disableUser} (id=${user.id}, disableUser = ${false}) }">Enable
 					</a>
 					</td>
 					<td><a class="btn btn-primary"

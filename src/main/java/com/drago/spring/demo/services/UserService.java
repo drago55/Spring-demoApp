@@ -30,8 +30,6 @@ public interface UserService extends UserDetailsService {
 	User getAuthenticatedUser();
 
 	Page<UserDto> findPaginatedUsers(Pageable pageable);
-
-	void disableOrEnableUser(Long id);
 	
 	void createVerificationTokenForUser(User user, String token);
 	
@@ -40,4 +38,9 @@ public interface UserService extends UserDetailsService {
 	void logoutUser(HttpServletRequest request);
 	
 	void changeUserPassword(User user, String password);
+
+	void enableUser(Long id);
+	
+	void disableUser(Long id);
+
 }

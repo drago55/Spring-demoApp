@@ -151,32 +151,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void disableOrEnableUser(Long id) {
-		Optional<User> optionalUser = userRepository.findById(id);
-		if (!optionalUser.isPresent()) {
-			throw new UserNotFoundException("User does not exists");
-		}
-
-		User user = optionalUser.get();
-
-		if (user.equals(getAuthenticatedUser())) {
-			throw new IllegalStateException("Can't disable current user!");
-		}
-
-		if (user.getStatus().getStatusCode().equals(StatusEnum.ACTIVE.getStatusCode())) {
-
-			user.setStatus(statusService.getStatusByCode(StatusEnum.INACTIVE));
-
-		} else if (user.getStatus().getStatusCode().equals(StatusEnum.INACTIVE.getStatusCode())) {
-
-			user.setStatus(statusService.getStatusByCode(StatusEnum.ACTIVE));
-		}
-
-		userRepository.save(user);
-
-	}
-
-	@Override
 	public void logoutUser(HttpServletRequest request) {
 		log.info("Logging out user...");
 		HttpSession session = request.getSession();
@@ -187,6 +161,36 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void changeUserPassword(User user, String password) {
 		user.setPassword(passwordEncoder.encode(password));
+		userRepository.save(user);
+	}
+
+	@Override
+	public void enableUser(Long id) {
+		
+		User user = getUser(id);
+		user.setStatus(statusService.getStatusByCode(StatusEnum.ACTIVE));
+		userRepository.save(user);
+
+	}
+
+	private User getUser(Long id) {
+		Optional<User> optionalUser = userRepository.findById(id);
+		if (!optionalUser.isPresent()) {
+			throw new UserNotFoundException("User does not exists");
+		}
+		return optionalUser.get();
+	}
+
+	@Override
+	public void disableUser(Long id) {
+		
+		User user = getUser(id);
+		
+		if (user.equals(getAuthenticatedUser())) {
+			throw new IllegalStateException("Can't disable current user!");
+		}
+
+		user.setStatus(statusService.getStatusByCode(StatusEnum.INACTIVE));
 		userRepository.save(user);
 	}
 
