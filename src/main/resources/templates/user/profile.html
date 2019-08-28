@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="/fragments/header :: header"></div>
+
+<body>
+	<div th:replace="/fragments/navigation_bar :: navigation_bar"></div>
+
+	<div th:if="${message}">
+		<div class="alert alert-success">
+			<p th:text="${message}">Mail</p>
+		</div>
+	</div>
+	<div th:if="${error!=null}">
+		<div class="alert alert-danger" role="alert">
+			<p th:text="${error}">Error email exists</p>
+		</div>
+	</div>
+	<div class="container">
+		<hr>
+		<h4>Map Options</h4>
+		<div class="row">
+			<div class="col-md-2">
+			<!-- Latitude input body -->
+			<div class="form-group">
+				<input type="text" name="lat"
+					th:field="*{userProfile.mapOptions.lat}" id='lat'
+					class="form-control" placeholder="Latitude"></input>
+			</div>
+			</div>
+			<div class="col-md-2">
+			<div class="form-group">
+				<!-- Longitude body -->
+				<input type="text" name="lon" id='lon'
+					th:field="*{userProfile.mapOptions.lon}" class="form-control"
+					placeholder="Longitude" value=""></input>
+			</div>
+			</div>
+			<div class="col-md-2">
+			<div class="form-group">
+				<!-- Map Reset time  -->
+				<input type="text" name="lon" id='lon' th:field="*{userProfile.mapOptions.mapResetTime}"
+					class="form-control" placeholder="Map reset time"
+					value=""></input>
+			</div>
+			</div>
+		</div>
+		<div class="row">
+		
+			
+			<div class="input-group">
+			
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-danger btn-number"
+					data-type="minus" data-field="quant[2]">
+					<span class="fa fa-minus-square"></span>
+				</button>
+			</span>
+
+			<div class="col-md-1">
+				<input type="text" name="quant[2]" class="form-control input-number"
+					value="10" min="1" max="100">
+			</div>
+
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-success btn-number"
+					data-type="plus" data-field="quant[2]">
+					<span class="fa fa-plus-square"></span>
+				</button>
+			</span>
+
+			</div>
+		</div>
+	
+	<hr>
+
+	</div>
+
+
+	<div th:replace="/fragments/footer :: footer"></div>
+</body>
+</html>
