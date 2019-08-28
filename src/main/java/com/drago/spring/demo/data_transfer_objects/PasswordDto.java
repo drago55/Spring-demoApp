@@ -7,7 +7,7 @@ import com.drago.spring.demo.constraint.ValidPassword;
 
 import lombok.Data;
 
-@FieldMatch.List({@FieldMatch(first = "password", second = "confirmPassword", message = "Password don't match!") })
+@FieldMatch(first = "password", second = "confirmPassword", message = "Password don't match!")
 @Data
 public class PasswordDto {
 
