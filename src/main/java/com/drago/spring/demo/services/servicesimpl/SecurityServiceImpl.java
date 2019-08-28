@@ -62,7 +62,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 		String url = contextPath + "/registration/confirm/" + user.getId() + "/" + token;
 
-		eMailService.sendEmail(user.getEmail(), "User verification mail", "Welcome to demo application to finish registration click on link below." + " \r\n" + url);
+		eMailService.sendEmail(user.getEmail(), "User verification mail", "Welcome to demo application, to finish registration click on link below." + " \r\n" + url);
 
 	}
 	

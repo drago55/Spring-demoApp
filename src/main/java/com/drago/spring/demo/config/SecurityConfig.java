@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/js/**", "/h2-console/**", "/", "/imagePath/**", "/css/**", "/webjars/**", "/errors",
 						"/image/**", "/processLogin", "/registration/confirm")
 				.permitAll()
-				.antMatchers("/showMarkers", "/editMarker", "/deleteMarker", "/upload-dir/**",
+				.antMatchers("/showMarkers", "/editMarker", "/deleteMarker", "/upload-dir/**", "/user/**",
 						"/addMarker", "/showCreateMarker","/map","/fullscreen_map","/about", "/contact")
 				.hasAnyRole("ADMIN", "USER")
 				.antMatchers("/admin/**")
