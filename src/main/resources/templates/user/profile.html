@@ -17,64 +17,70 @@
 	</div>
 	<div class="container">
 		<hr>
-		<h4>Map Options</h4>
-		<div class="row">
-			<div class="col-md-2">
-			<!-- Latitude input body -->
-			<div class="form-group">
-				<input type="text" name="lat"
-					th:field="*{userProfile.mapOptions.lat}" id='lat'
-					class="form-control" placeholder="Latitude"></input>
-			</div>
-			</div>
-			<div class="col-md-2">
-			<div class="form-group">
-				<!-- Longitude body -->
-				<input type="text" name="lon" id='lon'
-					th:field="*{userProfile.mapOptions.lon}" class="form-control"
-					placeholder="Longitude" value=""></input>
-			</div>
-			</div>
-			<div class="col-md-2">
-			<div class="form-group">
-				<!-- Map Reset time  -->
-				<input type="text" name="lon" id='lon' th:field="*{userProfile.mapOptions.mapResetTime}"
-					class="form-control" placeholder="Map reset time"
-					value=""></input>
-			</div>
-			</div>
+		<div class="row justify-content-md-center">
+
+			<h4>Map Options</h4>
 		</div>
 		<div class="row">
-		
-			
-			<div class="input-group">
-			
-			<span class="input-group-btn">
-				<button type="button" class="btn btn-danger btn-number"
-					data-type="minus" data-field="quant[2]">
-					<span class="fa fa-minus-square"></span>
-				</button>
-			</span>
+			<div class="col-md-6 offset-md-3">
 
-			<div class="col-md-1">
-				<input type="text" name="quant[2]" class="form-control input-number"
-					value="10" min="1" max="100">
-			</div>
-
-			<span class="input-group-btn">
-				<button type="button" class="btn btn-success btn-number"
-					data-type="plus" data-field="quant[2]">
-					<span class="fa fa-plus-square"></span>
-				</button>
-			</span>
+				<!-- Map body -->
+				<div class="form-group">
+					<h5 class="text-center">Click on a map to set center location</h5>
+					<div th:replace="@{'map/google_map'}"></div>
+				</div>
 
 			</div>
 		</div>
-	
-	<hr>
+		<form action="#" th:action="@{/profile/mapOptions/save}" th:object="${userProfile}" method="POST">
+		<div class="row justify-content-md-center">
 
+			<div class="col-md-2">
+				<label for="type">Zoom level</label>
+				<!-- Zoom input body -->
+				<div class="form-group">
+					<input type="text" name="zoom"
+						th:field="*{mapOptions.zoom}" id='zoom'
+						class="form-control" placeholder="Zoom"></input>
+				</div>
+			</div>
+
+			<div class="col-md-2">
+				<label for="type">Latitude</label>
+				<!-- Latitude input body -->
+				<div class="form-group">
+					<input type="text" name="lat"
+						th:field="*{mapOptions.lat}" id='lat'
+						class="form-control" placeholder="Latitude"></input>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<label for="type">Longitude</label>
+				<div class="form-group">
+					<!-- Longitude body -->
+					<input type="text" name="lon" id='lon'
+						th:field="*{mapOptions.lon}" class="form-control"
+						placeholder="Longitude" value=""></input>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<label for="type">reset time in ms</label>
+				<div class="form-group">
+					<!-- Map Reset time  -->
+					<input type="text" name="mapResetTime" id='mapResetTime'
+						th:field="*{mapOptions.mapResetTime}"
+						class="form-control" placeholder="Map reset time" value=""></input>
+				</div>
+			</div>
+		</div>
+		<!-- Submit button -->
+			<div class="form-group">
+				<button type="submit" name="create_marker"
+					class="btn btn-success btn-lg btn-block">Submit</button>
+			</div>
+		</form>
+		<hr>
 	</div>
-
 
 	<div th:replace="/fragments/footer :: footer"></div>
 </body>
