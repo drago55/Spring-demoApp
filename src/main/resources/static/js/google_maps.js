@@ -36,10 +36,14 @@ function initMap() {
 
 
   readValues();
-
+  
+  httpRequest("GET","/profile/mapOptions");
+  
+  
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-
+  
+  
+  
   if (markerObject.lat!=null && markerObject.lng!=null) {
     addUpdateMarker();
   }
@@ -57,9 +61,23 @@ function initMap() {
 
     removeMarkers(marker.id);
   });
+  
+  map.addListener('zoom_changed', function() {
+	  document.getElementById("zoom").value =  map.getZoom();
+   });
 
 
 
+}
+//This will fire after HTTP request
+function callback(data){
+	  //parsing raw json string and creating json objects
+	let object=JSON.parse(data);
+	 console.log("Map options  " + object);
+	if (typeof object.mapOptions !== "undefined" && object.mapOptions !==null) {
+	    //map options
+	    newMapOptions(object.mapOptions);
+	  }
 }
 
 function addUpdateMarker() {
@@ -71,18 +89,18 @@ function addUpdateMarker() {
 }
 
 
-/*Read values from editMarker document readValues from inputs to set update mareker on map*/
+/*Read values from editMarker document readValues from inputs to set update marker on map*/
 function readValues() {
 
   if (document.getElementById('addMarkerContainer')) {
 
     markerObject.name = document.getElementById('name').value;
-    markerObject.stateProvince=document.getElementById('streetAddress').value;
+    markerObject.streetAddress=document.getElementById('streetAddress').value;
     markerObject.stateProvince=document.getElementById('stateProvince').value;
-    markerObject.streetAddress = document.getElementById('city').value;
+    markerObject.city = document.getElementById('city').value;
     markerObject.lat = document.getElementById('lat').value;
     markerObject.lng = document.getElementById('lon').value;
-    markerObject.description=document.getElementById('lon').value;
+    markerObject.description=document.getElementById('description').value;
     var e = document.getElementById("type");
     markerObject.type=e.options[e.selectedIndex].value;
     markerObject.image =document.getElementById("marker_icon").src;
