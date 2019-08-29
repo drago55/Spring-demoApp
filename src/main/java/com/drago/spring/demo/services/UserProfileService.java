@@ -6,4 +6,6 @@ public interface UserProfileService {
 	
 	UserProfileDto getUserProfile();
 
+	UserProfileDto save(UserProfileDto userProfileDto);
+
 }

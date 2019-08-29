@@ -15,23 +15,29 @@ import com.drago.spring.demo.services.UserService;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
-	
+
 	@Autowired
 	private UserProfileRepository userProfileRepository;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
 
 	@Override
 	public UserProfileDto getUserProfile() {
 		User user = userService.getAuthenticatedUser();
-		
+
 		Optional<UserProfile> userProfile = userProfileRepository.findByUserId(user.getId());
-		
+
 		return modelMapper.map(userProfile.orElse(new UserProfile()), UserProfileDto.class);
 	}
-	
+
+	@Override
+	public UserProfileDto save(UserProfileDto userProfileDto) {
+		UserProfile userProfile = modelMapper.map(userProfileDto, UserProfile.class);
+		return modelMapper.map(userProfileRepository.save(userProfile), UserProfileDto.class);
+	}
+
 }
