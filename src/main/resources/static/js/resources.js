@@ -1,11 +1,18 @@
 //icon type for markers
 
-var url= location.protocol+'//'+location.host+location.pathname.substr(0, window.location.pathname.lastIndexOf('/'));
-console.log(url);
-var resource_url= location.protocol+'//'+location.host;
-console.log(resource_url);
-console.log("path name " +location.pathname);
-console.log("path " +location.pathname.substr(0, window.location.pathname.lastIndexOf('/')));
+//var url= location.protocol+'//'+location.host+location.pathname.substr(0, window.location.pathname.lastIndexOf('/'));
+//console.log(url);
+//console.log("Host: " +location.host);
+var resource_url = location.protocol+'//'+location.host;
+var context_path = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+var url = location.protocol + '//' + location.host + context_path;
+
+console.log("Context path: " + context_path);
+console.log("Url: " + url);
+console.log("Controller endpoint " + location.pathname);
+console.log("Path " + location.pathname.substr(0, window.location.pathname.lastIndexOf('/')));
+
+
 var icons = {
 
   TYPE1: url + '/image/icon_green.png',
