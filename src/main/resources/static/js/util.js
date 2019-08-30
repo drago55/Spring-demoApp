@@ -9,7 +9,7 @@ function httpRequest (method,controler) {
       }
     }
   };
-  httpRequest.open(method, url+controler);
+  httpRequest.open(method, url + controler);
   httpRequest.send();
 }
 /*
@@ -42,3 +42,5 @@ function addMarker(location,title, map, icon) {
   return marker;
 
 }
+
+

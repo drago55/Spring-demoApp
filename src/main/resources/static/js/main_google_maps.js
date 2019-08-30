@@ -31,13 +31,14 @@ function initMap() {
 
   bounds= new google.maps.LatLngBounds();
   map = new google.maps.Map(document.getElementById('map2'),mapOptions);
-
-
+  
   httpRequest("GET","/markers/get_json");
-    initClickListeners();
+  
+  httpRequest("GET", "/user/profile/mapOptions");
 
-
-
+  
+  
+  initClickListeners();
 
   if (typeof info_point_uuid !== "undefined" && info_point_uuid!=='') {
     httpRequest("GET","/home/_getInfoPointOptions/" + info_point_uuid);
@@ -75,7 +76,13 @@ function initMap() {
 
 }
 
-
+function newMapOptions(object) {
+	console.log("Setting new map options...");
+	console.log(object);
+	map.setCenter(new google.maps.LatLng(object.latLon.lat, object.latLon.lon));
+	map.setZoom(object.zoom);
+	time = object.resetTime;
+}
 /*
 *Callback function to setup user location
 */
@@ -126,9 +133,9 @@ function callback(data){
      addMarkers(object.markers);
 
 
-  }else if (typeof object.mapOptions !== "undefined" && object.mapOptions !==null) {
-    //map options
-    newMapOptions(object.mapOptions);
+  }else if (typeof object.latLon !== "undefined" && object.latLon !== null) {
+		//map options
+		newMapOptions(object);
   }
 }
 
@@ -160,21 +167,7 @@ function setInfoPoint(location) {
   });
 }
 
-/*
-*We are calling this function when we have set new map options.
-*/
-function newMapOptions(options) {
 
-  start_location=new google.maps.LatLng(options[0].lat, options[0].lng);
-  mapOptions.center= start_location;
-  mapOptions.zoom= options[0].zoom;
-  time=options[0].reset_time;
-
-  setInfoPoint(start_location);
-  bounds.extend(start_location);
-  map.fitBounds(bounds);       // auto-zoom
-  map.panToBounds(bounds);
-}
 //Add marker function object is json
 function addMarkers(object) {
 
