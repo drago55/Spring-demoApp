@@ -36,8 +36,11 @@ public class UserProfileServiceImpl implements UserProfileService {
 
 	@Override
 	public UserProfileDto save(UserProfileDto userProfileDto) {
-		UserProfile userProfile = modelMapper.map(userProfileDto, UserProfile.class);
-		return modelMapper.map(userProfileRepository.save(userProfile), UserProfileDto.class);
+		
+		UserProfile newUserProfile = modelMapper.map(userProfileDto, UserProfile.class);
+		User user = userService.getAuthenticatedUser();
+		newUserProfile.setUser(user);
+		return modelMapper.map(userProfileRepository.save(newUserProfile), UserProfileDto.class);
 	}
 
 }

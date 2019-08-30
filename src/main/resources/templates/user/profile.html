@@ -32,16 +32,19 @@
 
 			</div>
 		</div>
-		<form action="#" th:action="@{/profile/mapOptions/save}" th:object="${userProfile}" method="POST">
+		<form action="#" th:action="@{/user/profile/mapOptions}" th:object="${userProfile}" method="POST">
 		<div class="row justify-content-md-center">
-
+			<input type="hidden" th:field="*{id}"/>
+			<input type="hidden" th:field="*{userId}"/>
+			<input type="hidden" th:field="*{mapOptions.id}"/>
+			<input type="hidden" th:field="*{mapOptions.latLon.id}"/>
 			<div class="col-md-2">
 				<label for="type">Zoom level</label>
 				<!-- Zoom input body -->
 				<div class="form-group">
 					<input type="text" name="zoom"
 						th:field="*{mapOptions.zoom}" id='zoom'
-						class="form-control" placeholder="Zoom"></input>
+						class="form-control" placeholder="Zoom" min="0" max="22"></input>
 				</div>
 			</div>
 
@@ -50,7 +53,7 @@
 				<!-- Latitude input body -->
 				<div class="form-group">
 					<input type="text" name="lat"
-						th:field="*{mapOptions.lat}" id='lat'
+						th:field="*{mapOptions.latLon.lat}" id='lat'
 						class="form-control" placeholder="Latitude"></input>
 				</div>
 			</div>
@@ -59,7 +62,7 @@
 				<div class="form-group">
 					<!-- Longitude body -->
 					<input type="text" name="lon" id='lon'
-						th:field="*{mapOptions.lon}" class="form-control"
+						th:field="*{mapOptions.latLon.lon}" class="form-control"
 						placeholder="Longitude" value=""></input>
 				</div>
 			</div>
@@ -67,8 +70,8 @@
 				<label for="type">reset time in ms</label>
 				<div class="form-group">
 					<!-- Map Reset time  -->
-					<input type="text" name="mapResetTime" id='mapResetTime'
-						th:field="*{mapOptions.mapResetTime}"
+					<input type="text" name="resetTime" id='resetTime'
+						th:field="*{mapOptions.resetTime}"
 						class="form-control" placeholder="Map reset time" value=""></input>
 				</div>
 			</div>
