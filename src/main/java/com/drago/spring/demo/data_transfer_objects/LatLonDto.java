@@ -5,12 +5,12 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode
-public class UserProfileDto {
+public class LatLonDto {
 	
 	private Long id;
 	
-	private Long userId;
+	private Float lat;
 
-	private MapOptionsDto mapOptions;
+	private Float lon;
 
 }

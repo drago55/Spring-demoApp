@@ -7,12 +7,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 public class MapOptionsDto {
 	
-	private Float lat;
-
-	private Float lon;
+	private Long id;
+	
+	private LatLonDto latLon;
 	
 	private Integer zoom;
 
-	private Integer mapResetTime;
+	private Integer resetTime;
 
 }
