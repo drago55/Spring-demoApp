@@ -36,8 +36,6 @@ function initMap() {
   
   httpRequest("GET", "/user/profile/mapOptions");
 
-  
-  
   initClickListeners();
 
   if (typeof info_point_uuid !== "undefined" && info_point_uuid!=='') {
