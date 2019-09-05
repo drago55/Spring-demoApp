@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -32,12 +33,17 @@ public class AdministrationControllerTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(administrationController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(administrationController)
+				.setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())	
+				.build();
 	}
 
 	@Test
 	public void testListUsers() throws Exception {
-		this.mockMvc.perform(get("/users")).andExpect(status().isOk()).andExpect(model().attributeExists("users"))
+		this.mockMvc.perform(get("/admin/show_users"))
+			.andExpect(status().isOk())
+			.andExpect(model()
+			.attributeExists("users"))
 				.andExpect(view().name("admin/showUsers")).andDo(MockMvcResultHandlers.print());
 	}
 

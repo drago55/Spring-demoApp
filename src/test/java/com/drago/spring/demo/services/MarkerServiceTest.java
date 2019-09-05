@@ -24,6 +24,8 @@ public class MarkerServiceTest extends ApplicationTests {
 	@Autowired
 	private MarkerServiceImpl service;
 	
+	
+	
 	@Test
 	@WithMockUser(username = "drago@net.hr", authorities = { "ADMIN" })
 	public void testGetMarkerByUserId() {

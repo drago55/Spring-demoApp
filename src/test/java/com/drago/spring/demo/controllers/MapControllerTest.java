@@ -23,19 +23,7 @@ public class MapControllerTest {
 
     @Test
     public void showMap() throws Exception {
-    	mockMvc.perform(get("/index")).andExpect(status().isOk())
-    	.andExpect(view().name("map/index"));
-    }
-    
-    @Test
-    public void showMapOnRoot() throws Exception {
-    	mockMvc.perform(get("/")).andExpect(status().isOk())
-    	.andExpect(view().name("map/index"));
-    }
-    
-    @Test
-    public void showMapOnEmptyUrl() throws Exception {
-    	mockMvc.perform(get("")).andExpect(status().isOk())
+    	mockMvc.perform(get("/map")).andExpect(status().isOk())
     	.andExpect(view().name("map/index"));
     }
     

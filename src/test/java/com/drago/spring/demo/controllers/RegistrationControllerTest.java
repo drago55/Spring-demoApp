@@ -16,12 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
 import com.drago.spring.demo.services.UserService;
 import com.drago.spring.demo.services.servicesimpl.UserServiceImpl;
 
-public class RegisterUserControllerTest {
+public class RegistrationControllerTest {
 
 	private MockMvc mockMvc;
 
@@ -39,16 +40,17 @@ public class RegisterUserControllerTest {
 
 	@Test
 	public void showRegisterUser() throws Exception {
-		this.mockMvc.perform(get("/registerUser")).andExpect(status().isOk()).andExpect(model().attributeExists("user"))
+		this.mockMvc.perform(get("/registration/user")).andExpect(status().isOk()).andExpect(model().attributeExists("user"))
 				.andExpect(model().attribute("user", any(UserRegistrationDto.class)))
 				.andExpect(view().name("/registration/index")).andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test
+	@Transactional
 	public void proccesRegistration() throws Exception {
 
 		UserRegistrationDto user = new UserRegistrationDto();
-		user.setEmail("test@net.hr");
+		user.setEmail("test25@net.hr");
 		user.setFirstName("TestUser");
 		user.setLastName("TestUser");
 		user.setPassword("123456");
@@ -58,8 +60,9 @@ public class RegisterUserControllerTest {
 		 * 40net.hr&password=123456&confirmPassword=123456
 		 */
 		this.mockMvc
-				.perform(post("/processRegistration").param("firstName", "TestUser").param("lastName", "TestUser")
-						.param("email", "test@net.hr").param("confirmEmail", "test@net.hr").param("password", "123456")
+				.perform(post("/registration/process").param("firstName", "TestUser").param("lastName", "TestUser")
+						
+						.param("email", "test25@net.hr").param("password", "123456")
 						.param("confirmPassword", "123456").contentType(MediaType.APPLICATION_FORM_URLENCODED))
 				.andExpect(status().isOk()).andExpect(model().attributeExists("user"))
 				.andExpect(model().attributeExists("success")).andDo(MockMvcResultHandlers.print())

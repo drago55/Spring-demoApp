@@ -21,6 +21,7 @@ import com.drago.spring.demo.data_transfer_objects.UserRegistrationDto;
 import com.drago.spring.demo.domain.Role;
 import com.drago.spring.demo.domain.User;
 import com.drago.spring.demo.exception.InvalidUserException;
+import com.drago.spring.demo.exception.UserNotFoundException;
 import com.drago.spring.demo.services.servicesimpl.UserServiceImpl;
 
 @Transactional
@@ -39,7 +40,7 @@ public class UserServiceTest extends ApplicationTests {
 		UserLoginDto user = getUserLoginDto();
 		user.setUserEmail("unknown@net.hr");
 		assertThatThrownBy(() -> userService.findUserByEmail(user.getUserEmail()))
-				.isInstanceOf(UsernameNotFoundException.class).hasMessage("User not found!");
+				.isInstanceOf(UserNotFoundException.class).hasMessage("User not found!");
 	}
 
 	@Test
@@ -71,10 +72,10 @@ public class UserServiceTest extends ApplicationTests {
 	}
 
 	@Test
-	public void test_ThrowUsernameNotFoundException() throws UsernameNotFoundException {
+	public void test_ThrowUsernameNotFoundException() throws UserNotFoundException {
 		UserLoginDto user = getUserLoginDto();
 		user.setUserEmail("unknown@net.hr");
-		assertThatThrownBy(() -> userService.isValidUser(user)).isInstanceOf(UsernameNotFoundException.class)
+		assertThatThrownBy(() -> userService.isValidUser(user)).isInstanceOf(UserNotFoundException.class)
 				.hasMessage("Username or Password is wrong!!");
 	}
 
